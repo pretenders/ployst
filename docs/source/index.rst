@@ -11,7 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   architecture
    scenarios
+   references
 
 Indices and tables
 ==================
