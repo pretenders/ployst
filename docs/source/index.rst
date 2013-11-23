@@ -15,6 +15,8 @@ Contents:
    scenarios
    references
 
+   development-setup
+
 Indices and tables
 ==================
 

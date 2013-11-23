@@ -1,4 +1,10 @@
 -r runtime.txt
 
+Fabric
+
+# dependency management
+nodeenv
+
+# documentation
 Sphinx==1.2b3
 sphinx_bootstrap_theme==0.3.2

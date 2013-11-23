@@ -1,2 +1,6 @@
+# Untracked file types
 *.pyc
+*.swp
+
+# Build byproducts
 docs/build
