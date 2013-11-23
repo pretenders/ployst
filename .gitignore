@@ -1,6 +1,9 @@
 # Untracked file types
 *.pyc
 *.swp
+*.sqlite3
+
+.ropeproject/
 
 # Build byproducts
 docs/build
