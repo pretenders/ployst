@@ -42,6 +42,7 @@ INSTALLED_APPS = (
 
     # ployst proprietary apps
     'ployst.repos',
+    'ployst.builds',
 )
 
 MIDDLEWARE_CLASSES = (
