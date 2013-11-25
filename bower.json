@@ -11,6 +11,14 @@
   "dependencies": {
     "bootstrap": "3.0.2",
     "font-awesome": "4.0.3",
-    "angular": "1.2.1"
+    "angular": "1.2.2",
+    "angular-cookies": "1.2.2",
+    "angular-loader": "1.2.2",
+    "angular-resource": "1.2.2",
+    "angular-sanitize": "1.2.2"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.2",
+    "angular-scenario": "1.2.2"
   }
 }
