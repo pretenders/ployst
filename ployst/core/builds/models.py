@@ -2,7 +2,7 @@ from collections import namedtuple
 
 from django.db import models
 
-from ployst.repos.models import Revision
+from ..repos.models import Revision
 
 
 class Build(models.Model):

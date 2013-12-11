@@ -41,8 +41,9 @@ INSTALLED_APPS = (
     'rest_framework',                 # restful api
 
     # ployst proprietary apps
-    'ployst.repos',
-    'ployst.builds',
+    'ployst.core.features',
+    'ployst.core.repos',
+    'ployst.core.builds',
 )
 
 MIDDLEWARE_CLASSES = (
