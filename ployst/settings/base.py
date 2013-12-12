@@ -84,6 +84,38 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+COMPRESS_ENABLED = True
+# offline compression
+# COMPRESS_OFFLINE = True   # use this for live servers
+COMPRESS_OFFLINE_CONTEXT = {
+    'STATIC_URL': STATIC_URL,
+}
+
+# pre-compresses therefore allowing NGINX to deliver gzipped files
+# without incurring the overhead of doing the compression.
+COMPRESS_STORAGE = "compressor.storage.GzipCompressorFileStorage"
+# COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.SlimItFilter']
+COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter']
+COMPRESS_CSS_HASHING_METHOD = 'content'
+# by default /static/ in CSS files is substituted by STATIC_URL,
+# but you can override and specify others with the following setting
+# COMPRESS_CSS_REPLACE = [('/static/','http://www.bbc.co.uk/')]
+
+# Set the path to properly import LESS files from static files directories:
+# Default setting is to set LESS compile path to the static root location
+# only, which works for a production setting where collectstatic will have
+# been run. This is overriden in a development environment, where you want
+# a dynamic compile cycle while you work on CSS files
+
+LESS_COMMAND = 'lessc --include-path=%s {infile} {outfile}' % (
+    os.path.join(STATIC_ROOT, 'css')
+)
+COMPRESS_PRECOMPILERS = (
+    ('text/less', LESS_COMMAND),
+)
+
+# Global template directories. May live outside of the project in a production
+# setting.
 TEMPLATE_DIRS = (
     os.path.join(PLOYST_DIR, 'templates'),
 )
