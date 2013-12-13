@@ -28,11 +28,11 @@ class Repository(models.Model):
 
     If required in the future, this can be extended to support other
     repo types, such as mercurial, subversion etc.
-
     """
     name = models.CharField(max_length=100)
     url = models.URLField()
     active = models.BooleanField(default=True)
+    local_path = models.CharField(max_length=100)
 
     class Meta:
         verbose_name_plural = 'repositories'
@@ -51,6 +51,15 @@ class Branch(models.Model):
     repo = models.ForeignKey(Repository, related_name='branches')
     name = models.CharField(max_length=100)
     head = Revision(help_text="Latest known revision")
+    # is_contained_by_parent = models.BooleanField(
+    #        help_text="Merged into parent")
+    # parent = models.ForeignKey(Branch, related_name="children")
+    #          - or is this plural and many-to-many?
+    # features = manyToManyWithFeature
+    #            - I think we need this many-to-many relationship so that
+    #              the github app can contain all the logic about whether a
+    #              feature matches a branch. Otherwise at render point we'd
+    #              have to calculate that here again, right?
 
     class Meta:
         verbose_name_plural = 'branches'

@@ -4,3 +4,8 @@ django-compressor==1.3
 # slimit==0.8.1               # used by django compressor for compressing js files
 
 South==0.7.6
+
+django-appconf              # provides graceful configuration of apps
+
+# Git provider requirements
+GitPython==0.1.7            # access git repositories
