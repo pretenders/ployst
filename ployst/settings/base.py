@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'rest_framework',                 # restful api
 
     # ployst proprietary apps
+    'ployst.core.accounts',
     'ployst.core.features',
     'ployst.core.repos',
     'ployst.core.builds',

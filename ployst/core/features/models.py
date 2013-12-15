@@ -1,13 +1,18 @@
 from django.db import models
 
+from ..accounts.models import Team
+
 
 class Project(models.Model):
     """
     A project groups features together.
 
+    Projects belong to teams.
+
     """
     name = models.CharField(max_length=100)
     url = models.URLField()
+    team = models.ForeignKey(Team)
 
     def __unicode__(self):
         return self.name
