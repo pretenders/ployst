@@ -52,3 +52,9 @@ class Feature(models.Model):
     description = models.TextField()
     project = models.ForeignKey(Project)
     url = models.URLField()
+
+    def __unicode__(self):
+        return "#{id}: {title}".format(
+            id=self.feature_id,
+            title=self.title
+        )

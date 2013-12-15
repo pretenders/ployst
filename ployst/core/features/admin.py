@@ -1,3 +1,15 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Feature, Project
+
+
+class FeatureAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Feature, FeatureAdmin)
+
+
+class ProjectAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Project, ProjectAdmin)

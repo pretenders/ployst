@@ -12,6 +12,9 @@ class Team(models.Model):
     name = models.CharField(max_length=200)
     users = models.ManyToManyField(User, through='TeamUser')
 
+    def __unicode__(self):
+        return self.name
+
 
 class TeamUser(models.Model):
     """
@@ -35,3 +38,10 @@ class TeamUser(models.Model):
     user = models.ForeignKey(User)
     team = models.ForeignKey(Team)
     role = models.CharField(max_length=1, choices=ROLES)
+
+    def __unicode__(self):
+        return "{user} at {team} ({role})".format (
+            user=self.user.username,
+            team=self.team.name,
+            role=self.get_role_display(),
+        )
