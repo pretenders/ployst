@@ -34,4 +34,4 @@ class TeamUser(models.Model):
 
     user = models.ForeignKey(User)
     team = models.ForeignKey(Team)
-    role = models.CharField(choices=ROLES)
+    role = models.CharField(max_length=1, choices=ROLES)
