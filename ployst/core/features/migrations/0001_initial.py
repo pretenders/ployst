@@ -13,28 +13,28 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('team', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['accounts.Team'])),
+            ('team', self.gf('django.db.models.fields.related.ForeignKey')(related_name='projects', to=orm['accounts.Team'])),
         ))
         db.send_create_signal(u'features', ['Project'])
 
         # Adding model 'ProjectManager'
         db.create_table(u'features_projectmanager', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('project', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['features.Project'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='managed_projects', to=orm['auth.User'])),
+            ('project', self.gf('django.db.models.fields.related.ForeignKey')(related_name='managers', to=orm['features.Project'])),
         ))
         db.send_create_signal(u'features', ['ProjectManager'])
 
         # Adding model 'Feature'
         db.create_table(u'features_feature', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('project', self.gf('django.db.models.fields.related.ForeignKey')(related_name='features', to=orm['features.Project'])),
             ('provider', self.gf('django.db.models.fields.CharField')(max_length=40)),
             ('feature_id', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('type', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('owner', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('description', self.gf('django.db.models.fields.TextField')()),
-            ('project', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['features.Project'])),
             ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
         ))
         db.send_create_signal(u'features', ['Feature'])
@@ -107,7 +107,7 @@ class Migration(SchemaMigration):
             'feature_id': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'owner': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'project': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['features.Project']"}),
+            'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'features'", 'to': u"orm['features.Project']"}),
             'provider': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'type': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -117,14 +117,14 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Project'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'team': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['accounts.Team']"}),
+            'team': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'projects'", 'to': u"orm['accounts.Team']"}),
             'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
         },
         u'features.projectmanager': {
             'Meta': {'object_name': 'ProjectManager'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'project': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['features.Project']"}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+            'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'managers'", 'to': u"orm['features.Project']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'managed_projects'", 'to': u"orm['auth.User']"})
         }
     }
 
