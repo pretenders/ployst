@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 from ..accounts.models import Team
@@ -16,6 +17,18 @@ class Project(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class ProjectManager(models.Model):
+    """
+    Users that can manage a project (besides the team managers).
+
+    These can manage project provider settings, but not user permissions,
+    which remain the realm of the team managers.
+
+    """
+    user = models.ForeignKey(User)
+    project = models.ForeignKey(Project)
 
 
 class Feature(models.Model):
@@ -37,7 +50,6 @@ class Feature(models.Model):
     ``url``             - The url to the feature.
 
     """
-
     provider = models.CharField(
         max_length=40,
         help_text="The planning provider that created this feature",

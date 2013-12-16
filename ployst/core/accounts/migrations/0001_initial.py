@@ -20,7 +20,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('team', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['accounts.Team'])),
-            ('role', self.gf('django.db.models.fields.CharField')(max_length=1)),
+            ('manager', self.gf('django.db.models.fields.BooleanField')(default=True)),
         ))
         db.send_create_signal(u'accounts', ['TeamUser'])
 
@@ -43,7 +43,7 @@ class Migration(SchemaMigration):
         u'accounts.teamuser': {
             'Meta': {'object_name': 'TeamUser'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'role': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
+            'manager': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'team': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['accounts.Team']"}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },

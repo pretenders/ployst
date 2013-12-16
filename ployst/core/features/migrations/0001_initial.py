@@ -17,6 +17,14 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'features', ['Project'])
 
+        # Adding model 'ProjectManager'
+        db.create_table(u'features_projectmanager', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('project', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['features.Project'])),
+        ))
+        db.send_create_signal(u'features', ['ProjectManager'])
+
         # Adding model 'Feature'
         db.create_table(u'features_feature', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -36,6 +44,9 @@ class Migration(SchemaMigration):
         # Deleting model 'Project'
         db.delete_table(u'features_project')
 
+        # Deleting model 'ProjectManager'
+        db.delete_table(u'features_projectmanager')
+
         # Deleting model 'Feature'
         db.delete_table(u'features_feature')
 
@@ -50,7 +61,7 @@ class Migration(SchemaMigration):
         u'accounts.teamuser': {
             'Meta': {'object_name': 'TeamUser'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'role': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
+            'manager': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'team': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['accounts.Team']"}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
@@ -108,6 +119,12 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'team': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['accounts.Team']"}),
             'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
+        },
+        u'features.projectmanager': {
+            'Meta': {'object_name': 'ProjectManager'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'project': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['features.Project']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         }
     }
 
