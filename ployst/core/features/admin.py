@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Feature, Project
+from .models import Feature, Project, ProjectManager
 
 
 class FeatureAdmin(admin.ModelAdmin):
@@ -9,7 +9,11 @@ class FeatureAdmin(admin.ModelAdmin):
 admin.site.register(Feature, FeatureAdmin)
 
 
+class ProjectManagerInline(admin.TabularInline):
+    model = ProjectManager
+
+
 class ProjectAdmin(admin.ModelAdmin):
-    pass
+    inlines = (ProjectManagerInline,)
 
 admin.site.register(Project, ProjectAdmin)
