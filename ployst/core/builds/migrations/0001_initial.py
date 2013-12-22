@@ -13,7 +13,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('provider', self.gf('django.db.models.fields.CharField')(max_length=40)),
             ('job_id', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('revision', self.gf('ployst.repos.models.Revision')(max_length=40)),
+            ('revision', self.gf('ployst.core.repos.models.Revision')(max_length=40)),
             ('status', self.gf('django.db.models.fields.CharField')(default='gray', max_length=6)),
             ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
             ('build_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
@@ -33,7 +33,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'job_id': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'provider': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
-            'revision': ('ployst.repos.models.Revision', [], {'max_length': '40'}),
+            'revision': ('ployst.core.repos.models.Revision', [], {'max_length': '40'}),
             'status': ('django.db.models.fields.CharField', [], {'default': "'gray'", 'max_length': '6'}),
             'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
         }

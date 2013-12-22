@@ -1,11 +1,12 @@
 django==1.6.1
 djangorestframework==2.3.5
 django-compressor==1.3
+requests==2.1.0
 # slimit==0.8.1               # used by django compressor for compressing js files
 
 South==0.7.6
 
-django-appconf              # provides graceful configuration of apps
-
+django-appconf==0.6         # provides graceful configuration of apps
+django-filter==0.7          # provides generic filtering in API
 # Git provider requirements
 GitPython==0.1.7            # access git repositories

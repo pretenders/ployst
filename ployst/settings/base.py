@@ -131,3 +131,8 @@ COMPRESS_PRECOMPILERS = (
 TEMPLATE_DIRS = (
     os.path.join(PLOYST_DIR, 'templates'),
 )
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+}

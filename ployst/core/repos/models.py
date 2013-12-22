@@ -1,6 +1,7 @@
 from django.db import models
 from south.modelsinspector import add_introspection_rules
 
+from ployst.core.features.models import Feature
 
 class Revision(models.CharField):
     """
@@ -19,7 +20,7 @@ class Revision(models.CharField):
         "The display name will be the column name"
         return self.column
 
-add_introspection_rules([], ["^ployst\.repos\.models\.Revision"])
+add_introspection_rules([], ["^ployst\.core\.repos\.models\.Revision"])
 
 
 class Repository(models.Model):
@@ -51,15 +52,10 @@ class Branch(models.Model):
     repo = models.ForeignKey(Repository, related_name='branches')
     name = models.CharField(max_length=100)
     head = Revision(help_text="Latest known revision")
-    # is_contained_by_parent = models.BooleanField(
-    #        help_text="Merged into parent")
-    # parent = models.ForeignKey(Branch, related_name="children")
-    #          - or is this plural and many-to-many?
-    # features = manyToManyWithFeature
-    #            - I think we need this many-to-many relationship so that
-    #              the github app can contain all the logic about whether a
-    #              feature matches a branch. Otherwise at render point we'd
-    #              have to calculate that here again, right?
+    is_contained_by_parent = models.BooleanField(
+           help_text="Merged into parent")
+    parent = models.ForeignKey("self", related_name="children", null=True)
+    features = models.ManyToManyField(Feature)
 
     class Meta:
         verbose_name_plural = 'branches'

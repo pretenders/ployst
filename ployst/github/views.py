@@ -18,9 +18,8 @@ def recalculate(repo, branch_ref):
     Encapsulated in this function:
 
     The full update given a repo is:
-        - Get all features that relate to the given repo via the API.
-            - This is all features that are considered active now and belong to
-              users that have this repo enabled.
+        - Get the team(s) from the GITHUB_HOOK_TOKEN used.
+        - Get all features that are active and belong to these teams.
         - Filter out features that don't match this branch_ref.
         - For all remaining features, see if there are any branches that are
           relevant to it in the given repo.
@@ -46,6 +45,8 @@ def recalculate(repo, branch_ref):
 def receive_hook(request, hook_token):
     "Entry point for github messages"
     if hook_token != settings.GITHUB_HOOK_TOKEN:
+        # TODO: Change this to look up a team based on the github hook token
+        # used.
         return HttpResponseNotFound()
 
     try:
