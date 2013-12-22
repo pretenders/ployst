@@ -1,15 +1,18 @@
+import json
+
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.test.client import Client
 
-from ..repo import get_repos_by_url
-from . import FIXTURE_DIR
-
-class TestRepoAPI(TestCase):
-    fixtures = ['{0}/repos.json'.format(FIXTURE_DIR)]
+class TestFiltering(TestCase):
+    fixtures = ['repos.json']
 
     def test_get_repos_by_url(self):
         "Test we search by url to get a list of repos."
-        repos = get_repos_by_url('http://github.com/pretenders/ployst')
+        client = Client()
+        url='http://github.com/pretenders/ployst'
+        response = client.get('/core/repos/repo/?url={0}'.format(url))
+        repos = json.loads(response.content)
         self.assertEquals(len(repos), 1)
         self.assertEquals(repos[0]['name'], 'PloystTest')
 
