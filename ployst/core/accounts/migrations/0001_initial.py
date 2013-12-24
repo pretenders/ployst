@@ -12,6 +12,7 @@ class Migration(SchemaMigration):
         db.create_table(u'accounts_team', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('guid', self.gf('django.db.models.fields.CharField')(unique=True, max_length=50)),
         ))
         db.send_create_signal(u'accounts', ['Team'])
 
@@ -36,6 +37,7 @@ class Migration(SchemaMigration):
     models = {
         u'accounts.team': {
             'Meta': {'object_name': 'Team'},
+            'guid': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '50'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'users': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.User']", 'through': u"orm['accounts.TeamUser']", 'symmetrical': 'False'})
