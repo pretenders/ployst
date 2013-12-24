@@ -11,9 +11,9 @@ class Team(models.Model):
     Projects are assigned to teams. Users may belong to many teams.
 
     """
+    guid = models.CharField(max_length=50, primary_key=True, editable=False)
     name = models.CharField(max_length=200)
     users = models.ManyToManyField(User, through='TeamUser')
-    guid = models.CharField(max_length=50, unique=True)
 
     def __unicode__(self):
         return self.name

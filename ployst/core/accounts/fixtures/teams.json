@@ -1,0 +1,52 @@
+[
+{
+    "pk": 1,
+    "model": "auth.user",
+    "fields": {
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": true,
+        "is_staff": true,
+        "last_login": "2013-12-24T07:28:45.794Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$12000$RsxVwAx0nGuJ$OpzA1YrDg4OepJBslT5HB/ENEUKXIGW5s/Aj/o2IXa8=",
+        "email": "a@a.com",
+        "date_joined": "2013-12-13T20:23:42.749Z"
+    }
+},
+{
+    "pk": "8d7de2c4-4849-452f-82af-e142641c4b6d",
+    "model": "accounts.team",
+    "fields": {
+        "name": "Pretenders"
+    }
+},
+{
+    "pk": "fce365e1-8675-45e0-b740-2932f4dce60a",
+    "model": "accounts.team",
+    "fields": {
+        "name": "Azazo"
+    }
+},
+{
+    "pk": 1,
+    "model": "accounts.teamuser",
+    "fields": {
+        "manager": true,
+        "user": 1,
+        "team": "8d7de2c4-4849-452f-82af-e142641c4b6d"
+    }
+},
+{
+    "pk": 2,
+    "model": "accounts.teamuser",
+    "fields": {
+        "manager": true,
+        "user": 1,
+        "team": "fce365e1-8675-45e0-b740-2932f4dce60a"
+    }
+}
+]

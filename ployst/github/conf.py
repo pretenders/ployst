@@ -14,4 +14,4 @@ class GithubConf(AppConf):
         ``AppConf`` will auto convert these to be eg. <appname>_HOOK_TOKEN for
         use in settings. In this case GITHUB_HOOK_TOKEN.
     """
-    HOOK_TOKEN = None
+    pass
