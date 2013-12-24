@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.test.client import Client
 
 class TestTeams(TestCase):
-    fixtures = ['teams.json']
+    fixtures = ['users.json', 'teams.json', 'teamusers.json']
 
     def test_get_team_by_guid(self):
         "Test we can get a team by id"
