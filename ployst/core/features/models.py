@@ -61,7 +61,7 @@ class Feature(models.Model):
     )
     type = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
-    owner = models.CharField(max_length=100)
+    owner = models.CharField(max_length=100, null=True)
     description = models.TextField()
     url = models.URLField()
 

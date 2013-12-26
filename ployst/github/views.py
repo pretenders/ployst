@@ -39,6 +39,10 @@ def recalculate(repo, branch_ref):
 
     TODO: Move this to a more appropriate module.
     """
+    # projects = client.features.get_projects_by_team(token)
+    # for proj in projects:
+    #     client.features.get_features_by_project(proj['id'])
+
     pass
 
 

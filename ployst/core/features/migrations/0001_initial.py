@@ -33,7 +33,7 @@ class Migration(SchemaMigration):
             ('feature_id', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('type', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('owner', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('owner', self.gf('django.db.models.fields.CharField')(max_length=100, null=True)),
             ('description', self.gf('django.db.models.fields.TextField')()),
             ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
         ))
@@ -54,7 +54,7 @@ class Migration(SchemaMigration):
     models = {
         u'accounts.team': {
             'Meta': {'object_name': 'Team'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'guid': ('django.db.models.fields.CharField', [], {'max_length': '50', 'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'users': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.User']", 'through': u"orm['accounts.TeamUser']", 'symmetrical': 'False'})
         },
@@ -106,7 +106,7 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.TextField', [], {}),
             'feature_id': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'owner': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'owner': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True'}),
             'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'features'", 'to': u"orm['features.Project']"}),
             'provider': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),

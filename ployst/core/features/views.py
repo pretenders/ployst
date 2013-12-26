@@ -13,3 +13,4 @@ class ProjectViewSet(ModelViewSet):
 class FeatureViewSet(ModelViewSet):
     model = Feature
     serializer_class = FeatureSerializer
+    filter_fields = ('project',)
