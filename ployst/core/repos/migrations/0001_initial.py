@@ -22,7 +22,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('repo', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['repos.Repository'])),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('head', self.gf('ployst.repos.models.Revision')(max_length=40)),
+            ('head', self.gf('ployst.core.repos.models.Revision')(max_length=40)),
         ))
         db.send_create_signal(u'repos', ['Branch'])
 
@@ -38,7 +38,7 @@ class Migration(SchemaMigration):
     models = {
         u'repos.branch': {
             'Meta': {'object_name': 'Branch'},
-            'head': ('ployst.repos.models.Revision', [], {'max_length': '40'}),
+            'head': ('ployst.core.repos.models.Revision', [], {'max_length': '40'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'repo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['repos.Repository']"})

@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -9,11 +11,17 @@ class Team(models.Model):
     Projects are assigned to teams. Users may belong to many teams.
 
     """
+    guid = models.CharField(max_length=50, primary_key=True, editable=False)
     name = models.CharField(max_length=200)
     users = models.ManyToManyField(User, through='TeamUser')
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.guid:
+            self.guid = str(uuid.uuid4())
+        super(Team, self).save(*args, **kwargs)
 
 
 class TeamUser(models.Model):

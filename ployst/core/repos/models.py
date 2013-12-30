@@ -1,6 +1,7 @@
 from django.db import models
 from south.modelsinspector import add_introspection_rules
 
+from ployst.core.features.models import Feature
 
 class Revision(models.CharField):
     """
@@ -19,7 +20,7 @@ class Revision(models.CharField):
         "The display name will be the column name"
         return self.column
 
-add_introspection_rules([], ["^ployst\.repos\.models\.Revision"])
+add_introspection_rules([], ["^ployst\.core\.repos\.models\.Revision"])
 
 
 class Repository(models.Model):
@@ -28,11 +29,11 @@ class Repository(models.Model):
 
     If required in the future, this can be extended to support other
     repo types, such as mercurial, subversion etc.
-
     """
     name = models.CharField(max_length=100)
     url = models.URLField()
     active = models.BooleanField(default=True)
+    local_path = models.CharField(max_length=100)
 
     class Meta:
         verbose_name_plural = 'repositories'
@@ -51,6 +52,10 @@ class Branch(models.Model):
     repo = models.ForeignKey(Repository, related_name='branches')
     name = models.CharField(max_length=100)
     head = Revision(help_text="Latest known revision")
+    is_contained_by_parent = models.BooleanField(
+           help_text="Merged into parent")
+    parent = models.ForeignKey("self", related_name="children", null=True)
+    features = models.ManyToManyField(Feature)
 
     class Meta:
         verbose_name_plural = 'branches'

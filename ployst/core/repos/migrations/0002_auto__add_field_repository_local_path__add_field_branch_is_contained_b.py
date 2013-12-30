@@ -8,53 +8,48 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Project'
-        db.create_table(u'features_project', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('team', self.gf('django.db.models.fields.related.ForeignKey')(related_name='projects', to=orm['accounts.Team'])),
-        ))
-        db.send_create_signal(u'features', ['Project'])
+        # Adding field 'Repository.local_path'
+        db.add_column(u'repos_repository', 'local_path',
+                      self.gf('django.db.models.fields.CharField')(default='MISSING', max_length=100),
+                      keep_default=False)
 
-        # Adding model 'ProjectManager'
-        db.create_table(u'features_projectmanager', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='managed_projects', to=orm['auth.User'])),
-            ('project', self.gf('django.db.models.fields.related.ForeignKey')(related_name='managers', to=orm['features.Project'])),
-        ))
-        db.send_create_signal(u'features', ['ProjectManager'])
+        # Adding field 'Branch.is_contained_by_parent'
+        db.add_column(u'repos_branch', 'is_contained_by_parent',
+                      self.gf('django.db.models.fields.BooleanField')(default=False),
+                      keep_default=False)
 
-        # Adding model 'Feature'
-        db.create_table(u'features_feature', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('project', self.gf('django.db.models.fields.related.ForeignKey')(related_name='features', to=orm['features.Project'])),
-            ('provider', self.gf('django.db.models.fields.CharField')(max_length=40)),
-            ('feature_id', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('type', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('owner', self.gf('django.db.models.fields.CharField')(max_length=100, null=True)),
-            ('description', self.gf('django.db.models.fields.TextField')()),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
+        # Adding field 'Branch.parent'
+        db.add_column(u'repos_branch', 'parent',
+                      self.gf('django.db.models.fields.related.ForeignKey')(related_name='children', null=True, to=orm['repos.Branch']),
+                      keep_default=False)
+
+        # Adding M2M table for field features on 'Branch'
+        db.create_table(u'repos_branch_features', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('branch', models.ForeignKey(orm[u'repos.branch'], null=False)),
+            ('feature', models.ForeignKey(orm[u'features.feature'], null=False))
         ))
-        db.send_create_signal(u'features', ['Feature'])
+        db.create_unique(u'repos_branch_features', ['branch_id', 'feature_id'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Project'
-        db.delete_table(u'features_project')
+        # Deleting field 'Repository.local_path'
+        db.delete_column(u'repos_repository', 'local_path')
 
-        # Deleting model 'ProjectManager'
-        db.delete_table(u'features_projectmanager')
+        # Deleting field 'Branch.is_contained_by_parent'
+        db.delete_column(u'repos_branch', 'is_contained_by_parent')
 
-        # Deleting model 'Feature'
-        db.delete_table(u'features_feature')
+        # Deleting field 'Branch.parent'
+        db.delete_column(u'repos_branch', 'parent_id')
+
+        # Removing M2M table for field features on 'Branch'
+        db.delete_table('repos_branch_features')
 
 
     models = {
         u'accounts.team': {
             'Meta': {'object_name': 'Team'},
-            'guid': ('django.db.models.fields.CharField', [], {'max_length': '50', 'primary_key': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'users': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.User']", 'through': u"orm['accounts.TeamUser']", 'symmetrical': 'False'})
         },
@@ -106,7 +101,7 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.TextField', [], {}),
             'feature_id': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'owner': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True'}),
+            'owner': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'features'", 'to': u"orm['features.Project']"}),
             'provider': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -120,12 +115,24 @@ class Migration(SchemaMigration):
             'team': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'projects'", 'to': u"orm['accounts.Team']"}),
             'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
         },
-        u'features.projectmanager': {
-            'Meta': {'object_name': 'ProjectManager'},
+        u'repos.branch': {
+            'Meta': {'object_name': 'Branch'},
+            'features': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['features.Feature']", 'symmetrical': 'False'}),
+            'head': ('ployst.core.repos.models.Revision', [], {'max_length': '40'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'managers'", 'to': u"orm['features.Project']"}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'managed_projects'", 'to': u"orm['auth.User']"})
+            'is_contained_by_parent': ('django.db.models.fields.BooleanField', [], {}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'parent': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'children'", 'null': 'True', 'to': u"orm['repos.Branch']"}),
+            'repo': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'branches'", 'to': u"orm['repos.Repository']"})
+        },
+        u'repos.repository': {
+            'Meta': {'object_name': 'Repository'},
+            'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'local_path': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
         }
     }
 
-    complete_apps = ['features']
+    complete_apps = ['repos']

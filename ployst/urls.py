@@ -7,5 +7,9 @@ urlpatterns = patterns(
     '',
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^core/', include('ployst.core.urls')),
+    url(r'^core/', include('ployst.core.urls', namespace='core')),
+
+    url(r'^providers/github/',
+        include('ployst.github.urls', namespace='github')),
+
 )
