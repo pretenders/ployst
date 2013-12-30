@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from ..accounts.models import Team
+from ..accounts.models import Team, TeamObject
 
 
-class Project(models.Model):
+class Project(TeamObject):
     """
     A project groups features together.
 
@@ -14,6 +14,8 @@ class Project(models.Model):
     name = models.CharField(max_length=100)
     url = models.URLField()
     team = models.ForeignKey(Team, related_name='projects')
+
+    team_lookup = 'team'
 
     def __unicode__(self):
         return self.name
@@ -31,7 +33,7 @@ class ProjectManager(models.Model):
     project = models.ForeignKey(Project, related_name='managers')
 
 
-class Feature(models.Model):
+class Feature(TeamObject):
     """
     A work item for a software project.
 
@@ -64,6 +66,8 @@ class Feature(models.Model):
     owner = models.CharField(max_length=100, null=True)
     description = models.TextField()
     url = models.URLField()
+
+    team_lookup = 'project__team'
 
     def __unicode__(self):
         return "#{id}: {title}".format(
