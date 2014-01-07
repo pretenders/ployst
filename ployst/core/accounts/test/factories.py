@@ -1,6 +1,13 @@
 import factory
 
+from django.contrib.auth.models import User
 from ..models import Team
+
+
+class UserFactory(factory.DjangoModelFactory):
+    FACTORY_FOR = User
+    username = factory.Sequence(lambda n: 'user{0}'.format(n))
+    email = factory.Sequence(lambda n: 'user{0}@example.com'.format(n))
 
 
 class TeamFactory(factory.DjangoModelFactory):

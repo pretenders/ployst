@@ -8,8 +8,22 @@ class TeamObjectsQuerySet(QuerySet):
     """
 
     def for_team(self, team):
+        """
+        Filtered queryset only containing objects that belong to a team
+        """
         try:
             perm_kwargs = {self.model.team_lookup: team}
+            return self.filter(**perm_kwargs).distinct()
+        except AttributeError:
+            return self
+
+    def for_user(self, user):
+        """
+        Filtered queryset only containing objects that belong to a user
+        """
+        try:
+            user_lookup = self.model.team_lookup + '__users'
+            perm_kwargs = {user_lookup: user}
             return self.filter(**perm_kwargs).distinct()
         except AttributeError:
             return self
@@ -17,11 +31,22 @@ class TeamObjectsQuerySet(QuerySet):
 
 class TeamObjectsManager(Manager):
     """
-    A Manager to access a custom QuerySet for objects that belong to a team
+    A Manager to access a custom QuerySet for owned objects
+
+    It can filter objects that belong to a team or to a user
     """
 
     def get_query_set(self):
         return TeamObjectsQuerySet(self.model, using=self._db)
 
     def for_team(self, team):
+        """
+        Return only team objects
+        """
         return self.get_query_set().for_team(team)
+
+    def for_user(self, user):
+        """
+        Return only user objects
+        """
+        return self.get_query_set().for_user(user)
