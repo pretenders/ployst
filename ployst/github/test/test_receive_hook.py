@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.test.client import Client
 from django.test.utils import override_settings
 
 from mock import patch
@@ -14,8 +13,7 @@ from .. import views  # noqa
 class TestReceiveHook(TestCase):
 
     def post(self, data):
-        client = Client()
-        return client.post(
+        return self.client.post(
             reverse('github:hook', kwargs={'hook_token': "mock"}),
             data=data
         )
@@ -44,9 +42,7 @@ class TestReceiveHook(TestCase):
         "GET requests to the receive hook end point are rejected"
         team_exists.return_value = True
 
-        client = Client()
-
-        response = client.get(
+        response = self.client.get(
             reverse('github:hook', kwargs={'hook_token': 'a'})
         )
 

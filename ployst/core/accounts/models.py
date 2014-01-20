@@ -60,3 +60,33 @@ class TeamObject(models.Model):
 
     class Meta:
         abstract = True
+
+
+class Project(TeamObject):
+    """
+    A project groups artifacts together.
+
+    Projects belong to teams. Artifacts can be features, repositories,
+    builds, etc...
+
+    """
+    name = models.CharField(max_length=100)
+    url = models.URLField()
+    team = models.ForeignKey(Team, related_name='projects')
+
+    team_lookup = 'team'
+
+    def __unicode__(self):
+        return self.name
+
+
+class ProjectManager(models.Model):
+    """
+    Users that can manage a project (besides the team managers).
+
+    These can manage project provider settings, but not user permissions,
+    which remain the realm of the team managers.
+
+    """
+    user = models.ForeignKey(User, related_name='managed_projects')
+    project = models.ForeignKey(Project, related_name='managers')

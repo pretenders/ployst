@@ -1,12 +1,7 @@
 import factory
 
-from ...accounts.test.factories import TeamFactory
-from ..models import Feature, Project
-
-
-class ProjectFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Project
-    team = factory.SubFactory(TeamFactory)
+from ...accounts.test.factories import ProjectFactory
+from ..models import Feature
 
 
 class FeatureFactory(factory.DjangoModelFactory):

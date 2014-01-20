@@ -1,18 +1,6 @@
 from rest_framework import serializers
 
-from .models import Project, ProjectManager, Feature
-
-
-class ProjectManagerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProjectManager
-
-
-class ProjectSerializer(serializers.ModelSerializer):
-    managers = ProjectManagerSerializer(many=True)
-
-    class Meta:
-        model = Project
+from .models import Feature
 
 
 class FeatureSerializer(serializers.ModelSerializer):

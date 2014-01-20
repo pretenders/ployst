@@ -10,9 +10,8 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding model 'Team'
         db.create_table(u'accounts_team', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('guid', self.gf('django.db.models.fields.CharField')(max_length=50, primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
-            ('guid', self.gf('django.db.models.fields.CharField')(unique=True, max_length=50)),
         ))
         db.send_create_signal(u'accounts', ['Team'])
 
@@ -25,6 +24,23 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'accounts', ['TeamUser'])
 
+        # Adding model 'Project'
+        db.create_table(u'accounts_project', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
+            ('team', self.gf('django.db.models.fields.related.ForeignKey')(related_name='projects', to=orm['accounts.Team'])),
+        ))
+        db.send_create_signal(u'accounts', ['Project'])
+
+        # Adding model 'ProjectManager'
+        db.create_table(u'accounts_projectmanager', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='managed_projects', to=orm['auth.User'])),
+            ('project', self.gf('django.db.models.fields.related.ForeignKey')(related_name='managers', to=orm['accounts.Project'])),
+        ))
+        db.send_create_signal(u'accounts', ['ProjectManager'])
+
 
     def backwards(self, orm):
         # Deleting model 'Team'
@@ -33,12 +49,30 @@ class Migration(SchemaMigration):
         # Deleting model 'TeamUser'
         db.delete_table(u'accounts_teamuser')
 
+        # Deleting model 'Project'
+        db.delete_table(u'accounts_project')
+
+        # Deleting model 'ProjectManager'
+        db.delete_table(u'accounts_projectmanager')
+
 
     models = {
+        u'accounts.project': {
+            'Meta': {'object_name': 'Project'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'team': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'projects'", 'to': u"orm['accounts.Team']"}),
+            'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
+        },
+        u'accounts.projectmanager': {
+            'Meta': {'object_name': 'ProjectManager'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'managers'", 'to': u"orm['accounts.Project']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'managed_projects'", 'to': u"orm['auth.User']"})
+        },
         u'accounts.team': {
             'Meta': {'object_name': 'Team'},
-            'guid': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '50'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'guid': ('django.db.models.fields.CharField', [], {'max_length': '50', 'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'users': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.User']", 'through': u"orm['accounts.TeamUser']", 'symmetrical': 'False'})
         },
