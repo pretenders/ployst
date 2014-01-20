@@ -1,7 +1,7 @@
 import factory
 
 from django.contrib.auth.models import User
-from ..models import Team
+from ..models import Project, Team
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -12,3 +12,8 @@ class UserFactory(factory.DjangoModelFactory):
 
 class TeamFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Team
+
+
+class ProjectFactory(factory.DjangoModelFactory):
+    FACTORY_FOR = Project
+    team = factory.SubFactory(TeamFactory)

@@ -1,21 +1,24 @@
 import json
 
-from django.test import TestCase
+from django.core.urlresolvers import reverse
+from rest_framework.test import APITestCase
 
 from .factories import RepositoryFactory
 
 
-class TestFiltering(TestCase):
+class TestFiltering(APITestCase):
 
     def test_get_repos_by_url(self):
         """
         Test we search by url to get a list of repos.
 
         """
-        url = 'http://github.com/pretenders/ployst'
-        repo = RepositoryFactory(name='PloystTest', url=url)
+        repo_url = 'http://github.com/pretenders/ployst'
+        repo = RepositoryFactory(name='PloystTest', url=repo_url)
 
-        response = self.client.get('/core/repos/repo/?url={0}'.format(url))
+        # url = reverse('repos:repository-list')
+        url = '/core/repos/repo/'
+        response = self.client.get('{0}?url={1}'.format(url, repo_url))
 
         repos = json.loads(response.content)
         self.assertEquals(len(repos), 1)
