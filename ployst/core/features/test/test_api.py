@@ -1,7 +1,7 @@
 import json
 
+from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.test.client import Client
 
 from .factories import FeatureFactory, ProjectFactory
 
@@ -17,9 +17,9 @@ class TestFeatures(TestCase):
         FeatureFactory(project=project1, feature_id='US101')
         feature2 = FeatureFactory(project=project2, feature_id='US202')
 
-        client = Client()
-        response = client.get(
-            '/core/features/feature/?project={0}'.format(project2.id)
+        url = reverse('core:features:feature-list')
+        response = self.client.get(
+            '{}?project={}'.format(url, project2.id)
         )
         self.assertEquals(response.status_code, 200)
         features = json.loads(response.content)

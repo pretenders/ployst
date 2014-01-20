@@ -16,8 +16,7 @@ class TestFiltering(APITestCase):
         repo_url = 'http://github.com/pretenders/ployst'
         repo = RepositoryFactory(name='PloystTest', url=repo_url)
 
-        # url = reverse('repos:repository-list')
-        url = '/core/repos/repo/'
+        url = reverse('core:repos:repository-list')
         response = self.client.get('{0}?url={1}'.format(url, repo_url))
 
         repos = json.loads(response.content)
