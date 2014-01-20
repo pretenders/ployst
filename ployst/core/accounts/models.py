@@ -3,6 +3,8 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
+from .managers import TeamObjectsManager
+
 
 class Team(models.Model):
     """
@@ -28,7 +30,7 @@ class TeamUser(models.Model):
     """
     A user as part of a team.
 
-    Within a team, one or more users can be  managers.
+    Within a team, one or more users can be managers.
     Managers can add and remove team members, create
     projects and assign project managers to projects.
 
@@ -47,3 +49,14 @@ class TeamUser(models.Model):
             team=self.team.name,
             role=' (manager)' if self.manager else ''
         )
+
+
+class TeamObject(models.Model):
+    """
+    Base class for models that are objects that are owned by a team
+
+    """
+    objects = TeamObjectsManager()
+
+    class Meta:
+        abstract = True

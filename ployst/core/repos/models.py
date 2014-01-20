@@ -1,7 +1,8 @@
 from django.db import models
 from south.modelsinspector import add_introspection_rules
 
-from ployst.core.features.models import Feature
+from ployst.core.features.models import Feature, Project
+
 
 class Revision(models.CharField):
     """
@@ -30,10 +31,13 @@ class Repository(models.Model):
     If required in the future, this can be extended to support other
     repo types, such as mercurial, subversion etc.
     """
+    project = models.ForeignKey(Project, related_name='repositories')
     name = models.CharField(max_length=100)
     url = models.URLField()
     active = models.BooleanField(default=True)
     local_path = models.CharField(max_length=100)
+
+    team_lookup = 'project__team'
 
     class Meta:
         verbose_name_plural = 'repositories'
@@ -53,7 +57,7 @@ class Branch(models.Model):
     name = models.CharField(max_length=100)
     head = Revision(help_text="Latest known revision")
     is_contained_by_parent = models.BooleanField(
-           help_text="Merged into parent")
+        help_text="Merged into parent")
     parent = models.ForeignKey("self", related_name="children", null=True)
     features = models.ManyToManyField(Feature)
 
