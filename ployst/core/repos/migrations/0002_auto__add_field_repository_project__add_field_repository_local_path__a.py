@@ -13,10 +13,45 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.related.ForeignKey')(default=1, related_name='repositories', to=orm['features.Project']),
                       keep_default=False)
 
+        # Adding field 'Repository.local_path'
+        db.add_column(u'repos_repository', 'local_path',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=100),
+                      keep_default=False)
+
+        # Adding field 'Branch.merged_into_parent'
+        db.add_column(u'repos_branch', 'merged_into_parent',
+                      self.gf('django.db.models.fields.BooleanField')(default=False),
+                      keep_default=False)
+
+        # Adding field 'Branch.parent'
+        db.add_column(u'repos_branch', 'parent',
+                      self.gf('django.db.models.fields.related.ForeignKey')(related_name='children', null=True, to=orm['repos.Branch']),
+                      keep_default=False)
+
+        # Adding M2M table for field features on 'Branch'
+        db.create_table(u'repos_branch_features', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('branch', models.ForeignKey(orm[u'repos.branch'], null=False)),
+            ('feature', models.ForeignKey(orm[u'features.feature'], null=False))
+        ))
+        db.create_unique(u'repos_branch_features', ['branch_id', 'feature_id'])
+
 
     def backwards(self, orm):
         # Deleting field 'Repository.project'
         db.delete_column(u'repos_repository', 'project_id')
+
+        # Deleting field 'Repository.local_path'
+        db.delete_column(u'repos_repository', 'local_path')
+
+        # Deleting field 'Branch.merged_into_parent'
+        db.delete_column(u'repos_branch', 'merged_into_parent')
+
+        # Deleting field 'Branch.parent'
+        db.delete_column(u'repos_branch', 'parent_id')
+
+        # Removing M2M table for field features on 'Branch'
+        db.delete_table('repos_branch_features')
 
 
     models = {
@@ -93,7 +128,7 @@ class Migration(SchemaMigration):
             'features': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['features.Feature']", 'symmetrical': 'False'}),
             'head': ('ployst.core.repos.models.Revision', [], {'max_length': '40'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_contained_by_parent': ('django.db.models.fields.BooleanField', [], {}),
+            'merged_into_parent': ('django.db.models.fields.BooleanField', [], {}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'parent': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'children'", 'null': 'True', 'to': u"orm['repos.Branch']"}),
             'repo': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'branches'", 'to': u"orm['repos.Repository']"})
