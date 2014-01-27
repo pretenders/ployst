@@ -6,7 +6,7 @@ from django.http import (
 )
 from django.views.decorators.http import require_http_methods
 
-from ployst.core.client import accounts
+from ployst.core import client
 from .conf import settings
 
 LOGGER = logging.getLogger(__name__)
@@ -49,7 +49,7 @@ def recalculate(repo, branch_ref):
 @require_http_methods(['POST'])
 def receive_hook(request, hook_token):
     "Entry point for github messages"
-    if not accounts.team_exists(hook_token):
+    if not client.team_exists(hook_token):
         return HttpResponseNotFound()
 
     try:

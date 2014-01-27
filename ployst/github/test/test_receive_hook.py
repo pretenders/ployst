@@ -9,7 +9,7 @@ from . import read_data
 from .. import views  # noqa
 
 
-@patch(__name__ + '.views.accounts.team_exists')
+@patch(__name__ + '.views.client.team_exists')
 class TestReceiveHook(TestCase):
 
     def post(self, data):
