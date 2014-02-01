@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from ployst.apibase.mixins import DynamicFieldsSerializerMixin
 from .models import Branch, Repository
 
 
@@ -9,7 +10,8 @@ class BranchSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'head')
 
 
-class RepositorySerializer(serializers.ModelSerializer):
+class RepositorySerializer(DynamicFieldsSerializerMixin,
+                           serializers.ModelSerializer):
     branches = BranchSerializer(many=True)
 
     class Meta:
