@@ -3,6 +3,8 @@
 *.swp
 *.sqlite3
 
+# untracked files and directories
+tags
 .ropeproject/
 
 # Build byproducts
