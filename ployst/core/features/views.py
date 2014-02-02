@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 
-from ployst.apibase.mixins import PermissionsViewSetMixin
+from ployst.core.accounts.mixins import PermissionsViewSetMixin
 
 from .models import Feature
 from .serializers import FeatureSerializer
