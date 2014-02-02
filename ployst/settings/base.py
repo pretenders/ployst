@@ -39,14 +39,14 @@ INSTALLED_APPS = (
     # 3rd party apps
     'compressor',
     'south',
-    'rest_framework',                 # restful api
+    'rest_framework',               # restful api
 
     # ployst proprietary apps
-    'ployst.apibase',                 # base utilities and models for API
-    'ployst.core.accounts',
-    'ployst.core.features',
-    'ployst.core.repos',
-    'ployst.core.builds',
+    'ployst.apibase',               # base utilities and models for API
+    'ployst.core.accounts',         # teams, projects, and object ownership
+    'ployst.core.features',         # planning: stories, bugs, features...
+    'ployst.core.repos',            # version control: repos, branches...
+    'ployst.core.builds',           # continuous integration: build results...
 )
 
 MIDDLEWARE_CLASSES = (
