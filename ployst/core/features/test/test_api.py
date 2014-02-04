@@ -3,16 +3,20 @@ import json
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
+from ployst.core.accounts.test.mixins import ProjectTestMixin
+
 from .factories import FeatureFactory, ProjectFactory
 
 
-class TestFeatures(TestCase):
+class TestFeatures(ProjectTestMixin, TestCase):
 
     def test_get_features_by_project_id(self):
-        "Test we can get a feature by project id"
+        """
+        Get a feature by project id.
 
-        project1 = ProjectFactory()
-        project2 = ProjectFactory()
+        """
+        project1 = self.project
+        project2 = ProjectFactory(team=self.team)
 
         FeatureFactory(project=project1, feature_id='US101')
         feature2 = FeatureFactory(project=project2, feature_id='US202')
