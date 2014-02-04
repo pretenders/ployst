@@ -49,9 +49,6 @@ def recalculate(repo, branch_ref):
 @require_http_methods(['POST'])
 def receive_hook(request, hook_token):
     "Entry point for github messages"
-    if not client.team_exists(hook_token):
-        return HttpResponseNotFound()
-
     try:
         payload = request.POST['payload']
         commit_info = json.loads(payload)

@@ -9,7 +9,6 @@ from . import read_data
 from .. import views  # noqa
 
 
-@patch(__name__ + '.views.client.team_exists')
 class TestReceiveHook(TestCase):
 
     def post(self, data):
@@ -19,14 +18,13 @@ class TestReceiveHook(TestCase):
         )
 
     @patch(__name__ + '.views.recalculate')
-    def test_post_causes_recalculation(self, recalculate, team_exists):
+    def test_post_causes_recalculation(self, recalculate):
         """
         Test that we recalculate branches after receive hook
 
         Note that currently this is being done synchronously at the point
         of receiving a request from github.
         """
-        team_exists.return_value = True
         data = read_data('post-receive-hook.json')
 
         response = self.post({'payload': data})
@@ -38,52 +36,48 @@ class TestReceiveHook(TestCase):
             ('https://github.com/pretenders/ployst',
              'refs/heads/dev_alex'))
 
-    def test_get_rejected(self, team_exists):
+    def test_get_rejected(self):
         "GET requests to the receive hook end point are rejected"
-        team_exists.return_value = True
-
         response = self.client.get(
             reverse('github:hook', kwargs={'hook_token': 'a'})
         )
 
         self.assertEquals(response.status_code, 405)
 
-    def test_handles_missing_payload(self, team_exists):
+    def test_handles_missing_payload(self):
         "Return 400 on missing payload in POSTs"
-        team_exists.return_value = True
-
         response = self.post({'foo': 'bar'})
 
         self.assertEquals(response.status_code, 400)
 
-    def test_handles_missing_keys_in_payload(self, team_exists):
+    def test_handles_missing_keys_in_payload(self):
         """
         Return 400 if repository or branch information is missing from payload
         """
-        team_exists.return_value = True
-
         response = self.post({'payload': '{}'})
 
         self.assertEquals(response.status_code, 400)
 
-    def test_handles_malformed_json_content(self, team_exists):
+    def test_handles_malformed_json_content(self):
         """
         Return 400 on malformed JSON content
         """
-        team_exists.return_value = True
-
         response = self.post({'payload': 'xyz'})
 
         self.assertEquals(response.status_code, 400)
 
-    def test_rejects_messages_from_unrecognised_token(self, team_exists):
+    def test_rejects_messages_from_unrecognised_token(self):
         """
         Return 404 if the request comes from an unrecognised source.
 
         We set up github authentication to use a token in the URL. If the token
         given does not matched the one set up, we reject the request.
         """
-        team_exists.return_value = False
+        msg = (
+            "Need to implement security based on token used in POST "
+            "requests made to the github post receive hook url"
+        )
+        raise NotImplementedError(msg)
         response = self.post({'payload': '{}'})
 
         self.assertEquals(response.status_code, 404)
