@@ -16,6 +16,7 @@ Contents:
    references
 
    development-setup
+   security
 
 Indices and tables
 ==================
