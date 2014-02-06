@@ -8,4 +8,4 @@ djangorestframework==2.3.8
 South==0.7.6
 
 # Git provider requirements
-GitPython==0.1.7            # access git repositories
+GitPython==0.3.2.RC1            # access git repositories

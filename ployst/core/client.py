@@ -15,10 +15,20 @@ def get_features_by_project(project_id):
 
 
 def get_repos_by_url(url):
-    # I can't seem to get reverse to work for django rest framework.
-    # Any hints?
     response = requests.get(
         'http://localhost:8000/core/repos/repo/?url={0}'.format(url)
     )
     return response.json()
 
+
+def get_provider_settings(team_id, provider):
+    #TODO: make this API call.
+    if provider == "github":
+        return {
+            "branch_finders": ["^master$", ".*(?i){feature_id}.*"]
+        }
+
+
+def update_branch_information(branch_info):
+    # TODO: write this API call.
+    pass

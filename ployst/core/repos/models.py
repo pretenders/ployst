@@ -46,6 +46,11 @@ class Repository(TeamObject):
     def __unicode__(self):
         return self.name
 
+    @property
+    def team(self):
+        if hasattr(self.project, 'team'):
+            return self.project.team.guid
+
 
 class Branch(TeamObject):
     """
@@ -59,7 +64,7 @@ class Branch(TeamObject):
     head = Revision(help_text="Latest known revision")
     merged_into_parent = models.BooleanField(help_text="Merged into parent")
     parent = models.ForeignKey("self", related_name="children", null=True)
-    features = models.ManyToManyField(Feature)
+    feature = models.ForeignKey(Feature, related_name='branches', null=True)
 
     team_lookup = 'repo__project__team'
 

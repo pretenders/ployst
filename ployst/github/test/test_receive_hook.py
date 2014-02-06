@@ -1,7 +1,5 @@
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.test.utils import override_settings
 
 from mock import patch
 
@@ -34,7 +32,7 @@ class TestReceiveHook(TestCase):
         self.assertEquals(
             recalculate.call_args[0],
             ('https://github.com/pretenders/ployst',
-             'refs/heads/dev_alex'))
+             'dev_alex'))
 
     def test_get_rejected(self):
         "GET requests to the receive hook end point are rejected"
