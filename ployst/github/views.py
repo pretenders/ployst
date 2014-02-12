@@ -5,13 +5,15 @@ from django.http import (
     HttpResponse, HttpResponseBadRequest
 )
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 
-from ployst.core import client
+from ployst.core.client import Client
 from .conf import settings
 from .lib import match_features, HierarchyHandler
 
 LOGGER = logging.getLogger(__name__)
 
+client = Client('http://localhost:8000', settings.GITHUB_HOOK_TOKEN)
 
 def recalculate(repo_url, branch_name):
     """
@@ -82,6 +84,7 @@ def recalculate(repo_url, branch_name):
                 })
 
 
+@csrf_exempt
 @require_http_methods(['POST'])
 def receive_hook(request, hook_token):
     "Entry point for github messages"

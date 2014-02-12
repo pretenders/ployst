@@ -63,8 +63,10 @@ class Branch(TeamObject):
     name = models.CharField(max_length=100)
     head = Revision(help_text="Latest known revision")
     merged_into_parent = models.BooleanField(help_text="Merged into parent")
-    parent = models.ForeignKey("self", related_name="children", null=True)
-    feature = models.ForeignKey(Feature, related_name='branches', null=True)
+    parent = models.ForeignKey("self", related_name="children",
+                               blank=True, null=True)
+    feature = models.ForeignKey(Feature, related_name='branches',
+                                blank=True, null=True)
 
     team_lookup = 'repo__project__team'
 

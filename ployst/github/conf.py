@@ -15,3 +15,4 @@ class GithubConf(AppConf):
         use in settings. In this case GITHUB_HOOK_TOKEN.
     """
     NAME = "github"
+    HOOK_TOKEN = ""

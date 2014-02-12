@@ -4,6 +4,7 @@ from .models import Token
 
 TOKEN_HEADER = 'X-Ployst-Access-Token'
 
+_HTTP_TOKEN_LOOKUP = "HTTP_" + TOKEN_HEADER.replace('-', '_').upper()
 
 def contains_valid_token(request):
     """
@@ -13,7 +14,8 @@ def contains_valid_token(request):
     `X-Ployst-Access-Token` to match a token for a registered client.
 
     """
-    access_token = request.META.get(TOKEN_HEADER)
+    access_token = request.META.get(_HTTP_TOKEN_LOOKUP)
+
     if access_token is None:
         access_token = request.GET.get(TOKEN_HEADER)
 
