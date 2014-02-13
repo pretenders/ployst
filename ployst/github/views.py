@@ -15,6 +15,7 @@ LOGGER = logging.getLogger(__name__)
 
 client = Client('http://localhost:8000', settings.GITHUB_HOOK_TOKEN)
 
+
 def recalculate(repo_url, branch_name):
     """
     Recalculate all relevant branch information given a new commit
@@ -40,7 +41,6 @@ def recalculate(repo_url, branch_name):
         - dev branch (merged in)
         - dev branch 2 (not merged in)
     """
-
     repos = client.get_repos_by_url(repo_url)
     for repo in repos:
 
@@ -53,7 +53,6 @@ def recalculate(repo_url, branch_name):
 
         features = client.get_features_by_project(repo['project'])
 
-        # TODO: Match features against a branch name.
         matched_features = match_features(
             features,
             regexes,
@@ -73,15 +72,27 @@ def recalculate(repo_url, branch_name):
             statuses = controller.get_branch_merge_statuses(
                 hierarchy, branch_name
             )
-            for branch_status in statuses:
-                client.update_branch_information({
-                    'repo': repo['id'],
-                    'name': branch_status['branch_name'],
-                    'head': branch_status['head'],
-                    'merged_into_parent': branch_status['merged_into_parent'],
-                    'parent': branch_status['parent_name'],
-                    'feature': feature['id']
-                })
+            save_branch_statuses(statuses, repo['id'], feature['id'])
+
+
+def save_branch_statuses(statuses, repo_id, feature_id):
+    for branch_status in statuses:
+        parent = None
+        if branch_status['parent_name']:
+            parent = client.get_branch_by_name(
+                repo=repo_id,
+                name=branch_status['parent_name'])
+
+        parent_id = parent['id'] if parent else None
+
+        client.update_branch_information({
+            'repo': repo_id,
+            'name': branch_status['branch_name'],
+            'head': branch_status['head'],
+            'merged_into_parent': branch_status['merged_into_parent'],
+            'parent': parent_id,
+            'feature': feature_id,
+        })
 
 
 @csrf_exempt

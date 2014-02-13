@@ -20,6 +20,7 @@ C's parent is assumed to be A, due to level 1 having no nodes.
 
 """
 
+
 class Hierarchy(list):
 
     def __init__(self):

@@ -3,7 +3,9 @@ from unittest import TestCase
 from rest_framework.test import APIRequestFactory
 
 from ..models import Token
-from ..permissions import ClientTokenPermission, TOKEN_HEADER
+from ..permissions import (
+    ClientTokenPermission, TOKEN_HEADER, _HTTP_TOKEN_LOOKUP
+)
 
 
 class TestTokenPermissions(TestCase):
@@ -29,7 +31,7 @@ class TestTokenPermissions(TestCase):
         self.assertTrue(permissions.has_permission(request, None))
 
     def test_valid_token_in_header__has_permission(self):
-        kwargs = {TOKEN_HEADER: self.token.key}
+        kwargs = {_HTTP_TOKEN_LOOKUP: self.token.key}
         request = self.request_factory.get('/', **kwargs)
         permissions = ClientTokenPermission()
         self.assertTrue(permissions.has_permission(request, None))

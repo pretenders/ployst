@@ -30,6 +30,12 @@ class MockClient(object):
 
         }
 
+    def get_branch_by_name(self, repo, name):
+        return {
+            'name': name,
+            'id': 1001
+        }
+
     def get_features_by_project(self, project_id):
         return [
             {
@@ -81,7 +87,7 @@ class TestEndToEnd(TestCase):
                 'name': 'my/feature-99',
                 'head': '7098fa31bf9663343c723d9d155c0dc6e6e28174',
                 'merged_into_parent': False,
-                'parent': 'master',
+                'parent': 1001,
                 'feature': 1,
             }
         )

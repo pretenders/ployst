@@ -68,4 +68,3 @@ class TestBranchCreation(ProjectTestMixin, APITestCase):
         branches = Branch.objects.all()
         self.assertEquals(1, len(branches))
         self.assertEquals("dev/alex", branches[0].name)
-

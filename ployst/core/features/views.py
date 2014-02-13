@@ -9,4 +9,4 @@ from .serializers import FeatureSerializer
 class FeatureViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = Feature
     serializer_class = FeatureSerializer
-    filter_fields = ('project',)
+    filter_fields = ('project', 'feature_id')

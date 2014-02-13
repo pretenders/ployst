@@ -6,6 +6,7 @@ TOKEN_HEADER = 'X-Ployst-Access-Token'
 
 _HTTP_TOKEN_LOOKUP = "HTTP_" + TOKEN_HEADER.replace('-', '_').upper()
 
+
 def contains_valid_token(request):
     """
     Check that the request contains a registered token.
