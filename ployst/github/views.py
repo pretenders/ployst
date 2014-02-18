@@ -46,7 +46,7 @@ def recalculate(repo_url, branch_name):
 
         #TODO: Implement settings. Model and API calls.
         prov_settings = client.get_provider_settings(
-            repo['team'],
+            repo.project,
             settings.GITHUB_NAME
         )
         regexes = prov_settings['branch_finders']

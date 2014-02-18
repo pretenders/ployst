@@ -14,7 +14,7 @@ def ensure_dummy_clone_available():
     if not exists(DUMMY_CODE_DIR):
         os.mkdir(DUMMY_CODE_DIR)
     folder_name = join(DUMMY_CODE_DIR, 'dummyrepo')
-    if not exists(folder_name):
+    if not exists("{0}/.git".format(folder_name)):
         os.system('git clone git://github.com/pretenders/dummyrepo.git {0}'
                   .format(folder_name))
     else:

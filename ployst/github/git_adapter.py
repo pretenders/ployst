@@ -54,7 +54,9 @@ class PythonGitAdapter(GitAdapter):
         return branches
 
     def is_contained(self, commit, branch):
-        return commit in [c.hexsha for c in self.repo.iter_commits(branch)]
+        if not branch.startswith('origin'):
+            branch = "origin/{}".format(branch)
+        return commit in (c.hexsha for c in self.repo.iter_commits(branch))
 
     def fetch(self):
         self.remote.fetch()
