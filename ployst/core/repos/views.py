@@ -14,3 +14,4 @@ class RepositoryViewSet(PermissionsViewSetMixin, ModelViewSet):
 
 class BranchViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = Branch
+    filter_fields = ('name', 'repo')

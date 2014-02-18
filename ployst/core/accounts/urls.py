@@ -6,6 +6,7 @@ from . import views
 router = routers.SimpleRouter()
 router.register(r'project', views.ProjectViewSet)
 router.register(r'team', views.TeamViewSet)
+router.register(r'settings', views.ProjectProviderSettingsViewSet)
 
 urlpatterns = patterns(
     '',

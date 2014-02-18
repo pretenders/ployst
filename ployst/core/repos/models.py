@@ -46,25 +46,32 @@ class Repository(TeamObject):
     def __unicode__(self):
         return self.name
 
+    @property
+    def team(self):
+        if hasattr(self.project, 'team'):
+            return self.project.team.guid
+
 
 class Branch(TeamObject):
     """
     A relevant branch in the repository.
 
     Contains information such as its latest known revision.
-
     """
     repo = models.ForeignKey(Repository, related_name='branches')
     name = models.CharField(max_length=100)
     head = Revision(help_text="Latest known revision")
     merged_into_parent = models.BooleanField(help_text="Merged into parent")
-    parent = models.ForeignKey("self", related_name="children", null=True)
-    features = models.ManyToManyField(Feature)
+    parent = models.ForeignKey("self", related_name="children",
+                               blank=True, null=True)
+    feature = models.ForeignKey(Feature, related_name='branches',
+                                blank=True, null=True)
 
     team_lookup = 'repo__project__team'
 
     class Meta:
         verbose_name_plural = 'branches'
+        unique_together = ('repo', 'name')
 
     def __unicode__(self):
         return "{name} ({head})".format(**self.__dict__)

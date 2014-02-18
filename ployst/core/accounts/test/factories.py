@@ -1,7 +1,7 @@
 import factory
 
 from django.contrib.auth.models import User
-from ..models import Project, Team, TeamUser
+from ..models import Project, Team, TeamUser, ProjectProviderSettings
 
 TEST_PASSWORD = 's3cret-password'
 
@@ -27,6 +27,11 @@ class ProjectFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Project
     name = factory.Sequence(lambda n: 'project-{0}'.format(n))
     team = factory.SubFactory(TeamFactory)
+
+
+class SettingsFactory(factory.DjangoModelFactory):
+    FACTORY_FOR = ProjectProviderSettings
+    project = factory.SubFactory(ProjectFactory)
 
 
 def create_base_project():

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Project, ProjectManager, Team
+from .models import Project, ProjectManager, Team, ProjectProviderSettings
 
 
 class TeamUserInline(admin.TabularInline):
@@ -21,3 +21,9 @@ class ProjectAdmin(admin.ModelAdmin):
     inlines = (ProjectManagerInline,)
 
 admin.site.register(Project, ProjectAdmin)
+
+
+class ProjectProviderSettingsAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(ProjectProviderSettings, ProjectProviderSettingsAdmin)
