@@ -13,7 +13,7 @@ from .lib import match_features, HierarchyHandler
 
 LOGGER = logging.getLogger(__name__)
 
-client = Client('http://localhost:8000', settings.GITHUB_HOOK_TOKEN)
+client = Client('http://localhost:8000/', settings.GITHUB_HOOK_TOKEN)
 
 
 def recalculate(repo_url, branch_name):

@@ -37,7 +37,7 @@ def setUp():
     return
 
 hook_data = read_data('ployst/github/test/data/end-to-end.json')
-client = Client('http://localhost:8000', INTEGRATION_TEST_TOKEN)
+client = Client('http://localhost:8000/', INTEGRATION_TEST_TOKEN)
 
 
 def main():
