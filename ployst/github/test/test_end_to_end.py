@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from mock import patch, Mock
+from supermutes.dot import dotify
 
 from . import read_data, DUMMY_REPO, ensure_dummy_clone_available
 from .. import views  # noqa
@@ -12,7 +13,7 @@ class MockClient(object):
         self.create_or_update_branch_information = Mock()
 
     def get_repos_by_url(self, url):
-        return [
+        return dotify([
             {
                 "id": 1,
                 "name": "DummyRepo",
@@ -22,7 +23,7 @@ class MockClient(object):
                 "team": "10123",
                 "local_path": DUMMY_REPO
             },
-        ]
+        ])
 
     def get_provider_settings(self, team, provider_name):
         return {
