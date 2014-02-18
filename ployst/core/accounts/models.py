@@ -90,3 +90,16 @@ class ProjectManager(models.Model):
     """
     user = models.ForeignKey(User, related_name='managed_projects')
     project = models.ForeignKey(Project, related_name='managers')
+
+
+class ProjectProviderSettings(models.Model):
+    """
+    Settings for a provider within a project.
+    """
+    project = models.ForeignKey(Project, related_name='settings')
+    provider = models.CharField(max_length=20)
+    settings = models.TextField()
+
+    class Meta:
+        unique_together = ('project', 'provider')
+

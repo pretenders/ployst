@@ -9,7 +9,7 @@ from .. import views  # noqa
 class MockClient(object):
 
     def __init__(self):
-        self.update_branch_information = Mock()
+        self.create_or_update_branch_information = Mock()
 
     def get_repos_by_url(self, url):
         return [
@@ -79,9 +79,10 @@ class TestEndToEnd(TestCase):
 
         self.assertEquals(response.status_code, 200)
 
-        self.assertEquals(core_client.update_branch_information.call_count, 1)
         self.assertEquals(
-            core_client.update_branch_information.call_args[0][0],
+            core_client.create_or_update_branch_information.call_count, 1)
+        self.assertEquals(
+            core_client.create_or_update_branch_information.call_args[0][0],
             {
                 'repo': 1,
                 'name': 'my/feature-99',

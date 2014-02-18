@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Project, Team
+from .models import Project, Team, ProjectProviderSettings
 from .serializers import ProjectSerializer
 
 
@@ -12,3 +12,7 @@ class ProjectViewSet(ModelViewSet):
 
 class TeamViewSet(ModelViewSet):
     model = Team
+
+
+class ProjectProviderSettingsViewSet(ModelViewSet):
+    model = ProjectProviderSettings

@@ -20,11 +20,12 @@ INTEGRATION_TEST_TOKEN = "18c6af5f-7796-4a53-8a1f-041d77dee7eb"
 def read_data(filename):
     return file(filename).read()
 
+client = Client('http://localhost:8000/', INTEGRATION_TEST_TOKEN)
 
 def setUp():
     """
     We need to create:
-      - A project (integration-test)
+      - A project (integration-test, id=4)
       - A team (testers)
       - A feature with id 99
       - A dummy repo in the database (
@@ -34,17 +35,29 @@ def setUp():
     TODO: create these programatically. Currently these have been done
     manually to test the receive hook works.
     """
-    return
+    project_id = 4
+    client.set_provider_settings(
+        project_id, 'github', settings={
+            "branch_finders": ["^master$", ".*(?i){feature_id}.*"]
+        })
 
 hook_data = read_data('ployst/github/test/data/end-to-end.json')
-client = Client('http://localhost:8000/', INTEGRATION_TEST_TOKEN)
+
+error_file = '/tmp/error.html'
 
 
 def main():
+    setUp()
     response = requests.post(
         'http://localhost:8000/providers/github/receive-hook/TOKEN/',
         data={'payload': hook_data}
     )
+    if response.status_code == 500:
+        print "500 ERROR OUTPUT TO {}".format(error_file)
+        with file(error_file, 'w') as f:
+            f.write(response.content)
+        return
+
     assert_equals(response.status_code, 200)
 
     features = client.get_features_by_id(99)

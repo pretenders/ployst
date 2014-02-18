@@ -57,7 +57,6 @@ class Branch(TeamObject):
     A relevant branch in the repository.
 
     Contains information such as its latest known revision.
-
     """
     repo = models.ForeignKey(Repository, related_name='branches')
     name = models.CharField(max_length=100)
@@ -72,6 +71,7 @@ class Branch(TeamObject):
 
     class Meta:
         verbose_name_plural = 'branches'
+        unique_together = ('repo', 'name')
 
     def __unicode__(self):
         return "{name} ({head})".format(**self.__dict__)

@@ -85,7 +85,7 @@ def save_branch_statuses(statuses, repo_id, feature_id):
 
         parent_id = parent['id'] if parent else None
 
-        client.update_branch_information({
+        client.create_or_update_branch_information({
             'repo': repo_id,
             'name': branch_status['branch_name'],
             'head': branch_status['head'],
