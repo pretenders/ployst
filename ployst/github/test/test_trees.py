@@ -2,7 +2,7 @@ import unittest
 
 from nose.tools import assert_items_equal, assert_equal
 
-from ..models import Hierarchy
+from ..trees import Hierarchy
 
 
 class TestHierarchy(unittest.TestCase):
@@ -13,7 +13,6 @@ class TestHierarchy(unittest.TestCase):
         self.h[2].append(('c', '333'))
 
     def test_acts_as_default_list(self):
-        print self.h
         assert_items_equal(self.h, [[('a', '111')], [('c', '333')]])
 
         self.h[2].append(('c2', '444'))

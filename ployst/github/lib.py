@@ -1,6 +1,6 @@
 import re
 
-from .models import Hierarchy
+from .trees import Hierarchy
 
 from .git_adapter import PythonGitAdapter
 
