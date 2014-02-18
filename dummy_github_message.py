@@ -22,6 +22,7 @@ def read_data(filename):
 
 client = Client('http://localhost:8000/', INTEGRATION_TEST_TOKEN)
 
+
 def setUp():
     """
     We need to create:

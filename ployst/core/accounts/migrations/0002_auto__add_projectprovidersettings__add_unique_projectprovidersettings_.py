@@ -8,26 +8,25 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Branch.feature'
-        db.add_column(u'repos_branch', 'feature',
-                      self.gf('django.db.models.fields.related.ForeignKey')(related_name='branches', null=True, to=orm['features.Feature']),
-                      keep_default=False)
+        # Adding model 'ProjectProviderSettings'
+        db.create_table(u'accounts_projectprovidersettings', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('project', self.gf('django.db.models.fields.related.ForeignKey')(related_name='settings', to=orm['accounts.Project'])),
+            ('provider', self.gf('django.db.models.fields.CharField')(max_length=20)),
+            ('settings', self.gf('django.db.models.fields.TextField')()),
+        ))
+        db.send_create_signal(u'accounts', ['ProjectProviderSettings'])
 
-        # Removing M2M table for field features on 'Branch'
-        db.delete_table('repos_branch_features')
+        # Adding unique constraint on 'ProjectProviderSettings', fields ['project', 'provider']
+        db.create_unique(u'accounts_projectprovidersettings', ['project_id', 'provider'])
 
 
     def backwards(self, orm):
-        # Deleting field 'Branch.feature'
-        db.delete_column(u'repos_branch', 'feature_id')
+        # Removing unique constraint on 'ProjectProviderSettings', fields ['project', 'provider']
+        db.delete_unique(u'accounts_projectprovidersettings', ['project_id', 'provider'])
 
-        # Adding M2M table for field features on 'Branch'
-        db.create_table(u'repos_branch_features', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('branch', models.ForeignKey(orm[u'repos.branch'], null=False)),
-            ('feature', models.ForeignKey(orm[u'features.feature'], null=False))
-        ))
-        db.create_unique(u'repos_branch_features', ['branch_id', 'feature_id'])
+        # Deleting model 'ProjectProviderSettings'
+        db.delete_table(u'accounts_projectprovidersettings')
 
 
     models = {
@@ -37,6 +36,19 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'team': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'projects'", 'to': u"orm['accounts.Team']"}),
             'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
+        },
+        u'accounts.projectmanager': {
+            'Meta': {'object_name': 'ProjectManager'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'managers'", 'to': u"orm['accounts.Project']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'managed_projects'", 'to': u"orm['auth.User']"})
+        },
+        u'accounts.projectprovidersettings': {
+            'Meta': {'unique_together': "(('project', 'provider'),)", 'object_name': 'ProjectProviderSettings'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'settings'", 'to': u"orm['accounts.Project']"}),
+            'provider': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
+            'settings': ('django.db.models.fields.TextField', [], {})
         },
         u'accounts.team': {
             'Meta': {'object_name': 'Team'},
@@ -86,38 +98,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        u'features.feature': {
-            'Meta': {'object_name': 'Feature'},
-            'description': ('django.db.models.fields.TextField', [], {}),
-            'feature_id': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'owner': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True'}),
-            'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'features'", 'to': u"orm['accounts.Project']"}),
-            'provider': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'type': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
-        },
-        u'repos.branch': {
-            'Meta': {'object_name': 'Branch'},
-            'feature': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'branches'", 'null': 'True', 'to': u"orm['features.Feature']"}),
-            'head': ('ployst.core.repos.models.Revision', [], {'max_length': '40'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'merged_into_parent': ('django.db.models.fields.BooleanField', [], {}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'parent': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'children'", 'null': 'True', 'to': u"orm['repos.Branch']"}),
-            'repo': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'branches'", 'to': u"orm['repos.Repository']"})
-        },
-        u'repos.repository': {
-            'Meta': {'object_name': 'Repository'},
-            'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'local_path': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'repositories'", 'to': u"orm['accounts.Project']"}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
         }
     }
 
-    complete_apps = ['repos']
+    complete_apps = ['accounts']
