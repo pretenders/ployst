@@ -8,10 +8,11 @@ class Client(object):
 
     def __init__(self, base_url, access_token):
         assert base_url.endswith('/')
-        self.base_url = base_url
+
+        self.base_url = base_url + 'core/'
         self.access_token = access_token
         self.ployst = Api(
-            base_url,
+            self.base_url,
             headers={'X-Ployst-Access-Token': self.access_token}
         )
 
@@ -32,7 +33,7 @@ class Client(object):
 
     # Accounts
     def get_provider_settings(self, project_id, provider):
-        response = self.ployst.core.accounts.settings(
+        response = self.ployst.accounts.settings(
             project=project_id,
             provider=provider
         )
@@ -40,7 +41,7 @@ class Client(object):
             return json.loads(response[0]['settings'])
 
     def set_provider_settings(self, project_id, provider, settings):
-        existing_settings = self.ployst.core.accounts.settings(
+        existing_settings = self.ployst.accounts.settings(
             project=project_id,
             provider=provider
         )
@@ -52,20 +53,20 @@ class Client(object):
         }
 
         if existing_settings:
-            self.put('core/accounts/settings/{}/'.format(
+            self.put('accounts/settings/{}/'.format(
                 existing_settings[0]['id']), data)
         else:
-            self.post('core/accounts/settings/', data)
+            self.post('accounts/settings/', data)
 
     # Features
     def get_features_by_id(self, feature_id):
-        return self.ployst.core.features.feature(feature_id=feature_id)
+        return self.ployst.features.feature(feature_id=feature_id)
 
     def get_features_by_project(self, project_id):
-        return self.ployst.core.features.feature(project=project_id)
+        return self.ployst.features.feature(project=project_id)
 
     def get_projects_by_team(self, team_id):
-        return self.ployst.core.features.project(team=team_id)
+        return self.ployst.features.project(team=team_id)
 
     # Repos
     def get_branch_by_name(self, repo, name):
@@ -78,10 +79,10 @@ class Client(object):
         :param name:
             Branch name.
         """
-        return self.ployst.core.repos.branch(repo=repo, name=name)
+        return self.ployst.repos.branch(repo=repo, name=name)
 
     def get_repos_by_url(self, url):
-        return self.ployst.core.repos.repo(url=url)
+        return self.ployst.repos.repo(url=url)
 
     def create_or_update_branch_information(self, branch_info):
         """
@@ -90,12 +91,12 @@ class Client(object):
         Perform a lookup on (repo, name) to see if it exists.
         Update or create it with the contents of ``branch_info``.
         """
-        existing_branch = self.ployst.core.repos.branch(
+        existing_branch = self.ployst.repos.branch(
             repo=branch_info['repo'],
             name=branch_info['name']
         )
         if existing_branch:
-            self.put('core/repos/branch/{}/'.format(existing_branch[0]['id']),
+            self.put('repos/branch/{}/'.format(existing_branch[0]['id']),
                      branch_info)
         else:
-            self.post('core/repos/branch/', branch_info)
+            self.post('repos/branch/', branch_info)
