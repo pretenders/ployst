@@ -53,13 +53,23 @@ class TeamUser(models.Model):
 
 class TeamObject(models.Model):
     """
-    Base class for models that are objects that are owned by a team
+    Base class for models that are objects that are owned by a team.
 
+    It relies on the class having a field ``team_lookup`` that is a django
+    ORM-style lookup from object to team.
     """
     objects = TeamObjectsManager()
 
     class Meta:
         abstract = True
+
+    @property
+    def team(self):
+        team_path = self.team_lookup.split('__')
+        value = self
+        for attr in team_path:
+            value = getattr(value, attr)
+        return value.guid
 
 
 class Project(TeamObject):

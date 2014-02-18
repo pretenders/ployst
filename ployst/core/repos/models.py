@@ -46,11 +46,6 @@ class Repository(TeamObject):
     def __unicode__(self):
         return self.name
 
-    @property
-    def team(self):
-        if hasattr(self.project, 'team'):
-            return self.project.team.guid
-
 
 class Branch(TeamObject):
     """
