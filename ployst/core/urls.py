@@ -5,6 +5,7 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
+
     url(r'^accounts/',
         include('ployst.core.accounts.urls', namespace='accounts')),
     url(r'^features/',

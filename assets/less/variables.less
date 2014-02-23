@@ -1,3 +1,20 @@
+// PLOYST branding
+
+@brand-primary:         #428bca;
+@brand-success:         #5cb85c;
+@brand-info:            #5bc0de;
+@brand-warning:         #f0ad4e;
+@brand-danger:          #d9534f;
+
+// Custom (Non-twitter-bootstrap) variables
+@brand-sans-font:  SansationRegular, Arial, sans-serif;
+@brand-serif-font: Georgia, "Times New Roman", Times, serif;
+@brand-mono-font:  Menlo, Monaco, Consolas, "Courier New", monospace;
+
+@brand-font: YanoneKaffeesatzBold;
+
+// end branding
+
 //
 // Variables
 // --------------------------------------------------
@@ -12,12 +29,6 @@
 @gray:                   lighten(#000, 33.5%); // #555
 @gray-light:             lighten(#000, 60%);   // #999
 @gray-lighter:           lighten(#000, 93.5%); // #eee
-
-@brand-primary:         #428bca;
-@brand-success:         #5cb85c;
-@brand-info:            #5bc0de;
-@brand-warning:         #f0ad4e;
-@brand-danger:          #d9534f;
 
 
 //== Scaffolding
@@ -39,10 +50,10 @@
 //
 //## Font, line-height, and color for body text, headings, and more.
 
-@font-family-sans-serif:  "Helvetica Neue", Helvetica, Arial, sans-serif;
-@font-family-serif:       Georgia, "Times New Roman", Times, serif;
+@font-family-sans-serif:  @brand-sans-font;
+@font-family-serif:       @brand-serif-font;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
-@font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
+@font-family-monospace:   @brand-mono-font;
 @font-family-base:        @font-family-sans-serif;
 
 @font-size-base:          14px;

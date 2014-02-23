@@ -37,8 +37,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     # 3rd party apps
+    'account',                      # django-user-accounts
     'compressor',
+    'crispy_forms',
     'south',
+
     'rest_framework',               # restful api
 
     # ployst proprietary apps
@@ -47,15 +50,21 @@ INSTALLED_APPS = (
     'ployst.core.features',         # planning: stories, bugs, features...
     'ployst.core.repos',            # version control: repos, branches...
     'ployst.core.builds',           # continuous integration: build results...
+    'ployst.ui',                    # The main Ployst UI
 )
 
 MIDDLEWARE_CLASSES = (
+    # base django
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 3rd party
+    'account.middleware.LocaleMiddleware',
+    'account.middleware.TimezoneMiddleware',
 )
 
 ROOT_URLCONF = 'ployst.urls'
@@ -81,6 +90,29 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
+# Global template directories. May live outside of the project in a production
+# setting.
+TEMPLATE_DIRS = (
+    os.path.join(PLOYST_DIR, 'templates'),
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    # django
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+
+    # 3rd party
+    'account.context_processors.account',
+
+    # ployst
+)
+
 
 # Static files (CSS, JavaScript, Images) and compression
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -127,13 +159,11 @@ COMPRESS_PRECOMPILERS = (
     ('text/less', LESS_COMMAND),
 )
 
-# Global template directories. May live outside of the project in a production
-# setting.
-TEMPLATE_DIRS = (
-    os.path.join(PLOYST_DIR, 'templates'),
-)
-
-
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
+
+LOGIN_URL = '/account/login'
+
+# Crispy Forms ------------------------------------------------------------
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
