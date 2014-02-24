@@ -1,10 +1,18 @@
 // PLOYST branding
 
-@brand-primary:         #428bca;
-@brand-success:         #5cb85c;
+@color1: #B3CC57;
+@color2: #ECF081;
+@color3: #FFBE40;
+@color4: #EF746F;
+@color5: #AB3E5B;
+
+@brand-color: @color5;
+
+@brand-primary:         @brand-color;  // #428bca;
+@brand-success:         @color1;  // #5cb85c;
 @brand-info:            #5bc0de;
-@brand-warning:         #f0ad4e;
-@brand-danger:          #d9534f;
+@brand-warning:         @color3;  // #f0ad4e;
+@brand-danger:          @color4;  // #d9534f;
 
 // Custom (Non-twitter-bootstrap) variables
 @brand-sans-font:  SansationRegular, Arial, sans-serif;
@@ -12,6 +20,10 @@
 @brand-mono-font:  Menlo, Monaco, Consolas, "Courier New", monospace;
 
 @brand-font: YanoneKaffeesatzBold;
+
+@white:  #fff;
+@black:  #000;
+
 
 // end branding
 
@@ -24,11 +36,11 @@
 //
 //## Gray and brand colors for use across Bootstrap.
 
-@gray-darker:            lighten(#000, 13.5%); // #222
-@gray-dark:              lighten(#000, 20%);   // #333
-@gray:                   lighten(#000, 33.5%); // #555
-@gray-light:             lighten(#000, 60%);   // #999
-@gray-lighter:           lighten(#000, 93.5%); // #eee
+@gray-darker:            lighten(@black, 13.5%); // #222
+@gray-dark:              lighten(@black, 20%);   // #333
+@gray:                   lighten(@black, 33.5%); // #555
+@gray-light:             lighten(@black, 60%);   // #999
+@gray-lighter:           lighten(@black, 93.5%); // #eee
 
 
 //== Scaffolding
@@ -36,7 +48,7 @@
 // ## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-@body-bg:               #fff;
+@body-bg:               @white;
 //** Global text color on `<body>`.
 @text-color:            @gray-dark;
 
@@ -111,7 +123,7 @@
 @border-radius-small:       3px;
 
 //** Global color for active items (e.g., navs or dropdowns).
-@component-active-color:    #fff;
+@component-active-color:    @white;
 //** Global background color for active items (e.g., navs or dropdowns).
 @component-active-bg:       @brand-primary;
 
