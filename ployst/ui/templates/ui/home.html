@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "ui/admin_base.html" %}
 {% load account_tags %}
 
-{% block content %}
-Welcome home {% user_display user %}.
+{% block page %}
+<p>Welcome home {% user_display user %}.</p>
 {% endblock %}
