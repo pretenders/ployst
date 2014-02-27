@@ -6,6 +6,7 @@
 # untracked files and directories
 tags
 .ropeproject/
+/assets/lib
 
 # Build byproducts
 docs/build

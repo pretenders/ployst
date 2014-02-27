@@ -9,7 +9,7 @@
   "description": "The ultimate story tracking tool",
   "private": true,
   "dependencies": {
-    "bootstrap": "3.0.2",
+    "bootstrap": "3.1.1",
     "font-awesome": "4.0.3",
     "angular": "1.2.2",
     "angular-cookies": "1.2.2",
