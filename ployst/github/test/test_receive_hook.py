@@ -28,9 +28,9 @@ class TestReceiveHook(TestCase):
         response = self.post({'payload': data})
 
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(recalculate.call_count, 1)
+        self.assertEquals(recalculate.delay.call_count, 1)
         self.assertEquals(
-            recalculate.call_args[0],
+            recalculate.delay.call_args[0],
             ('https://github.com/pretenders/ployst',
              'dev_alex'))
 

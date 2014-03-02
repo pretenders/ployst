@@ -1,10 +1,11 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+
 from mock import patch, Mock
 from supermutes.dot import dotify
 
 from . import read_data, DUMMY_REPO, ensure_dummy_clone_available
-from .. import views  # noqa
+from .. import tasks  # noqa
 
 
 class MockClient(object):
@@ -61,7 +62,7 @@ class TestEndToEnd(TestCase):
     def setUp(self):
         ensure_dummy_clone_available()
 
-    @patch(__name__ + '.views.client', MockClient())
+    @patch(__name__ + '.tasks.client', MockClient())
     def test_receive_hook_end_to_end(self):
         """
         Perform a full end to end test with the receive hook.
@@ -69,7 +70,7 @@ class TestEndToEnd(TestCase):
         A github-like POST to the receive hook should result in branch(es)
         being updated in core.
         """
-        from ..views import client as core_client
+        from ..tasks import client as core_client
 
         data = read_data('end-to-end.json')
 
