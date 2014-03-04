@@ -166,7 +166,9 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
 
+# Django User Accounts ----------------------------------------------------
 LOGIN_URL = '/account/login'
+THEME_ACCOUNT_CONTACT_EMAIL = 'help@ployst.com'
 
 # Crispy Forms ------------------------------------------------------------
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
