@@ -4,17 +4,18 @@ from optparse import make_option
 import requests
 
 from django.core.management.base import BaseCommand, CommandError
+from django.core.urlresolvers import reverse
 
 
 class Command(BaseCommand):
     args = '<repo_url> <branch_name>'
     option_list = BaseCommand.option_list + (
         make_option('-p', '--port',
-            dest="port",
-            help="port to POST to (default: 8000)",
-            default='8000'
-            ),
-        )
+                    dest="port",
+                    help="port to POST to (default: 8000)",
+                    default='8000'
+                    ),
+    )
     help = """Create a fake message from github to force an update.
     Requires a running instance"""
 
@@ -25,15 +26,16 @@ class Command(BaseCommand):
 
         repo_url, branch_name = args
         port = options.get('port')
-        url = ('http://localhost:{port}/'
-               'providers/github/receive-hook/tOkEn/'.format(port=port))
+        url = reverse('github:hook', kwargs={'hook_token': "tOkEn"})
+        full_url = 'http://localhost:{port}{url}'.format(url=url, port=port)
+
         load = json.dumps({
             'repository': {
                 'url': repo_url
             },
             'ref': branch_name
         })
-        response = requests.post(url, data={'payload': load})
+        response = requests.post(full_url, data={'payload': load})
         print response.status_code
         if response.status_code != 200:
             with file('/tmp/error.html', 'w') as f:
