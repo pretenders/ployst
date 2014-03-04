@@ -19,7 +19,7 @@ You should see log messages in the celery worker console.
 Adding celery tasks
 ===================
 
-Celery tasks are found if they are put inside a ``tasks.py`` modue
+Celery tasks are found if they are put inside a ``tasks.py`` module
 of an app that is registered in ``INSTALLED_APPS`` of settings.
 
 

@@ -33,10 +33,10 @@ class MockClient(object):
         }
 
     def get_branch_by_name(self, repo, name):
-        return {
+        return [{
             'name': name,
             'id': 1001
-        }
+        }]
 
     def get_features_by_project(self, project_id):
         return [

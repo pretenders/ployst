@@ -54,8 +54,10 @@ class HierarchyHandler(object):
         statuses = []
         for node in all_nodes:
             parent_name = node.parent.branch if node.parent else None
-            merged_into_parent = self.git.is_contained(
-                node.commit, parent_name)
+            merged_into_parent = False
+            if parent_name:
+                merged_into_parent = self.git.is_contained(
+                    node.commit, parent_name)
 
             statuses.append({
                 'head': node.commit,

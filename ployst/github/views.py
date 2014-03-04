@@ -25,5 +25,6 @@ def receive_hook(request, hook_token):
         LOGGER.error('Unexpected data structure: {0}'.format(request.POST))
         return HttpResponseBadRequest()
 
-    recalculate.delay(url, branch_name)
+    f = recalculate.delay(url, branch_name)
+    print f
     return HttpResponse("OK")

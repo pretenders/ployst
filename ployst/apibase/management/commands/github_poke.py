@@ -1,4 +1,5 @@
 import json
+from optparse import make_option
 
 import requests
 
@@ -7,6 +8,13 @@ from django.core.management.base import BaseCommand, CommandError
 
 class Command(BaseCommand):
     args = '<repo_url> <branch_name>'
+    option_list = BaseCommand.option_list + (
+        make_option('-p', '--port',
+            dest="port",
+            help="port to POST to (default: 8000)",
+            default='8000'
+            ),
+        )
     help = """Create a fake message from github to force an update.
     Requires a running instance"""
 
@@ -16,8 +24,9 @@ class Command(BaseCommand):
                 self.args, len(args)))
 
         repo_url, branch_name = args
-
-        url = 'http://localhost:8000/providers/github/receive-hook/tOkEn/'
+        port = options.get('port')
+        url = ('http://localhost:{port}/'
+               'providers/github/receive-hook/tOkEn/'.format(port=port))
         load = json.dumps({
             'repository': {
                 'url': repo_url
