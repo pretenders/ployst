@@ -51,6 +51,9 @@ INSTALLED_APPS = (
     'ployst.core.repos',            # version control: repos, branches...
     'ployst.core.builds',           # continuous integration: build results...
     'ployst.ui',                    # The main Ployst UI
+
+    # Providers
+    'ployst.github'
 )
 
 MIDDLEWARE_CLASSES = (
