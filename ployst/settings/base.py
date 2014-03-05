@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     # 3rd party apps
-    'account',                      # django-user-accounts
+    'registration',                 # django-registration
     'compressor',
     'crispy_forms',
     'south',
@@ -166,19 +166,13 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
 
-# Django User Accounts ----------------------------------------------------
-LOGIN_URL = '/account/login'
-THEME_ACCOUNT_CONTACT_EMAIL = 'help@ployst.com'
-
-# Crispy Forms ------------------------------------------------------------
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            'format': ('%(levelname)s %(asctime)s %(module)s '
+                       '%(process)d %(thread)d %(message)s')
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
@@ -190,7 +184,7 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': '/tmp/ployst.log',
         },
-        'console':{
+        'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
@@ -209,3 +203,11 @@ LOGGING = {
         },
     },
 }
+
+# Auth and Registration ---------------------------------------------------
+LOGIN_URL = '/auth/login'
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_CONTACT_EMAIL = 'help@ployst.com'
+
+# Crispy Forms ------------------------------------------------------------
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

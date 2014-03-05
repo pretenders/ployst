@@ -1,4 +1,4 @@
-{% extends "account/base_panel.html" %}
+{% extends "registration/base_panel.html" %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
@@ -12,6 +12,6 @@
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
     {% endif %}
     <p>
-        <a class="pull-right small" href="{% url "account_password_reset" %}">{% trans "Forgot your password?" %}</a>
+        <a class="pull-right small" href="{% url "password_reset" %}">{% trans "Forgot your password?" %}</a>
     </p>
 {% endblock %}
