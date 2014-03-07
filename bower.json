@@ -11,14 +11,13 @@
   "dependencies": {
     "bootstrap": "3.1.1",
     "font-awesome": "4.0.3",
-    "angular": "1.2.2",
-    "angular-cookies": "1.2.2",
-    "angular-loader": "1.2.2",
-    "angular-resource": "1.2.2",
-    "angular-sanitize": "1.2.2"
+    "angular": "=1.2.14",
+    "angular-route": "=1.2.14",
+    "angular-resource": "=1.2.14",
+    "angular-cookies": "=1.2.14"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.2",
-    "angular-scenario": "1.2.2"
+    "angular-mocks": "=1.2.14",
+    "angular-scenario": "=1.2.14"
   }
 }
