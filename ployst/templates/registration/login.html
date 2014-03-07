@@ -1,0 +1,17 @@
+{% extends "registration/base_panel.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{% trans "Log in" %}{% endblock %}
+
+{% block panel_heading %}{% trans "Log in to an existing account" %}{% endblock %}
+
+{% block panel_body %}
+    {% crispy form %}
+    {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <p>
+        <a class="pull-right small" href="{% url "password_reset" %}">{% trans "Forgot your password?" %}</a>
+    </p>
+{% endblock %}

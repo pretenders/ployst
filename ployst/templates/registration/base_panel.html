@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>{% block panel_heading %}{% endblock %}</h4>
+            </div>
+            <div class="panel-body">
+                {% block panel_body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

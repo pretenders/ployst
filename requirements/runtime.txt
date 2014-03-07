@@ -6,7 +6,7 @@ django-compressor==1.3
 django-crispy-forms==1.4.0       # better control over form rendering
 django-filter==0.7               # provides generic filtering in API
 djangorestframework==2.3.8
-django-user-accounts==1.0c4      # user accounts and registration
+django-registration==1.0         # user accounts and registration
 South==0.7.6
 
 # API client requirements
