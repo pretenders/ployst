@@ -28,3 +28,10 @@ This will:
  * install all npm modules defined in ``requirements/npm-modules.txt``
    into your virtualenv
  * install all dependencies defined in ``bower.json`` into ``assets/lib``.
+
+Git hook installation
+---------------------
+
+To install the pre commit hook run:
+
+    ln -s ../../pre-commit.sh .git/hooks/pre-commit
