@@ -8,6 +8,13 @@ tags
 .ropeproject/
 /assets/lib
 
+# This may be a sublime thing
+.project
+
 # Build byproducts
 docs/build
 /static
+
+# Some OSX specific thing
+*.DS_Store
+

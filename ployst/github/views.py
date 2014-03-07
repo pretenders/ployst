@@ -13,7 +13,6 @@ from .tasks import recalculate
 
 LOGGER = logging.getLogger(__name__)
 
-# TODO: Make the hook_token actually do something
 @csrf_exempt
 @require_http_methods(['POST'])
 def receive_hook(request, hook_token):
