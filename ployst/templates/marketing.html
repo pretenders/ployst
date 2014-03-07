@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block head_title %}Welcome to Ployst{% endblock %}
+
+{% block content %}
+<div id="marketing">
+    <section class="marketing-hero row-fluid">
+        <article class="col-sm-12">
+                <h1>Welcome to Ployst!</h1>
+                <p class="lead">...watch your user stories unfold!</p>
+                <blockquote>
+                    <p>
+                        <strong>Ployst</strong> will help you take your stories
+                        from inception to deployment, showing you relevant information along their
+                        lifecycle, by combining data collected from various tools.
+                    </p>
+                </blockquote>
+            </article>
+    </section>
+    <section class='marketing-detail row-fluid'>
+        <article class="col-sm-4">
+            <h3>
+                <i class="fa fa-tasks"></i> Planning Tools</h3>
+            <p>Collect backlog information from:
+                <ul>
+                    <li>Github</li>
+                    <li>Target Process</li>
+                    <li>Jira</li>
+                    <li>etc...</li>
+                </ul>
+            </p>
+        </article>
+        <article class="col-sm-4">
+            <h3>
+                <i class="fa fa-edit"></i> Version Control</h3>
+            <p>Get branches relevant to your stories from your repositories:
+                <ul>
+                    <li>Git</li>
+                    <li>Mercurial</li>
+                    <li>etc...</li>
+                </ul>
+            </p>
+        </article>
+        <article class="col-sm-4">
+            <h3>
+                <i class="fa fa-cogs"></i> Build and CI Tools</h3>
+            <p>See the results of your build jobs from:
+                <ul>
+                    <li>Jenkins</li>
+                    <li>Travis CI</li>
+                    <li>etc...</li>
+                </ul>
+            </p>
+        </article>
+    </section>
+</div>
+{% endblock %}

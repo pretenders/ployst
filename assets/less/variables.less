@@ -1,18 +1,19 @@
 // PLOYST branding
 
 @color1: #B3CC57;
-@color2: #ECF081;
+@color2: #FFF694;
 @color3: #FFBE40;
 @color4: #EF746F;
 @color5: #AB3E5B;
 
 @brand-color: @color5;
+@brand-alt-color: @color3;
 
-@brand-primary:         @brand-color;  // #428bca;
-@brand-success:         @color1;  // #5cb85c;
+@brand-primary:         @brand-color;  // orig: #428bca;
+@brand-success:         @color1;       // orig: #5cb85c;
 @brand-info:            #5bc0de;
-@brand-warning:         @color3;  // #f0ad4e;
-@brand-danger:          @color4;  // #d9534f;
+@brand-warning:         @color3;       // orig: #f0ad4e;
+@brand-danger:          @color4;       // orig: #d9534f;
 
 // Custom (Non-twitter-bootstrap) variables
 @brand-sans-font:  SansationRegular, Arial, sans-serif;
@@ -24,6 +25,11 @@
 @white:  #fff;
 @black:  #000;
 
+// These are the 'semantic' colour variables that are actually used
+// in all other less files:
+
+@discrete-background: lighten(@color2, 10%);
+@main-dark-background: darken(@color4, 50%);
 
 // end branding
 

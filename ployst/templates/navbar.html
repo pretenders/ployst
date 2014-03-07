@@ -36,9 +36,21 @@
                     </ul>
                 </li>
                 {% else %}
-                <li>
-                    <a href="{% url 'login' %}" class="signin-menu">Sign In to your <b>ployst</b> account</a>
-                </li>
+                    {# only display login form if there isn't already a form in the page #}
+                    {% if not form %}
+                    <li>
+                        <form class="navbar-form" role="form" method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" name="username" placeholder="Username" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="password" placeholder="Password" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Sign in</button>
+                        </form>
+                    </li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </div>

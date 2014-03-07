@@ -73,3 +73,34 @@ body {
     text-transform: lowercase;
     padding: 8px 15px 12px;
 }
+
+/* Marketing page ---------------------------------------------------- */
+
+#marketing {
+    max-width: 960px;
+    margin: 0 auto;
+
+    .marketing-hero {
+        article {
+            background-color: darken(@discrete-background, 5%);
+            margin-bottom: 0;
+            padding: 32px;
+        }
+        blockquote {
+            border-color: darken(@discrete-background, 50%);
+            color: @gray-dark;
+        }
+    }
+
+    .marketing-detail {
+        article {
+            background-color: @discrete-background;
+            border-color: darken(@discrete-background, 5%);
+            border-style: solid;
+            border-width: 16px;
+            min-height: 210px !important;
+        }
+    }
+}
+
+

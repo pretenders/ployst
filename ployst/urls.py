@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from django.views.generic.base import RedirectView
+from django.views.generic.base import RedirectView, TemplateView
 
 #from .core.accounts.views import LoginView
 
@@ -9,7 +9,8 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
 
-    url(r'^$', RedirectView.as_view(url='/ui'), name='home'),
+    url(r'^$', TemplateView.as_view(template_name='marketing.html'),
+        name='marketing'),
 
     # django and 3rd party apps
     url(r'^admin/', include(admin.site.urls)),
