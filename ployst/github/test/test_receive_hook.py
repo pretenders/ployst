@@ -1,3 +1,5 @@
+import json
+
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
@@ -9,9 +11,21 @@ from .. import views  # noqa
 
 class TestReceiveHook(TestCase):
 
-    def post(self, data):
+    def _get_hook_token(self, data):
+        "Generate a token for the data provided"
+        try:
+            payload = json.loads(data['payload'])
+            url = payload['repository']['url']
+            return views.create_token(url)
+        except (KeyError, ValueError):
+            return ""
+
+    def post(self, data, hook_token=None):
+        if not hook_token:
+            hook_token = self._get_hook_token(data)
+
         return self.client.post(
-            reverse('github:hook', kwargs={'hook_token': "mock"}),
+            reverse('github:hook', kwargs={'hook_token': hook_token}),
             data=data
         )
 
@@ -71,11 +85,8 @@ class TestReceiveHook(TestCase):
         We set up github authentication to use a token in the URL. If the token
         given does not matched the one set up, we reject the request.
         """
-        msg = (
-            "Need to implement security based on token used in POST "
-            "requests made to the github post receive hook url"
-        )
-        raise NotImplementedError(msg)
-        response = self.post({'payload': '{}'})
+        data = read_data('post-receive-hook.json')
+
+        response = self.post({'payload': data}, hook_token='made-up-token')
 
         self.assertEquals(response.status_code, 404)
