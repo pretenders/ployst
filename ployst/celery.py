@@ -7,7 +7,12 @@ from celery import Celery
 from django.conf import settings
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ployst.settings.dev')
+if 'ON_HEROKU' in os.environ:
+    settings_path = 'ployst.settings.heroku'
+else:
+    settings_path = 'ployst.settings.dev'
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_path)
 
 app = Celery('ployst')
 
