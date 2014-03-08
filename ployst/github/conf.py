@@ -11,8 +11,12 @@ class GithubConf(AppConf):
 
     .. note::
 
-        ``AppConf`` will auto convert these to be eg. <appname>_HOOK_TOKEN for
-        use in settings. In this case GITHUB_HOOK_TOKEN.
+        ``AppConf`` will auto convert these to be eg. <appname>_CORE_API_TOKEN
+        for use in settings. In this case GITHUB_CORE_API_TOKEN.
     """
     NAME = "github"
-    HOOK_TOKEN = ""
+
+    CORE_API_TOKEN = ""
+
+    HOOK_TOKEN_SALT = "ChAnGeThIsOnPrOdUcTiOn"
+    "The salt used when creating a hook token that github pushes to"

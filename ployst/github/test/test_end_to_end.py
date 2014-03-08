@@ -1,3 +1,5 @@
+import json
+
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
@@ -6,6 +8,7 @@ from supermutes.dot import dotify
 
 from . import read_data, DUMMY_REPO, ensure_dummy_clone_available
 from .. import tasks  # noqa
+from ..views import create_token
 
 
 class MockClient(object):
@@ -74,8 +77,10 @@ class TestEndToEnd(TestCase):
 
         data = read_data('end-to-end.json')
 
+        url = json.loads(data)['repository']['url']
+
         response = self.client.post(
-            reverse('github:hook', kwargs={'hook_token': "mock"}),
+            reverse('github:hook', kwargs={'hook_token': create_token(url)}),
             data={'payload': data}
         )
 

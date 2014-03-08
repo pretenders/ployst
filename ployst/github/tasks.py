@@ -4,7 +4,7 @@ from ployst.core.client import Client
 from .conf import settings
 from .lib import match_features, HierarchyHandler
 
-client = Client('http://localhost:8000/', settings.GITHUB_HOOK_TOKEN)
+client = Client('http://localhost:8000/', settings.GITHUB_CORE_API_TOKEN)
 
 
 @app.task
@@ -36,7 +36,6 @@ def recalculate(repo_url, branch_name):
     repos = client.get_repos_by_url(repo_url)
     for repo in repos:
 
-        # TODO: Implement settings. Model and API calls.
         prov_settings = client.get_provider_settings(
             repo.project,
             settings.GITHUB_NAME
