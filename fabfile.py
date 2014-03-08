@@ -1,5 +1,7 @@
+from os import environ
 from os.path import dirname, join
-from fabric.api import local, task
+from fabric.api import abort, local, task
+from fabric.contrib.console import confirm
 
 
 THIS_DIR = dirname(__file__)
@@ -27,6 +29,21 @@ def develop():
     Update environment for local development
 
     """
+    install_npm_mods = False
     local('pip install -r requirements/dev.txt')
-    install_from_file('npm install -g', 'npm-modules', '@')
-    local('bower install')
+    venv = environ.get('VIRTUAL_ENV')
+    npm = local('which npm', capture=True)
+
+    if not venv:
+        abort('You must be in a virtual environment')
+
+    if not venv in npm:
+        if confirm('Install npm in your virtual env {0}?'.format(venv)):
+            local('nodeenv -p')
+            install_npm_mods = True
+    else:
+        install_npm_mods = True
+
+    if install_npm_mods:
+        install_from_file('npm install -g', 'npm-modules', '@')
+        local('bower install')

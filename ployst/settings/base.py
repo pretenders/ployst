@@ -199,7 +199,7 @@ LOGGING = {
 
 # Auth and Registration ---------------------------------------------------
 LOGIN_URL = '/auth/login'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/ui'
 ACCOUNT_CONTACT_EMAIL = 'help@ployst.com'
 
 # Crispy Forms ------------------------------------------------------------
