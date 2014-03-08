@@ -16,6 +16,7 @@ Contents:
    references
 
    development-setup
+   celery
    security
 
 Indices and tables
