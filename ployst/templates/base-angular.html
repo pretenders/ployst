@@ -9,10 +9,11 @@
 {% endblock %}
 
 {% block extrafoot %}
-<script src="/static/lib/angular/angular.min.js"></script>
-<script src="/static/lib/angular-resource/angular-resource.min.js"></script>
-<script src="/static/lib/angular-route/angular-route.min.js"></script>
-<script src="/static/lib/angular-cookies/angular-cookies.min.js"></script>
+<script src="{{ STATIC_URL }}lib/angular/angular.min.js"></script>
+<script src="{{ STATIC_URL }}lib/angular-resource/angular-resource.min.js"></script>
+<script src="{{ STATIC_URL }}lib/angular-route/angular-route.min.js"></script>
+<script src="{{ STATIC_URL }}lib/angular-cookies/angular-cookies.min.js"></script>
+<script type="text/javascript">
+    window.STATIC_URL = {{ STATIC_URL }};
+</script>
 {% endblock %}
-
-{% block ng_attrs %} ng-view{% endblock %}
