@@ -1,21 +1,23 @@
 {% extends "base-angular.html" %}
 
 {% block content %}
-<div class="col-sm-2 col-md-2 sidebar">
-    <ul class="nav nav-stacked">
-        <li>
-            <a href="#/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
-        </li>
-        <li>
-            <a href="#/teams"><i class="fa fa-fw fa-group"></i> Teams and Projects</a>
-        </li>
-        <li>
-            <a href="#/providers"><i class="fa fa-fw fa-gears"></i> Providers</a>
-        </li>
-    </ul>
-</div>
-<div class="col-sm-10 col-md-10" ng-app="ployst">
-    <div ng-view>
+<div class="row-fluid" ng-app="ployst">
+    <div class="col-sm-2" id="admin-sidebar">
+        <ul class="nav nav-stacked">
+            <li>
+                <a href="#/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+            </li>
+            <li>
+                <a href="#/teams"><i class="fa fa-fw fa-group"></i> Teams and Projects</a>
+            </li>
+            <li>
+                <a href="#/providers"><i class="fa fa-fw fa-gears"></i> Providers</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-sm-10" id="admin-main">
+        <div ng-view>
+        </div>
     </div>
 </div>
 {% endblock %}
