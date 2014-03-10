@@ -10,12 +10,12 @@
         $routeProvider
             .when('/profile', {
                 controller: 'profile',
-                templateUrl: '/static/templates/profile.html',
+                templateUrl: STATIC_URL + 'templates/profile.html',
             })
-            //.when('/teams', {
-                //controller: 'teams',
-                //templateUrl: STATIC_URL + 'templates/teams.html.tmpl',
-            //})
+            .when('/teams', {
+                controller: 'teams',
+                templateUrl: STATIC_URL + 'templates/teams.html',
+            })
             .otherwise({
                 redirectTo: '/profile'
             });
@@ -30,26 +30,44 @@
         });
     };
 
-    //ng.controllers.teams = function ($scope, $rootScope, $route) {
-        //$scope.exists = false;
-    //};
+    ng.controllers.teams = function ($scope, Teams, Projects) {
+        Teams.query('', function(teams) {
+            $scope.teams = teams;
+        });
+        Projects.query('', function(projects) {
+            $scope.projects = projects;
+        });
+    };
 
     //ng.directives = ng.directives || {};
 
     ng.factories = ng.factories || {};
 
-    //ng.factories.Teams = function($resource) {
-        //return $resource(
-            //'/core/accounts/team/:id',
-            //{},
-            //{
-                //query: {
-                    //method: 'GET',
-                    //params: {id: ''},
-                    //isArray: true
-                //}
-            //});
-    //};
+    ng.factories.Projects = function($resource) {
+        return $resource(
+            '/core/accounts/project/:id',
+            {},
+            {
+                query: {
+                    method: 'GET',
+                    params: {id: ''},
+                    isArray: true
+                }
+            });
+    };
+
+    ng.factories.Teams = function($resource) {
+        return $resource(
+            '/core/accounts/team/:id',
+            {},
+            {
+                query: {
+                    method: 'GET',
+                    params: {id: ''},
+                    isArray: true
+                }
+            });
+    };
 
     ng.factories.User = function($resource) {
         return $resource(

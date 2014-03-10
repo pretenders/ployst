@@ -1,29 +1,27 @@
 {% extends "base-angular.html" %}
 
 {% block content %}
-<div class="container-fluid" ng-app="ployst">
-    <div class="row">
-        <div class="col-sm-3 col-md-3">
-            <ul class="nav nav-pills nav-stacked">
-                <li class="active">
-                    <a href="#/profile">Profile</a>
-                </li>
-                <!--li>
-                    <a href="#/teams">Teams</a>
-                </li>
-                <li>
-                    <a href="#/providers">Providers</a>
-                </li-->
-            </ul>
-        </div>
-        <div class="col-sm-9 col-md-9" ng-view>
-        </div>
+<div class="col-sm-2 col-md-2 sidebar">
+    <ul class="nav nav-stacked">
+        <li>
+            <a href="#/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+        </li>
+        <li>
+            <a href="#/teams"><i class="fa fa-fw fa-group"></i> Teams and Projects</a>
+        </li>
+        <li>
+            <a href="#/providers"><i class="fa fa-fw fa-gears"></i> Providers</a>
+        </li>
+    </ul>
+</div>
+<div class="col-sm-10 col-md-10" ng-app="ployst">
+    <div ng-view>
     </div>
 </div>
 {% endblock %}
 
 {% block extrafoot %}
 {{ block.super }}
-<script src="/static/js/ployst.ui.admin.js"></script>
-<script src="/static/js/ployst.ui.ng.js"></script>
+<script src="{{ STATIC_URL }}js/ployst.ui.admin.js"></script>
+<script src="{{ STATIC_URL }}js/ployst.ui.ng.js"></script>
 {% endblock %}

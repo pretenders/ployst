@@ -1,0 +1,15 @@
+<h3><i class="fa fa-group"></i> Your Teams</h3>
+
+<ul>
+    <li ng-repeat="team in teams">
+        {{ team.name }} <span class="label label-info">{{ team.guid }}</span>
+    </li>
+</ul>
+
+<h3><i class="fa fa-folder"></i> Your Projects</h3>
+
+<ul>
+    <li ng-repeat="project in projects">
+        <a href="{{ project.url }}">{{ project.name }}</a>
+    </li>
+</ul>

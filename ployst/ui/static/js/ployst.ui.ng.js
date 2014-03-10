@@ -6,7 +6,7 @@
      * Ployst Angular module application {@link
      *     http://docs.angularjs.org/api/angular.module}
      * @example
-     *     <div ng-app="ployst-admin">
+     *     <div ng-app="ployst">
      *         <div ng-view></div>
      *     </div>
      */
@@ -17,17 +17,26 @@
             'ngCookies'
         ])
         .config([
-            '$routeProvider', '$locationProvider', ng.config.routing
+            '$routeProvider', '$locationProvider',
+            ng.config.routing
         ])
-        //.factory('Teams', [
-            //'$resource', ng.factories.Teams
-        //])
+        .factory('Projects', [
+            '$resource', ng.factories.Projects
+        ])
+        .factory('Teams', [
+            '$resource', ng.factories.Teams
+        ])
         .factory('User', [
-            '$resource', ng.factories.User
+            '$resource',
+            ng.factories.User
         ])
         .controller('profile', [
             '$scope', 'User',
             ng.controllers.profile
+        ])
+        .controller('teams', [
+            '$scope', 'Teams', 'Projects',
+            ng.controllers.teams
         ]);
 })();
 
