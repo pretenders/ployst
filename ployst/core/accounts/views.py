@@ -2,6 +2,7 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from .mixins import PermissionsViewSetMixin
 from .models import Project, Team, ProjectProviderSettings
 from .serializers import ProjectSerializer, UserSerializer
 
@@ -24,15 +25,15 @@ class MyAccountView(RetrieveAPIView):
         return Response(serializer.data)
 
 
-class ProjectViewSet(ModelViewSet):
+class ProjectViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = Project
     serializer_class = ProjectSerializer
     filter_fields = ('team',)
 
 
-class TeamViewSet(ModelViewSet):
+class TeamViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = Team
 
 
-class ProjectProviderSettingsViewSet(ModelViewSet):
+class ProjectProviderSettingsViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = ProjectProviderSettings

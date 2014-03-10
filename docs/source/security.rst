@@ -40,3 +40,7 @@ field ``team_lookup`` that is a Django ORM lookup used to trace the path from
 the object in particular to the team. (For all the cases we have now, this
 goes via `Project`, but that needn't be the case for future models, such as
 e.g. team settings).
+
+If ``team_lookup`` is set to ``None``, it will be assumed that instances of
+that model are directly assigned to users using a ``users``
+``ManyToManyField``.

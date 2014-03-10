@@ -20,9 +20,16 @@ class TeamObjectsQuerySet(QuerySet):
     def for_user(self, user):
         """
         Filtered queryset only containing objects that belong to a user.
+
+        If team_lookup is None in the model, it means the object is linked
+        directly to users via a ``users`` ManyToManyField.
         """
         try:
-            user_lookup = self.model.team_lookup + '__users'
+            team_lookup = self.model.team_lookup
+            if self.model.team_lookup:
+                user_lookup = self.model.team_lookup + '__users'
+            else:
+                user_lookup = 'users'
             perm_kwargs = {user_lookup: user}
             return self.filter(**perm_kwargs).distinct()
         except AttributeError:

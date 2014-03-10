@@ -16,7 +16,9 @@ class TestTeams(TestCase):
     def test_get_team_by_guid(self):
         "Test we can get a team by id"
         url = reverse('core:accounts:team-detail', args=[TEST_TEAM])
+
         response = self.client.get(url)
+
         team = json.loads(response.content)
         self.assertEquals(team['name'], 'Pretenders')
 
@@ -28,12 +30,12 @@ class TestProjects(TestCase):
 
         team1 = TeamFactory()
         team2 = TeamFactory(pk=TEST_TEAM)
-
         ProjectFactory(name='Project One', team=team1)
         project2 = ProjectFactory(name='Project Two', team=team2)
         url = reverse('core:accounts:project-list')
 
         response = self.client.get('{}?team={}'.format(url, TEST_TEAM))
+
         self.assertEquals(response.status_code, 200)
         projects = json.loads(response.content)
         self.assertEquals(len(projects), 1)
@@ -47,7 +49,6 @@ class TestProjectProviderSettings(TestCase):
         project1 = ProjectFactory(name='Project One', team=team1)
         SettingsFactory(project=project1, provider="MyProvider",
                         settings=json.dumps({'a': 1, 'b': 2}))
-
         url = reverse('core:accounts:projectprovidersettings-list')
 
         response = self.client.get(
@@ -55,14 +56,12 @@ class TestProjectProviderSettings(TestCase):
         )
 
         self.assertEquals(response.status_code, 200)
-
         settings = json.loads(json.loads(response.content)[0]['settings'])
         self.assertEquals(settings['a'], 1)
 
     def test_set_settings_for_provider_project(self):
         team1 = TeamFactory()
         project1 = ProjectFactory(name='Project One', team=team1)
-
         url = reverse('core:accounts:projectprovidersettings-list')
 
         self.client.post(url, data={
