@@ -5,13 +5,6 @@
 
 // Custom Site-wide styles
 
-@media (min-width: 980px) {
-    #content {
-        padding-top: 80px; /* make space for fixed top navbar */
-    }
-}
-
-
 html,
 body {
     height: 100%;
@@ -28,7 +21,11 @@ body {
 }
 
 #content {
+    padding-top: 55px; /* make space for fixed top navbar */
     margin-bottom: 32px;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
 }
 
 /* sticky footer ----------------------------------------------------- */
@@ -43,11 +40,8 @@ body {
 }
 
 /* Set the fixed height of the footer here */
-#push,
 #footer {
     height: 120px;  /* make sure you modify negative margin in #wrap accordingly */
-}
-#footer {
     background-color: @gray-dark;
     border-top: 4px solid @gray;
     color: @white;
@@ -94,7 +88,7 @@ body {
 
     .marketing-detail {
         article {
-            background-color: @discrete-background;
+            background-color: @white;
             border-color: darken(@discrete-background, 5%);
             border-style: solid;
             border-width: 16px;
@@ -103,4 +97,25 @@ body {
     }
 }
 
+/* Admin page -------------------------------------------------------- */
 
+#admin-sidebar {
+    padding: 16px 0;
+
+    .nav-stacked {
+        li {
+            border-color: @gray-lighter;
+            border-style: solid;
+            border-width: 0 1px 0 0;
+            &.active {
+                border-width: 1px 0 1px 1px;
+            }
+        }
+    }
+}
+
+@media (min-width: 767px) {
+    #admin-main {
+        padding-left: 48px;
+    }
+}

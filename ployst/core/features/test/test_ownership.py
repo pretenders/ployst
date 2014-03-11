@@ -1,30 +1,12 @@
 from django.test import TestCase
 
 from ...accounts.models import TeamUser
-from ...accounts.test.factories import TeamFactory, UserFactory
-from ..models import Feature, Project
-from .factories import FeatureFactory, ProjectFactory
+from ...accounts.test.factories import ProjectFactory, TeamFactory, UserFactory
+from ..models import Feature
+from .factories import FeatureFactory
 
 
 class TestFeatureOwnership(TestCase):
-
-    def test_filter_projects_for_teams(self):
-        """
-        Check that projects are properly filtered by team ownership
-        """
-
-        team1 = TeamFactory(name='Team One')
-        team2 = TeamFactory(name='Team Two')
-
-        project1 = ProjectFactory(name='Project One', team=team1)
-        project2a = ProjectFactory(name='Project Two A', team=team2)
-        project2b = ProjectFactory(name='Project Two B', team=team2)
-
-        team1_projects = Project.objects.for_team(team1)
-        team2_projects = Project.objects.for_team(team2)
-
-        self.assertEqual(set(team1_projects), {project1})
-        self.assertEqual(set(team2_projects), {project2a, project2b})
 
     def test_filter_features_for_teams(self):
         """

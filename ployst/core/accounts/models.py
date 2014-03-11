@@ -6,7 +6,28 @@ from django.contrib.auth.models import User
 from .managers import TeamObjectsManager
 
 
-class Team(models.Model):
+class TeamObject(models.Model):
+    """
+    Base class for models that are objects that are owned by a team.
+
+    It relies on the class having a field ``team_lookup`` that is a django
+    ORM-style lookup from object to team.
+    """
+    objects = TeamObjectsManager()
+
+    class Meta:
+        abstract = True
+
+    @property
+    def team(self):
+        team_path = self.team_lookup.split('__')
+        value = self
+        for attr in team_path:
+            value = getattr(value, attr)
+        return value.guid
+
+
+class Team(TeamObject):
     """
     A team is a group of users, and is the root of the object ownership.
 
@@ -16,6 +37,7 @@ class Team(models.Model):
     guid = models.CharField(max_length=50, primary_key=True, editable=False)
     name = models.CharField(max_length=200)
     users = models.ManyToManyField(User, through='TeamUser')
+    team_lookup = None
 
     def __unicode__(self):
         return self.name
@@ -49,27 +71,6 @@ class TeamUser(models.Model):
             team=self.team.name,
             role=' (manager)' if self.manager else ''
         )
-
-
-class TeamObject(models.Model):
-    """
-    Base class for models that are objects that are owned by a team.
-
-    It relies on the class having a field ``team_lookup`` that is a django
-    ORM-style lookup from object to team.
-    """
-    objects = TeamObjectsManager()
-
-    class Meta:
-        abstract = True
-
-    @property
-    def team(self):
-        team_path = self.team_lookup.split('__')
-        value = self
-        for attr in team_path:
-            value = getattr(value, attr)
-        return value.guid
 
 
 class Project(TeamObject):

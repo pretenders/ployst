@@ -10,5 +10,6 @@ router.register(r'settings', views.ProjectProviderSettingsViewSet)
 
 urlpatterns = patterns(
     '',
+    url(r'^me', views.MyAccountView.as_view(), name='me'),
     url(r'^', include(router.urls)),
 )

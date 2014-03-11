@@ -16,22 +16,16 @@
         {% endcompress %}
 
         <!-- pre-compressed -->
-        <link href="/static/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="screen">
-        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="screen">
+        <!-- link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" -->
 
-        <!-- Bootstrap { -->
-        <script src="http://code.jquery.com/jquery.min.js"></script>
-        <script src="/static/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- JS required by Bootstrap { -->
+        <!-- script src="//code.jquery.com/jquery.min.js"></script -->
+        <script src="{{ STATIC_URL }}lib/jquery/dist/jquery.min.js"></script>
+        <script src="{{ STATIC_URL }}lib/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- } -->
 
-        <style>
-            [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-                display: none;
-            }
-        </style>
-
-        {% block extrahead %}
-        {% endblock %}
+        {% block extrahead %}{% endblock %}
     {% endblock %}
     </head>
 
@@ -42,26 +36,16 @@
             </header>
 
             {# Main area where angular views will display #}
-            <section id="content" class="container-fluid" ng-view>
+            <section id="content" class="container-fluid">
                 {% block content %}{% endblock %}
             </section>
-
-            <div id="push"></div>
         </div>
-        <footer id="footer">
+        <footer id="footer" class="container-fluid">
             <div class="container-fluid">
             <p>Produced by <a href="http://github.com/pretenders/">Pretenders</a>.</p>
             <p><small>&copy; 2013-2014 Alex Couper and Carles Barrob&eacute;s.</small></p>
             </div>
         </footer>
-
-        <script src="/static/lib/angular/angular.js"></script>
-        <script src="/static/js/app.js"></script>
-        <script src="/static/js/services.js"></script>
-        <script src="/static/js/controllers.js"></script>
-        <script src="/static/js/filters.js"></script>
-        <script src="/static/js/directives.js"></script>
-        <script src="/static/lib/angular/angular-resource.js"></script>
 
         {% block extrafoot %}{% endblock %}
     </body>

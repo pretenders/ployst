@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+<style>
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block extrafoot %}
+<script src="{{ STATIC_URL }}lib/angular/angular.min.js"></script>
+<script src="{{ STATIC_URL }}lib/angular-resource/angular-resource.min.js"></script>
+<script src="{{ STATIC_URL }}lib/angular-route/angular-route.min.js"></script>
+<script src="{{ STATIC_URL }}lib/angular-cookies/angular-cookies.min.js"></script>
+<script type="text/javascript">
+    window.STATIC_URL = {{ STATIC_URL }};
+</script>
+{% endblock %}
