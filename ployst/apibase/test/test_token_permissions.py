@@ -1,23 +1,10 @@
 from unittest import TestCase
 
-from rest_framework.test import APIRequestFactory
-
-from ..models import Token
-from ..permissions import (
-    ClientTokenPermission, TOKEN_HEADER, HTTP_TOKEN_LOOKUP
-)
+from ..permissions import ClientTokenPermission, TOKEN_HEADER
+from .mixins import CoreApiClientTestMixin
 
 
-class TestTokenPermissions(TestCase):
-
-    @classmethod
-    def setUpClass(self):
-        self.token = Token.objects.create()
-        self.request_factory = APIRequestFactory()
-
-    @classmethod
-    def tearDownClass(self):
-        Token.objects.all().delete()
+class TestTokenPermissions(CoreApiClientTestMixin, TestCase):
 
     def test_no_token_no_permission(self):
         request = self.request_factory.get('/')
@@ -31,7 +18,6 @@ class TestTokenPermissions(TestCase):
         self.assertTrue(permissions.has_permission(request, None))
 
     def test_valid_token_in_header__has_permission(self):
-        kwargs = {HTTP_TOKEN_LOOKUP: self.token.key}
-        request = self.request_factory.get('/', **kwargs)
+        request = self.request_factory.get('/', **self.get_token_headers())
         permissions = ClientTokenPermission()
         self.assertTrue(permissions.has_permission(request, None))
