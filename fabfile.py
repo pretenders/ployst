@@ -62,6 +62,7 @@ def heroku_package_npm():
     install_from_file('npm install', 'npm-modules', '@',
                       command_opts='--save')
 
+
 @task
 def heroku_configure():
     """

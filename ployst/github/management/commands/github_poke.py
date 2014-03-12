@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 
 from ...views import create_token
 
+
 class Command(BaseCommand):
     args = '<repo_url> <branch_name>'
     option_list = BaseCommand.option_list + (
