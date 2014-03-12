@@ -5,8 +5,6 @@ import sys
 if __name__ == "__main__":
     if 'test' in sys.argv:
         settings_path = 'ployst.settings.test'
-    elif 'ON_HEROKU' in os.environ:
-        settings_path = 'ployst.settings.heroku'
     else:
         settings_path = 'ployst.settings.dev'
 

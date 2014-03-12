@@ -13,14 +13,6 @@ CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
-# Static asset configuration
-import os
-STATIC_ROOT = 'staticfiles'
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    os.path.join(ROOT_DIR, 'assets'),
-)
 # We may want to look into hosting assets on S3
 # http://django-storages.readthedocs.org/en/latest/backends/amazon-S3.html
 

@@ -8,12 +8,8 @@ https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 """
 
 import os
-if 'ON_HEROKU' in os.environ:
-    settings_path = 'ployst.settings.heroku'
-else:
-    settings_path = 'ployst.settings.dev'
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_path)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'ployst.settings.dev')
 
 from django.core.wsgi import get_wsgi_application
 from dj_static import Cling
