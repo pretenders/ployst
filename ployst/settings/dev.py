@@ -5,7 +5,8 @@ from .base import *  # noqa
 DEBUG = True
 TEMPLATE_DEBUG = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+CELERY_ALWAYS_EAGER = True
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
 # Fake/test credentials:
 

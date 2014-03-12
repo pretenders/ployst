@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from django.views.generic.base import RedirectView, TemplateView
+from django.views.generic.base import TemplateView
 
 #from .core.accounts.views import LoginView
 

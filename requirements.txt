@@ -1,0 +1,8 @@
+#HEROKU REQUIREMENTS FILE
+
+-r requirements/runtime.txt
+
+gunicorn==18.0
+dj-database-url==0.2.2
+dj-static==0.0.5
+

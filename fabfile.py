@@ -1,5 +1,5 @@
 from os import environ
-from os.path import dirname, join
+from os.path import dirname, exists, join
 from fabric.api import abort, local, task
 from fabric.contrib.console import confirm
 
@@ -7,7 +7,8 @@ from fabric.contrib.console import confirm
 THIS_DIR = dirname(__file__)
 
 
-def install_from_file(command, filename, version_separator):
+def install_from_file(command, filename, version_separator,
+                      command_opts=''):
     """
     Install requirement from a file with the given command.
 
@@ -19,8 +20,10 @@ def install_from_file(command, filename, version_separator):
     with open(dependencies, 'r') as f:
         for dependency in f.readlines():
             if not dependency.strip().startswith('#'):
+                dependency = dependency.split('#')[0].strip()
                 dependency = version_separator.join(dependency.split('=='))
-                local('{0} {1}'.format(command, dependency))
+                cmd = '{0} {1} {2}'.format(command, dependency, command_opts)
+                local(cmd)
 
 
 @task
@@ -47,3 +50,36 @@ def develop():
     if install_npm_mods:
         install_from_file('npm install -g', 'npm-modules', '@')
         local('bower install')
+
+
+@task
+def heroku_package_npm():
+    """
+    Create package.json for heroku
+    """
+    if not exists('package.json'):
+        local('npm init')
+    install_from_file('npm install', 'npm-modules', '@',
+                      command_opts='--save')
+
+
+@task
+def heroku_configure():
+    """
+    Configure local environment for a heroku deploy
+    """
+    local(
+        'heroku config:add '
+        'BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git'
+    )
+
+
+@task
+def heroku_deploy():
+    """
+    Push this branch to heroku to deploy it.
+    """
+    local('heroku config:set ON_HEROKU=true')
+    local('heroku config:set DJANGO_SETTINGS_MODULE=ployst.settings.heroku')
+    this_branch = local("git rev-parse --abbrev-ref HEAD", capture=True)
+    local("git push heroku {0}:master".format(this_branch))
