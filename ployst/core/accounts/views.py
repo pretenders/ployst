@@ -4,7 +4,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from .mixins import PermissionsViewSetMixin
 from .models import Project, Team, ProjectProviderSettings
-from .serializers import ProjectSerializer, UserSerializer
+from .serializers import ProjectSerializer, TeamSerializer, UserSerializer
 
 
 class MyAccountView(RetrieveAPIView):
@@ -33,6 +33,7 @@ class ProjectViewSet(PermissionsViewSetMixin, ModelViewSet):
 
 class TeamViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = Team
+    serializer_class = TeamSerializer
 
 
 class ProjectProviderSettingsViewSet(PermissionsViewSetMixin, ModelViewSet):
