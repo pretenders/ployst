@@ -7,10 +7,11 @@
     <div class="panel-body">
         <div class="col-md-6">
             <h4><i class="fa fa-user"></i> Users</h4>
-            <ul>
-                <li ng-repeat="user in team.users" class="list-unstyled">
-                    <kbd>{{ user.username }}</kbd>
-                    <i class="fa fa-star" ng-if="user.isManager"></i>
+            <ul class="fa-ul">
+                <li ng-repeat="user in team.users">
+                    <i class="fa fa-fw fa-star" title="manager" ng-if="user.isManager"></i>
+                    <i class="fa fa-fw" ng-if="!user.isManager"></i>
+                    <span>{{ user.username }}</span>
                 </li>
             </ul>
         </div>
