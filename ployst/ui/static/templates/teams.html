@@ -1,15 +1,28 @@
-<h3><i class="fa fa-group"></i> Your Teams</h3>
+<h3><i class="fa fa-group"></i> Your Teams and Projects</h3>
 
-<ul>
-    <li ng-repeat="team in teams">
-        {{ team.name }} <kbd>{{ team.guid }}</kbd>
-    </li>
-</ul>
+<div ng-repeat="team in teams" class="panel panel-default">
+    <div class="panel-heading">
+        <h4><i class="fa fa-group"></i> {{ team.name }}</h4>
+    </div>
+    <div class="panel-body">
+        <div class="col-md-6">
+            <h4><i class="fa fa-user"></i> Users</h4>
+            <ul class="fa-ul">
+                <li ng-repeat="user in team.users">
+                    <i class="fa fa-fw fa-star" title="manager" ng-if="user.isManager"></i>
+                    <i class="fa fa-fw" ng-if="!user.isManager"></i>
+                    <span>{{ user.username }}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h4><i class="fa fa-folder"></i> Projects</h4>
+            <ul>
+                <li ng-repeat="project in team.projects" class="list-unstyled">
+                    <a href="{{ project.url }}" target="_blank">{{ project.name }}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-<h3><i class="fa fa-folder"></i> Your Projects</h3>
-
-<ul>
-    <li ng-repeat="project in projects">
-        <a href="{{ project.url }}" target="_blank">{{ project.name }}</a>
-    </li>
-</ul>

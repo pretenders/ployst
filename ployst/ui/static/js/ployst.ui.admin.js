@@ -33,6 +33,11 @@
     ng.controllers.teams = function ($scope, Teams, Projects) {
         Teams.query('', function(teams) {
             $scope.teams = teams;
+            $.map(teams, function(team) {
+                $.map(team.users, function(user) {
+                    user.isManager = (team.managers.indexOf(user.id) !== -1);
+                });
+            });
         });
         Projects.query('', function(projects) {
             $scope.projects = projects;
