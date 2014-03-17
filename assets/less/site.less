@@ -21,7 +21,9 @@ body {
 }
 
 #content {
-    padding-top: 55px; /* make space for fixed top navbar */
+    .with-nav & {
+        padding-top: 55px; /* make space for fixed top navbar */
+    }
     margin-bottom: 32px;
     min-height: 100%;
     height: auto !important;
@@ -100,18 +102,24 @@ body {
 /* Admin page -------------------------------------------------------- */
 
 #admin-sidebar {
-    background-color: #F5F5F5;
-    position: fixed;
+    background-color: @sidebar-background;
+    position: absolute;
     left: 0;
-    top: 51px;
+    top: 0;
     display: block;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 16px 0 0 0;
+    padding: 0;
     z-index: 100;
-    min-height: 320px;
+    min-height: 400px;
     height: 100%;
     .box-shadow(0 0 6px @gray);
+    p {
+        padding: 0 16px 16px;
+    }
+    .sidebar-divider {
+        height: 2em;
+    }
 }
 
 @media (min-width: 767px) {
@@ -120,18 +128,43 @@ body {
     }
 }
 
-/* Set the fixed height of the footer here */
-#mini-footer {
-    position: absolute;
-    bottom: 50px;
-    left: 0;
+#mini-header, #mini-footer {
     display: block;
     overflow-x: auto;
     overflow-y: hidden;
     z-index: 110;
     width: 100%;
     background-color: @gray-dark;
+    padding: 6px;
+}
+
+#mini-header {
+    padding: 8px 16px 32px;
+    text-transform: lowercase;
+    #gradient.vertical(@gray-dark, @sidebar-background, 70%, 85%);
+    h1 {
+        font-family: @brand-font;
+        color: @brand-color;
+        font-size: 24px;
+        margin: 0 0 8px;
+    }
+    p {
+        padding: 0;
+        color: @white;
+    }
+}
+
+#mini-footer {
+    position: absolute;
+    bottom: 0; left: 0;
     border-top: 4px solid @gray;
     color: @white;
     padding: 6px;
+    p {
+        margin: 0;
+    }
+}
+
+.icon-clickable {
+    cursor: pointer;
 }
