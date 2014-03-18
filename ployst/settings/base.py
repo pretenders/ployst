@@ -155,10 +155,6 @@ COMPRESS_PRECOMPILERS = (
     ('text/less', LESS_COMMAND),
 )
 
-REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
-}
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -197,9 +193,15 @@ LOGGING = {
     },
 }
 
+# REST API ----------------------------------------------------------------
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+}
+APPEND_SLASH = False  # play nicely with angularJS no end slashes
+
 # Auth and Registration ---------------------------------------------------
-LOGIN_URL = '/auth/login'
-LOGIN_REDIRECT_URL = '/ui'
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = '/ui/'
 ACCOUNT_CONTACT_EMAIL = 'help@ployst.com'
 
 # Crispy Forms ------------------------------------------------------------

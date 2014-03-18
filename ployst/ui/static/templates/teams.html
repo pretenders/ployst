@@ -2,7 +2,9 @@
 
 <div ng-repeat="team in teams" class="panel panel-default">
     <div class="panel-heading">
-        <h4><i class="fa fa-group"></i> {{ team.name }}</h4>
+        <h4><i class="fa fa-group"></i> {{ team.name }}
+            <i class="fa fa-fw fa-times-circle icon-clickable text-danger" title="Delete" ng-click="deleteTeam(team)"></i>
+        </h4>
     </div>
     <div class="panel-body">
         <div class="col-md-6">
@@ -19,6 +21,7 @@
             <h4><i class="fa fa-folder"></i> Projects</h4>
             <ul>
                 <li ng-repeat="project in team.projects" class="list-unstyled">
+                    <i class="fa fa-fw fa-times-circle icon-clickable text-danger" title="Delete" ng-click="deleteProject(project)"></i>
                     <a href="{{ project.url }}" target="_blank">{{ project.name }}</a>
                 </li>
             </ul>

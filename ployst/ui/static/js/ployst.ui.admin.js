@@ -22,6 +22,10 @@
         $locationProvider.html5Mode(false);
     };
 
+    ng.run = function ($http, $cookies) {
+        $http.defaults.headers.common['X-CSRFToken'] = $cookies['csrftoken'];
+    };
+
     ng.controllers = ng.controllers || {};
 
     ng.controllers.profile = function ($scope, User) {
@@ -31,6 +35,7 @@
     };
 
     ng.controllers.teams = function ($scope, Teams, Projects) {
+
         Teams.query('', function(teams) {
             $scope.teams = teams;
             $.map(teams, function(team) {
@@ -39,9 +44,30 @@
                 });
             });
         });
+
         Projects.query('', function(projects) {
             $scope.projects = projects;
         });
+
+        $scope.deleteTeam = function(team) {
+            Teams.delete({guid: team.guid}, function() {
+                // remove from UI once deleted in backend
+                $scope.teams.splice($scope.teams.indexOf(team), 1);
+            });
+        };
+
+        $scope.deleteProject = function(project) {
+            Projects.delete({id: project.id}, function() {
+                // remove from UI once deleted in backend
+                $.map($scope.teams, function(team) {
+                    if(team.guid === project.team) {
+                        team.projects.splice(
+                            team.projects.indexOf(project.team), 1
+                        );
+                    }
+                });
+            });
+        };
     };
 
     //ng.directives = ng.directives || {};
@@ -63,12 +89,12 @@
 
     ng.factories.Teams = function($resource) {
         return $resource(
-            '/core/accounts/team/:id',
+            '/core/accounts/team/:guid',
             {},
             {
                 query: {
                     method: 'GET',
-                    params: {id: ''},
+                    params: {guid: ''},
                     isArray: true
                 }
             });
