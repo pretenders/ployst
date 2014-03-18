@@ -139,9 +139,10 @@ body {
 }
 
 #mini-header {
-    padding: 8px 16px 32px;
+    border-bottom: 8px solid @gray;
+    margin-bottom: 16px;
+    padding: 8px 16px;
     text-transform: lowercase;
-    #gradient.vertical(@gray-dark, @sidebar-background, 70%, 85%);
     h1 {
         font-family: @brand-font;
         color: @brand-color;
@@ -149,6 +150,7 @@ body {
         margin: 0 0 8px;
     }
     p {
+        margin: 0;
         padding: 0;
         color: @white;
     }
