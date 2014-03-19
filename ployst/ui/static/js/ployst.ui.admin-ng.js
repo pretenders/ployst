@@ -16,6 +16,10 @@
             'ngResource',
             'ngCookies'
         ])
+        .run([
+            '$http', '$cookies',
+            ng.run
+        ])
         .config([
             '$routeProvider', '$locationProvider',
             ng.config.routing
