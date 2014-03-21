@@ -19,6 +19,8 @@ Contents:
    celery
    security
 
+   deployment
+
 Indices and tables
 ==================
 
