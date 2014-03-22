@@ -20,3 +20,12 @@ class GithubConf(AppConf):
 
     HOOK_TOKEN_SALT = "ChAnGeThIsOnPrOdUcTiOn"
     "The salt used when creating a hook token that github pushes to"
+
+    CLIENT_ID = ""
+    "The client id given when registering the application on github."
+
+    OAUTH_STATE = "ChAnGeThIsOnPrOdUcTiOn"
+    """
+    The state used when doing an OAuth dance. Used to confirm that the POST
+    from github is actually a reply from a GET from us.
+    """
