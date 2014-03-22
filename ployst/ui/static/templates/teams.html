@@ -1,54 +1,66 @@
 <h3><i class="fa fa-group"></i> Your Teams and Projects</h3>
 
-<div ng-repeat="team in teams" class="panel panel-default">
-    <div class="panel-heading">
-        <h4><i class="fa fa-group"></i> {{ team.name }}
-            <i ng-if="isManager(team, user)" ng-click="deleteTeam(team)"
-               class="fa fa-fw fa-times-circle icon-clickable text-danger"
-               title="Delete">
-            </i>
-        </h4>
+<div ng-if="team">
+    <ul class="nav nav-tabs">
+        <li ng-repeat="t in teams" ng-class="{active: t===team}">
+            <a ng-click="selectTeam(t)">
+                <h4>
+                    <i ng-if="t===team" class="fa fa-group"></i> {{ t.name }}
+                </h4>
+            </a>
+        </li>
+    </ul>
+    <div class="col-md-5">
+        <h4><i class="fa fa-user"></i> Users</h4>
+        <ul class="fa-ul">
+            <li ng-repeat="user in team.users">
+                <i ng-if="isManager(team, user)"
+                    class="fa fa-fw fa-star" title="manager"></i>
+                <i ng-if="!isManager(team, user)"
+                    class="fa fa-fw"></i>
+                <span>{{ user.username }}</span>
+            </li>
+            <li ng-if="isManager(team, user)">
+                <h5>Invite a user to join {{ team.name }}:</h5>
+                <input ng-model="newUser.email" name="email" placeholder="email..."></input>
+                <i ng-click="inviteUser(team, newUser)"
+                    class="fa fa-fw fa-plus-square icon-clickable"
+                    title="Invite a User"></i>
+            </li>
+        </ul>
     </div>
-    <div class="panel-body">
-        <div class="col-md-6">
-            <h4><i class="fa fa-user"></i> Users</h4>
-            <ul class="fa-ul">
-                <li ng-repeat="user in team.users">
-                    <i ng-if="isManager(team, user)"
-                       class="fa fa-fw fa-star" title="manager"></i>
-                    <i ng-if="!isManager(team, user)"
-                       class="fa fa-fw"></i>
-                    <span>{{ user.username }}</span>
-                </li>
-                <li ng-if="isManager(team, user)">
-                    <h5>Invite a user to join {{ team.name }}:</h5>
-                    <input ng-model="newUser.email" name="email" placeholder="email..."></input>
-                    <i ng-click="inviteUser(team, newUser)"
-                       class="fa fa-fw fa-plus-square icon-clickable"
-                       title="Invite a User"></i>
-                </li>
-            </ul>
+    <div class="col-md-5">
+        <h4><i class="fa fa-folder"></i> Projects</h4>
+        <ul class="fa-ul">
+            <li ng-repeat="project in team.projects">
+                <i ng-if="isManager(team, user)"
+                    ng-click="deleteProject(project)"
+                    class="fa fa-fw fa-times-circle icon-clickable text-danger"
+                    title="Delete"/></i>
+                <a href="{{ project.url }}" target="_blank">{{ project.name }}</a>
+            </li>
+            <li ng-if="isManager(team, user)">
+                <h5>Create a project:</h5>
+                <input ng-model="newProject.name" name="name" placeholder="name..."></input>
+                <input ng-model="newProject.url" name="url" placeholder="URL..."></input>
+                <i ng-click="createProject(team, newProject)"
+                    class="fa fa-fw fa-plus-square icon-clickable"
+                    title="Create Project"></i>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-2">
+        <div class="btn-group-vertical">
+            <button ng-if="isManager(team, user)" ng-click="deleteTeam(team)"
+                    type="button" class="btn btn-small btn-danger">
+                Delete {{ team.name }}
+            </button>
         </div>
-        <div class="col-md-6">
-            <h4><i class="fa fa-folder"></i> Projects</h4>
-            <ul class="fa-ul">
-                <li ng-repeat="project in team.projects">
-                    <i ng-if="isManager(team, user)"
-                       ng-click="deleteProject(project)"
-                       class="fa fa-fw fa-times-circle icon-clickable text-danger"
-                       title="Delete"/></i>
-                    <a href="{{ project.url }}" target="_blank">{{ project.name }}</a>
-                </li>
-                <li ng-if="isManager(team, user)">
-                    <h5>Create a project:</h5>
-                    <input ng-model="newProject.name" name="name" placeholder="name..."></input>
-                    <input ng-model="newProject.url" name="url" placeholder="URL..."></input>
-                    <i ng-click="createProject(team, newProject)"
-                       class="fa fa-fw fa-plus-square icon-clickable"
-                       title="Create Project"></i>
-                </li>
-            </ul>
-        </div>
+        <h5>Create a team:</h5>
+        <input ng-model="newTeam.name" name="name" placeholder="name..."></input>
+        <i ng-click="createTeam(newTeam)"
+            class="fa fa-fw fa-plus-square icon-clickable"
+            title="Create Team"></i>
     </div>
 </div>
 

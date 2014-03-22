@@ -51,6 +51,20 @@ class TeamViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = Team
     serializer_class = TeamSerializer
 
+    def create(self, request, *args, **kwargs):
+        """
+        Create a team.
+
+        The user that creates the team is made team manager.
+
+        """
+        super(TeamViewSet, self).create(request, *args, **kwargs)
+        TeamUser.objects.create(
+            team=self.object, user=request.user, manager=True
+        )
+        serializer = self.get_serializer(self.object)
+        return Response(serializer.data)
+
     @action()
     def invite_user(self, request, pk=None):
         """
@@ -71,12 +85,12 @@ class TeamViewSet(PermissionsViewSetMixin, ModelViewSet):
                 # TODO this should become invite user to signup
                 error = 'User not recognised'
             else:
-                _, created = TeamUser.objects.get_or_create(
+                team_user, created = TeamUser.objects.get_or_create(
                     team=team, user=user
                 )
                 if created:
-                    user.manager = False
-                    user.save()
+                    team_user.manager = False
+                    team_user.save()
                     serializer = UserSerializer(user)
                     return Response(serializer.data)
                 else:

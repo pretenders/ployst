@@ -38,18 +38,41 @@
         $scope.newProject = {};
         $scope.newUser = {};
         $scope.user = User.user;
-        $scope.teams = Team.query();
-
-        var rootScope = $scope;
+        Team.query(function(teams) {
+            $scope.teams = teams;
+            $scope.setDefaultTeam();
+        });
 
         $scope.isManager = function(team, user) {
             return (team.managers.indexOf(user.id) !== -1);
+        };
+
+        $scope.setDefaultTeam = function() {
+            // set first team as active
+            if($scope.teams.length > 0) {
+                $scope.team = $scope.teams[0];
+            }
+        };
+
+        $scope.selectTeam = function(team) {
+            $scope.team = team;
+        };
+
+        $scope.createTeam = function(newTeam) {
+            var team = new Team({name: newTeam.name});
+            team.$save(function(team) {
+                // Add to UI
+                $scope.teams.push(team);
+                $scope.team = team;
+                newTeam.name = '';
+            });
         };
 
         $scope.deleteTeam = function(team) {
             Team.delete({guid: team.guid}, function() {
                 // remove from UI once deleted in backend
                 $scope.teams.splice($scope.teams.indexOf(team), 1);
+                $scope.setDefaultTeam();
             });
         };
 
