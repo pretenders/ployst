@@ -72,14 +72,14 @@ def heroku_configure():
         'heroku config:add '
         'BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git'
     )
-
+    local('heroku config:set '
+          'ON_HEROKU=true '
+          'DJANGO_SETTINGS_MODULE=ployst.settings.heroku')
 
 @task
 def heroku_deploy():
     """
     Push this branch to heroku to deploy it.
     """
-    local('heroku config:set ON_HEROKU=true')
-    local('heroku config:set DJANGO_SETTINGS_MODULE=ployst.settings.heroku')
     this_branch = local("git rev-parse --abbrev-ref HEAD", capture=True)
     local("git push heroku {0}:master".format(this_branch))
