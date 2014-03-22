@@ -39,7 +39,7 @@
             ng.controllers.profile
         ])
         .controller('teams', [
-            '$scope', 'Team', 'Project', 'User',
+            '$http', '$scope', 'Project', 'Team', 'User',
             ng.controllers.teams
         ]);
 })();

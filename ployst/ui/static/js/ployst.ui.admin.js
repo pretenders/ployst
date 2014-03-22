@@ -10,11 +10,11 @@
         $routeProvider
             .when('/profile', {
                 controller: 'profile',
-                templateUrl: STATIC_URL + 'templates/profile.html',
+                templateUrl: STATIC_URL + 'templates/profile.html'
             })
             .when('/teams', {
                 controller: 'teams',
-                templateUrl: STATIC_URL + 'templates/teams.html',
+                templateUrl: STATIC_URL + 'templates/teams.html'
             })
             .otherwise({
                 redirectTo: '/profile'
@@ -34,9 +34,9 @@
         $scope.user = User.user;
     };
 
-    ng.controllers.teams = function ($scope, Team, Project, User) {
-
+    ng.controllers.teams = function ($http, $scope, Project, Team, User) {
         $scope.newProject = {};
+        $scope.newUser = {};
         $scope.user = User.user;
         $scope.teams = Team.query();
 
@@ -51,6 +51,24 @@
                 // remove from UI once deleted in backend
                 $scope.teams.splice($scope.teams.indexOf(team), 1);
             });
+        };
+
+        $scope.inviteUser = function(team, user) {
+            // invite user to join team: if email is recognised, add to team,
+            // else the user will be sent an invite to join ployst
+            var url = '/core/accounts/team/' + team.guid + '/invite_user';
+
+            $http.post(url, {email: user.email})
+                .success(function(data, status, headers, config) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    team.users.push(data);
+                    user.email = '';
+                })
+                .error(function(data, status, headers, config) {
+                    alert(data.error);
+                }
+            );
         };
 
         $scope.createProject = function(team, newProject) {

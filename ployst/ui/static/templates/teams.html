@@ -20,6 +20,13 @@
                        class="fa fa-fw"></i>
                     <span>{{ user.username }}</span>
                 </li>
+                <li ng-if="isManager(team, user)">
+                    <h5>Invite a user to join {{ team.name }}:</h5>
+                    <input ng-model="newUser.email" name="email" placeholder="email..."></input>
+                    <i ng-click="inviteUser(team, newUser)"
+                       class="fa fa-fw fa-plus-square icon-clickable"
+                       title="Invite a User"></i>
+                </li>
             </ul>
         </div>
         <div class="col-md-6">
@@ -33,7 +40,7 @@
                     <a href="{{ project.url }}" target="_blank">{{ project.name }}</a>
                 </li>
                 <li ng-if="isManager(team, user)">
-                    <p>Create a project:</p>
+                    <h5>Create a project:</h5>
                     <input ng-model="newProject.name" name="name" placeholder="name..."></input>
                     <input ng-model="newProject.url" name="url" placeholder="URL..."></input>
                     <i ng-click="createProject(team, newProject)"
