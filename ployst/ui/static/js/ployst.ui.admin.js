@@ -26,31 +26,33 @@
         $http.defaults.headers.common['X-CSRFToken'] = $cookies['csrftoken'];
     };
 
+    // controllers ----------------------------------------------------------
+
     ng.controllers = ng.controllers || {};
 
     ng.controllers.profile = function ($scope, User) {
-        $scope.user = User.query();
+        $scope.user = User.user;
     };
 
-    ng.controllers.teams = function ($scope, Teams, Projects, User) {
+    ng.controllers.teams = function ($scope, Team, Project, User) {
 
         $scope.name = '';
-        $scope.user = User.query();
-        $scope.teams = Teams.query();
+        $scope.user = User.user;
+        $scope.teams = Team.query();
 
         $scope.isManager = function(team, user) {
             return (team.managers.indexOf(user.id) !== -1);
         };
 
         $scope.deleteTeam = function(team) {
-            Teams.delete({guid: team.guid}, function() {
+            Team.delete({guid: team.guid}, function() {
                 // remove from UI once deleted in backend
                 $scope.teams.splice($scope.teams.indexOf(team), 1);
             });
         };
 
         $scope.createProject = function(team, name, url) {
-            var newProject = new Projects({
+            var newProject = new Project({
                 name: name,
                 url: url,
                 team: team.guid
@@ -63,7 +65,7 @@
         };
 
         $scope.deleteProject = function(project) {
-            Projects.delete({id: project.id}, function() {
+            Project.delete({id: project.id}, function() {
                 // remove from UI once deleted in backend
                 $.map($scope.teams, function(team) {
                     if(team.guid === project.team) {
@@ -76,11 +78,15 @@
         };
     };
 
-    //ng.directives = ng.directives || {};
+    // directives -----------------------------------------------------------
+
+    ng.directives = ng.directives || {};
+
+    // factories ------------------------------------------------------------
 
     ng.factories = ng.factories || {};
 
-    ng.factories.Projects = function($resource) {
+    ng.factories.Project = function($resource) {
         return $resource(
             '/core/accounts/project/:id',
             {},
@@ -93,7 +99,7 @@
             });
     };
 
-    ng.factories.Teams = function($resource) {
+    ng.factories.Team = function($resource) {
         return $resource(
             '/core/accounts/team/:guid',
             {},
@@ -106,13 +112,15 @@
             });
     };
 
-    ng.factories.User = function($resource) {
-        return $resource(
-            '/core/accounts/me',
-            {},
-            {
-                query: { method: 'GET' }
-            });
+    // services -------------------------------------------------------------
+
+    ng.services = ng.services || {};
+
+    ng.services.User = function($resource) {
+        var userResource = $resource(
+            '/core/accounts/me', {}, {query: {method: 'GET'}}
+        );
+        this.user = userResource.get();
     };
  
 })();
