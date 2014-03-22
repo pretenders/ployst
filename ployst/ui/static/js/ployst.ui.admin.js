@@ -36,9 +36,11 @@
 
     ng.controllers.teams = function ($scope, Team, Project, User) {
 
-        $scope.name = '';
+        $scope.newProject = {};
         $scope.user = User.user;
         $scope.teams = Team.query();
+
+        var rootScope = $scope;
 
         $scope.isManager = function(team, user) {
             return (team.managers.indexOf(user.id) !== -1);
@@ -51,16 +53,18 @@
             });
         };
 
-        $scope.createProject = function(team, name, url) {
-            var newProject = new Project({
-                name: name,
-                url: url,
+        $scope.createProject = function(team, newProject) {
+            var project = new Project({
+                name: newProject.name,
+                url: newProject.url,
                 team: team.guid
                 // managers: [$scope.user.id]
             });
-            newProject.$save(function(project) {
+            project.$save(function(project) {
                 // remove from UI once deleted in backend
                 team.projects.push(project);
+                newProject.name = '';
+                newProject.url = '';
             });
         };
 

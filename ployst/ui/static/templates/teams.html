@@ -34,9 +34,9 @@
                 </li>
                 <li ng-if="isManager(team, user)">
                     <p>Create a project:</p>
-                    <input ng-model="name" name="name" placeholder="name..."></input>
-                    <input ng-model="url" name="url" placeholder="URL..."></input>
-                    <i ng-click="createProject(team, name, url)"
+                    <input ng-model="newProject.name" name="name" placeholder="name..."></input>
+                    <input ng-model="newProject.url" name="url" placeholder="URL..."></input>
+                    <i ng-click="createProject(team, newProject)"
                        class="fa fa-fw fa-plus-square icon-clickable"
                        title="Create Project"></i>
                 </li>
