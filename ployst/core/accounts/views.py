@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .mixins import PermissionsViewSetMixin
-from .models import Project, Team, ProjectProviderSettings
+from .models import Project, ProjectManager, ProjectProviderSettings, Team
 from .serializers import ProjectSerializer, TeamSerializer, UserSerializer
 
 
@@ -29,6 +29,11 @@ class ProjectViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = Project
     serializer_class = ProjectSerializer
     filter_fields = ('team',)
+
+    def create(self, request, *args, **kwargs):
+        response = super(ProjectViewSet, self).create(request, *args, **kwargs)
+        ProjectManager.objects.create(project=self.object, user=request.user)
+        return response
 
 
 class TeamViewSet(PermissionsViewSetMixin, ModelViewSet):

@@ -39,7 +39,7 @@
             ng.controllers.profile
         ])
         .controller('teams', [
-            '$scope', 'Teams', 'Projects',
+            '$scope', 'Teams', 'Projects', 'User',
             ng.controllers.teams
         ]);
 })();

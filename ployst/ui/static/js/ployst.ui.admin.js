@@ -29,30 +29,36 @@
     ng.controllers = ng.controllers || {};
 
     ng.controllers.profile = function ($scope, User) {
-        User.query('', function(user) {
-            $scope.user = user;
-        });
+        $scope.user = User.query();
     };
 
-    ng.controllers.teams = function ($scope, Teams, Projects) {
+    ng.controllers.teams = function ($scope, Teams, Projects, User) {
 
-        Teams.query('', function(teams) {
-            $scope.teams = teams;
-            $.map(teams, function(team) {
-                $.map(team.users, function(user) {
-                    user.isManager = (team.managers.indexOf(user.id) !== -1);
-                });
-            });
-        });
+        $scope.name = '';
+        $scope.user = User.query();
+        $scope.teams = Teams.query();
 
-        Projects.query('', function(projects) {
-            $scope.projects = projects;
-        });
+        $scope.isManager = function(team, user) {
+            return (team.managers.indexOf(user.id) !== -1);
+        };
 
         $scope.deleteTeam = function(team) {
             Teams.delete({guid: team.guid}, function() {
                 // remove from UI once deleted in backend
                 $scope.teams.splice($scope.teams.indexOf(team), 1);
+            });
+        };
+
+        $scope.createProject = function(team, name, url) {
+            var newProject = new Projects({
+                name: name,
+                url: url,
+                team: team.guid
+                // managers: [$scope.user.id]
+            });
+            newProject.$save(function(project) {
+                // remove from UI once deleted in backend
+                team.projects.push(project);
             });
         };
 
@@ -62,7 +68,7 @@
                 $.map($scope.teams, function(team) {
                     if(team.guid === project.team) {
                         team.projects.splice(
-                            team.projects.indexOf(project.team), 1
+                            team.projects.indexOf(project), 1
                         );
                     }
                 });

@@ -24,7 +24,8 @@ class ProjectManagerSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    managers = ProjectManagerSerializer(many=True)
+    managers = ProjectManagerSerializer(many=True, required=False)
+    read_only_fields = ('managers',)
 
     class Meta:
         model = Project
