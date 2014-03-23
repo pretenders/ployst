@@ -26,8 +26,8 @@ class TeamObjectsQuerySet(QuerySet):
         """
         try:
             team_lookup = self.model.team_lookup
-            if self.model.team_lookup:
-                user_lookup = self.model.team_lookup + '__users'
+            if team_lookup:
+                user_lookup = team_lookup + '__users'
             else:
                 user_lookup = 'users'
             perm_kwargs = {user_lookup: user}

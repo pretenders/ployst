@@ -3,7 +3,8 @@ from django.test import TestCase
 from django.test.utils import override_settings
 from mock import patch
 
-from .. import views
+from .. import views  # noqa
+
 
 class TestOAuthBehaviour(TestCase):
 
