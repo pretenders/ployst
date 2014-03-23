@@ -22,7 +22,7 @@ class TestOAuthBehaviour(TestCase):
              )
         )
 
-    @patch(__name__ + '.views.oauth_exchange_for_access_token')
+    @patch(__name__ + '.views.oauth.exchange_for_access_token')
     @override_settings(GITHUB_OAUTH_STATE='jill')
     def test_handle_callback_from_github(self, oauth_exchange):
         """

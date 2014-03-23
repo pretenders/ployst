@@ -8,7 +8,7 @@ from supermutes.dot import dotify
 
 from . import read_data, DUMMY_REPO, ensure_dummy_clone_available
 from .. import tasks  # noqa
-from ..views import create_token
+from ..views.hook import create_token
 
 
 class MockClient(object):
