@@ -38,6 +38,9 @@
         $scope.newProject = {};
         $scope.newUser = {};
         $scope.user = User.user;
+        // prior to team loading, to avoid UI flicker with "no teams" message:
+        $scope.team = 'unknown';
+
         Team.query(function(teams) {
             $scope.teams = teams;
             $scope.setDefaultTeam();
@@ -51,6 +54,8 @@
             // set first team as active
             if($scope.teams.length > 0) {
                 $scope.team = $scope.teams[0];
+            } else {
+                $scope.team = null;
             }
         };
 
@@ -169,4 +174,3 @@
     };
  
 })();
-

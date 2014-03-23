@@ -1,6 +1,17 @@
-<h3><i class="fa fa-group"></i> Your Teams and Projects</h3>
+<div class="row-fluid">
+    <h3>
+        <i class="fa fa-group"></i> Your Teams and Projects
 
-<div ng-if="team">
+        <small class="pull-right">Create a team:
+            <input ng-model="newTeam.name" name="name" placeholder="name..."></input>
+            <i ng-click="createTeam(newTeam)"
+                class="fa fa-fw fa-plus-square icon-clickable"
+                title="Create Team"></i>
+        </small>
+    </h3>
+</div>
+
+<div ng-if="team && (team !== 'unknown')" class="row-fluid">
     <ul class="nav nav-tabs">
         <li ng-repeat="t in teams" ng-class="{active: t===team}">
             <a ng-click="selectTeam(t)">
@@ -56,11 +67,11 @@
                 Delete {{ team.name }}
             </button>
         </div>
-        <h5>Create a team:</h5>
-        <input ng-model="newTeam.name" name="name" placeholder="name..."></input>
-        <i ng-click="createTeam(newTeam)"
-            class="fa fa-fw fa-plus-square icon-clickable"
-            title="Create Team"></i>
     </div>
 </div>
 
+<div ng-if="!team" class="row-fluid">
+    <div class="alert alert-info">
+        <strong>You have no teams yet.</strong> Why don't you go ahead and create one?
+    </div>
+</div>

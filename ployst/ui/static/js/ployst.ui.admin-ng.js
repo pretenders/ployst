@@ -43,4 +43,3 @@
             ng.controllers.teams
         ]);
 })();
-
