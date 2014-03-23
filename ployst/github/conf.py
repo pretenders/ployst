@@ -24,6 +24,9 @@ class GithubConf(AppConf):
     CLIENT_ID = ""
     "The client id given when registering the application on github."
 
+    CLIENT_SECRET = ""
+    "The client secret given when registering the application on github"
+
     OAUTH_STATE = "ChAnGeThIsOnPrOdUcTiOn"
     """
     The state used when doing an OAuth dance. Used to confirm that the POST

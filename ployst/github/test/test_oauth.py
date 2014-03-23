@@ -1,9 +1,13 @@
+import json
+
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.utils import override_settings
+import httpretty
 from mock import patch
 
 from .. import views  # noqa
+from ..views.oauth import exchange_for_access_token
 
 
 class TestOAuthBehaviour(TestCase):
@@ -53,3 +57,40 @@ class TestOAuthBehaviour(TestCase):
             }
         )
         self.assertEquals(response.status_code, 400)
+
+
+class TestAccessTokenExchange(TestCase):
+
+    @httpretty.activate
+    @patch(__name__ + '.views.oauth.client.set_access_token')
+    def test_github_gives_back_access_token(self, set_access_token):
+        """
+        The users access token should be stored in the core db.
+        """
+        access_token = 'e72e16c7e42f292c6912e7710c838347ae178b4a'
+        httpretty.register_uri(
+            httpretty.POST,
+            "https://github.com/login/oauth/access_token",
+            body=json.dumps({
+                "access_token":access_token,
+                "scope":"repo,gist",
+                "token_type":"bearer"
+            }),
+            status=200)
+
+        exchange_for_access_token('somecode')
+
+        self.assertEquals(set_access_token.call_count, 1)
+        self.assertEquals(
+            set_access_token.call_args[0],
+            ('github', access_token)
+        )
+
+    def test_github_returns_error(self):
+        """
+        Test what happens when github comes back with some non-200 status.
+
+        We expect to LOG this sitation for now as the docs don't give us any
+        other expectation.
+        """
+        pass

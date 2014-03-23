@@ -4,3 +4,4 @@ factory-boy==2.3.0
 mock
 nose==1.3.0
 supermutes
+httpretty
