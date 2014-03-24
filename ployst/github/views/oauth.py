@@ -1,8 +1,9 @@
 import logging
 
 from django.http import (
-    HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
+    HttpResponseBadRequest, HttpResponseRedirect
 )
+from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_http_methods
 import requests
 
@@ -10,6 +11,7 @@ from ..conf import settings
 from .. import client
 
 LOGGER = logging.getLogger(__name__)
+
 
 @require_http_methods(['GET'])
 def start(request):
@@ -30,7 +32,9 @@ def receive(request):
     if request.GET['state'] != settings.GITHUB_OAUTH_STATE:
         return HttpResponseBadRequest()
     exchange_for_access_token(request.GET['code'])
-    return HttpResponse('OK')
+    # This url will eventually exist, for now it will redirect to /profile
+    github_provider_url = reverse('ui:home') + '#/providers/github'
+    return HttpResponseRedirect(github_provider_url)
 
 
 def exchange_for_access_token(code):
