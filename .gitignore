@@ -12,7 +12,11 @@ tags
 .project
 
 # Build byproducts
-docs/build
+.coverage
+.tox
+/cover
+/docs/build
+/ployst.egg-info
 /static
 
 # Some OSX specific thing
