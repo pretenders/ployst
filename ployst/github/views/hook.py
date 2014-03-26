@@ -8,15 +8,15 @@ from django.http import (
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
-from .conf import settings
-from .tasks import recalculate
+from ..conf import settings
+from ..tasks import recalculate
 
 LOGGER = logging.getLogger(__name__)
 
 
 @csrf_exempt
 @require_http_methods(['POST'])
-def receive_hook(request, hook_token):
+def receive(request, hook_token):
     "Entry point for github messages"
     try:
         payload = request.POST['payload']

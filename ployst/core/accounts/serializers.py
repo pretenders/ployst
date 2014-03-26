@@ -45,6 +45,7 @@ class TeamSerializer(serializers.ModelSerializer):
 
     def get_managers(self, team):
         if team:
-            return team.users.filter(teamuser__manager=True).values_list('id', flat=True)
+            return team.users.filter(
+                teamuser__manager=True).values_list('id', flat=True)
         else:
             return []

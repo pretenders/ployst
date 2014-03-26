@@ -1,10 +1,9 @@
 from ployst.celery import app
-from ployst.core.client import Client
 
 from .conf import settings
 from .lib import match_features, HierarchyHandler
 
-client = Client('http://localhost:8000/', settings.GITHUB_CORE_API_TOKEN)
+from . import client
 
 
 @app.task

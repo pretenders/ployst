@@ -100,3 +100,6 @@ class Client(object):
                      branch_info)
         else:
             self.post('repos/branch/', branch_info)
+
+    def set_access_token(self, oauth_provider, access_token):
+        pass

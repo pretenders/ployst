@@ -16,7 +16,7 @@ class TestReceiveHook(TestCase):
         try:
             payload = json.loads(data['payload'])
             url = payload['repository']['url']
-            return views.create_token(url)
+            return views.hook.create_token(url)
         except (KeyError, ValueError):
             return ""
 
@@ -29,7 +29,7 @@ class TestReceiveHook(TestCase):
             data=data
         )
 
-    @patch(__name__ + '.views.recalculate')
+    @patch(__name__ + '.views.hook.recalculate')
     def test_post_causes_recalculation(self, recalculate):
         """
         Test that we recalculate branches after receive hook
