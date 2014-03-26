@@ -27,7 +27,7 @@ class Hierarchy(list):
         self._data = {}
 
     def __getitem__(self, key):
-        if not key in self._data:
+        if key not in self._data:
             new_row = HierarchyLevel(level=key, notify=self.new_node)
             self._data[key] = new_row
         return self._data[key]

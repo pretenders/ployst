@@ -76,9 +76,9 @@ class TestAccessTokenExchange(TestCase):
             httpretty.POST,
             "https://github.com/login/oauth/access_token",
             body=json.dumps({
-                "access_token":access_token,
-                "scope":"repo,gist",
-                "token_type":"bearer"
+                "access_token": access_token,
+                "scope": "repo,gist",
+                "token_type": "bearer"
             }),
             status=200)
 
