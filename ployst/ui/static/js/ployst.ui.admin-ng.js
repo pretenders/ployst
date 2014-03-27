@@ -30,6 +30,10 @@
         .factory('Team', [
             '$resource', ng.factories.Team
         ])
+        .service('Provider', [
+            '$resource',
+            ng.services.Provider
+        ])
         .service('User', [
             '$resource',
             ng.services.User
@@ -37,6 +41,10 @@
         .controller('profile', [
             '$scope', 'User',
             ng.controllers.profile
+        ])
+        .controller('providers', [
+            '$scope', 'Provider',
+            ng.controllers.providers
         ])
         .controller('teams', [
             '$http', '$scope', 'Project', 'Team', 'User',

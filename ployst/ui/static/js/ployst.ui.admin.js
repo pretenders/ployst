@@ -16,6 +16,10 @@
                 controller: 'teams',
                 templateUrl: STATIC_URL + 'templates/teams.html'
             })
+            .when('/providers', {
+                controller: 'providers',
+                templateUrl: STATIC_URL + 'templates/providers.html'
+            })
             .otherwise({
                 redirectTo: '/profile'
             });
@@ -32,6 +36,10 @@
 
     ng.controllers.profile = function ($scope, User) {
         $scope.user = User.user;
+    };
+
+    ng.controllers.providers = function ($scope, Provider) {
+        $scope.providers = Provider.providers;
     };
 
     ng.controllers.teams = function ($http, $scope, Project, Team, User) {
@@ -137,29 +145,11 @@
     ng.factories = ng.factories || {};
 
     ng.factories.Project = function($resource) {
-        return $resource(
-            '/core/accounts/project/:id',
-            {},
-            {
-                query: {
-                    method: 'GET',
-                    params: {id: ''},
-                    isArray: true
-                }
-            });
+        return $resource('/core/accounts/project/:id');
     };
 
     ng.factories.Team = function($resource) {
-        return $resource(
-            '/core/accounts/team/:guid',
-            {},
-            {
-                query: {
-                    method: 'GET',
-                    params: {guid: ''},
-                    isArray: true
-                }
-            });
+        return $resource('/core/accounts/team/:guid');
     };
 
     // services -------------------------------------------------------------
@@ -167,10 +157,13 @@
     ng.services = ng.services || {};
 
     ng.services.User = function($resource) {
-        var userResource = $resource(
-            '/core/accounts/me', {}, {query: {method: 'GET'}}
-        );
+        var userResource = $resource('/core/accounts/me');
         this.user = userResource.get();
+    };
+ 
+    ng.services.Provider = function($resource) {
+        var providerResource = $resource('/core/providers');
+        this.providers = providerResource.query();
     };
  
 })();

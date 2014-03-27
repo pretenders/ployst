@@ -207,4 +207,10 @@ ACCOUNT_CONTACT_EMAIL = 'help@ployst.com'
 # Crispy Forms ------------------------------------------------------------
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+# Ployst-specific settings ------------------------------------------------
+INSTALLED_PROVIDERS = (
+    'ployst.github',
+)
+
 CORE_API_ADDRESS = "http://localhost:8000/"
+
