@@ -34,9 +34,7 @@
             {% block page_header %}{% endblock %}
 
             {# Main area where angular views will display #}
-            <section id="content" class="container-fluid">
-                {% block content %}{% endblock %}
-            </section>
+            {% block content %}{% endblock %}
         </div>
         {% block page_footer %}{% endblock %}
     </body>

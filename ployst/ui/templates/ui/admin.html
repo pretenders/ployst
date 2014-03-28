@@ -1,13 +1,13 @@
 {% extends "base-angular.html" %}
 
 {% block content %}
-<div class="row-fluid" ng-app="ployst">
-    <div class="col-sm-2" id="admin-sidebar">
-        <header id="mini-header">
+<div ng-app="ployst">
+    <aside class="sidebar">
+        <header>
             <h1>[ployst]</h1>
             <p><small>hi</small>&nbsp;{{ user }}</p>
         </header>
-        <ul class="nav nav-stacked">
+        <ul>
             <li>
                 <a href="#/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
             </li>
@@ -22,11 +22,11 @@
                 <a href="{% url 'logout' %}"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
             </li>
         </ul>
-        <footer id="mini-footer">
+        <footer>
             <p><small>&copy; 2013-2014<br>Alex Couper &amp; Carles Barrob&eacute;s</small></p>
         </footer>
-    </div>
-    <div class="col-sm-offset-2 col-sm-8" id="admin-main">
+    </aside>
+    <div class="sidebar-rest">
         <div ng-view ng-cloak>
         </div>
     </div>

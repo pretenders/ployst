@@ -1,13 +1,12 @@
-<div class="row-fluid">
-    <h3>
-        <i class="fa fa-gears"></i> Providers
-    </h3>
-</div>
-
-<div class="row-fluid">
+<aside class="sidebar sidebar-inner">
+    <header>
+        <h1>Providers</h1>
+    </header>
     <ul>
         <li ng-repeat="p in providers">
-            <h4>{{ p.name }} - <a href="{{ p.url }}">{{ p.url }}</a></h4>
+            <a href="#/providers/{{ p.slug }}">
+                <i class="fa fa-fw fa-cogs"></i>{{ p.name}}
+            </a>
         </li>
     </ul>
-</div>
+</aside>
