@@ -23,17 +23,15 @@ Markup:
 
 .sidebar {
     background-color: @sidebar-background;
-    position: absolute;
-    left: 0;
-    top: 0;
     display: block;
-    // overflow-x: hidden;
-    overflow-y: auto;
-    padding: 0;
-    z-index: 100;
-    min-height: 400px;
     height: 100%;
+    min-height: 400px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    top: 0;
     width: @sidebar-width;
+    z-index: 100;
 
     .box-shadow(8px 0 4px rgba(0,0,0,0.4));
 
@@ -48,6 +46,9 @@ Markup:
     ul {
         .nav;
         .nav-stacked;
+        position: fixed;
+        top: 80px + @sidebar-padding;
+        width: @sidebar-width;
     }
 
     li.active {
@@ -58,20 +59,24 @@ Markup:
     }
 
     header, footer {
+        background-color: @sidebar-heading-background;
         display: block;
         overflow-x: auto;
         overflow-y: hidden;
-        z-index: 110;
-        width: 100%;
-        background-color: @sidebar-heading-background;
         padding: 8px;
+        position: fixed;
+        width: @sidebar-width;
+        z-index: 110;
     }
 
     header {
         border-bottom: @sidebar-heading-border;
-        margin-bottom: @sidebar-padding;
+        height: 80px;
+        margin-bottom: 80px + @sidebar-padding;
         padding: 8px @sidebar-padding;
         text-transform: lowercase;
+        top: 0;
+
         h1 {
             font-family: @brand-font;
             color: @brand-color;
@@ -86,10 +91,10 @@ Markup:
     }
 
     footer {
-        position: absolute;
-        bottom: 0; left: 0;
         border-top: @sidebar-heading-border;
+        bottom: 0;
         color: @white;
+
         p {
             margin: 0;
         }
@@ -126,10 +131,9 @@ Markup:
 }
 
 .sidebar-rest {
-    position: absolute;
     height: 100%;
-    width: auto;
-    left: @sidebar-width;
+    min-height: 100%;
+    margin-left: @sidebar-width;
     h2 {
         margin-bottom: @sidebar-padding;
         padding-bottom: @sidebar-padding;
