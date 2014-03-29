@@ -210,6 +210,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Ployst-specific settings ------------------------------------------------
 INSTALLED_PROVIDERS = (
     'ployst.github',
+    'ployst.targetprocess',
 )
 
 CORE_API_ADDRESS = "http://localhost:8000/"
