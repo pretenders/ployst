@@ -7,6 +7,7 @@ client = Client(settings.CORE_API_ADDRESS,
 
 META = {
     'slug': 'github',
+    'icon': 'github',
     'name': 'Github',
     'type': 'sourcecontrol',
     'url': 'https://github.com',
