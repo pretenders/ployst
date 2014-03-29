@@ -19,6 +19,7 @@ Markup:
 @sidebar-padding: 16px;
 @sidebar-heading-background: @gray-dark;
 @sidebar-heading-border: 8px solid lighten(@sidebar-heading-background, 30%);
+@sidebar-link-color: @black;
 
 
 .sidebar {
@@ -46,16 +47,28 @@ Markup:
     ul {
         .nav;
         .nav-stacked;
+
+        font-weight: bold;
         position: fixed;
         top: 80px + @sidebar-padding;
         width: @sidebar-width;
-    }
 
-    li.active {
-        background-color: darken(@sidebar-background, 20%);
-        a {
-            color: @white;
+        li {
+            a {
+                color: @sidebar-link-color;
+            }
+            &.active {
+                background-color: darken(@sidebar-background, 25%);
+                a {
+                    color: @white;
+                }
+            }
+            a:hover {
+                background-color: darken(@sidebar-background, 20%);
+                color: @white;
+            }
         }
+
     }
 
     header, footer {
@@ -78,15 +91,15 @@ Markup:
         top: 0;
 
         h1 {
-            font-family: @brand-font;
             color: @brand-color;
+            font-family: @brand-font;
             font-size: 24px;
             margin: 0 0 8px;
         }
         p {
+            color: @white;
             margin: 0;
             padding: 0;
-            color: @white;
         }
     }
 
@@ -110,18 +123,20 @@ Markup:
     z-index: 90;
 
     header {
+        height: auto;
         text-transform: none;
         h1 {
-            font-family: @brand-sans-font;
-            font-size: 16px; 
             color: @white !important;
+            font-family: @brand-sans-font;
+            font-size: 15px; 
+            font-weight: bold;
             margin-top: 12px;
         }
     }
 
     header, footer {
-        padding: 8px @sidebar-padding;
         background-color: lighten(@sidebar-heading-background, 20%) !important;
+        padding: 8px @sidebar-padding;
         padding-left: 2 * @sidebar-padding;
     }
 
@@ -132,8 +147,9 @@ Markup:
 
 .sidebar-rest {
     height: 100%;
-    min-height: 100%;
     margin-left: @sidebar-width;
+    min-height: 100%;
+
     h2 {
         margin-bottom: @sidebar-padding;
         padding-bottom: @sidebar-padding;

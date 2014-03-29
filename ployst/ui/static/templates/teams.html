@@ -1,18 +1,18 @@
 <aside class="sidebar sidebar-inner">
     <header>
-        <h1>Teams and Projects</h1>
+        <h1>My Teams</h1>
     </header>
     <ul>
         <li ng-repeat="t in teams" ng-class="{active: t===team}">
             <a ng-click="selectTeam(t)">
-                <i ng-if="t===team" class="active"></i> {{ t.name }}
+                <i class="fa fa-fw fa-group"></i> {{ t.name }}
             </a>
         </li>
     </ul>
     <footer>Create a team:
         <input ng-model="newTeam.name" name="name" placeholder="name..."></input>
         <i ng-click="createTeam(newTeam)"
-            class="fa fa-fw fa-plus-square icon-clickable"
+            class="fa fa-fw fa-lg fa-plus-square icon-clickable"
             title="Create Team"></i>
     </footer>
 </aside>
@@ -34,7 +34,7 @@
                     <h5>Invite a user to join {{ team.name }}:</h5>
                     <input ng-model="newUser.email" name="email" placeholder="email..."></input>
                     <i ng-click="inviteUser(team, newUser)"
-                        class="fa fa-fw fa-plus-square icon-clickable"
+                        class="fa fa-fw fa-lg fa-plus-square icon-clickable"
                         title="Invite a User"></i>
                 </li>
             </ul>
@@ -45,7 +45,7 @@
                 <li ng-repeat="project in team.projects">
                     <i ng-if="isManager(team, user)"
                         ng-click="deleteProject(project)"
-                        class="fa fa-fw fa-times-circle icon-clickable text-danger"
+                        class="fa fa-fw fa-lg fa-times-circle icon-clickable text-danger"
                         title="Delete"/></i>
                     <a href="{{ project.url }}" target="_blank">{{ project.name }}</a>
                 </li>
@@ -54,7 +54,7 @@
                     <input ng-model="newProject.name" name="name" placeholder="name..."></input>
                     <input ng-model="newProject.url" name="url" placeholder="URL..."></input>
                     <i ng-click="createProject(team, newProject)"
-                        class="fa fa-fw fa-plus-square icon-clickable"
+                        class="fa fa-fw fa-lg fa-plus-square icon-clickable"
                         title="Create Project"></i>
                 </li>
             </ul>
