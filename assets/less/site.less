@@ -9,6 +9,10 @@
 @import "sidebar.less";
 
 
+@footer-height: 120px;
+@nav-height: 55px;
+
+
 // Custom Site-wide styles
 
 html,
@@ -32,7 +36,7 @@ h5 {
 
 #content {
     .with-nav & {
-        padding-top: 55px; /* make space for fixed top navbar */
+        padding-top: @nav-height + 16px; /* make space for fixed top navbar */
     }
     margin-bottom: 32px;
     min-height: 100%;
@@ -41,36 +45,6 @@ h5 {
 }
 
 /* sticky footer ----------------------------------------------------- */
-
-/* Wrapper for page content to push down footer */
-#wrap {
-    min-height: 100%;
-    height: auto !important;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-}
-
-/* Set the fixed height of the footer here */
-#footer {
-    height: 120px;  /* make sure you modify negative margin in #wrap accordingly */
-    background-color: @gray-dark;
-    border-top: 4px solid @gray;
-    color: @white;
-    padding-top: 30px;
-}
-
-/* Lastly, apply responsive CSS fixes as necessary */
-@media (max-width: 767px) {
-    #footer {
-        margin-left: -20px;
-        margin-right: -20px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-}
-
-/* end sticky footer */
 
 .navbar-brand {
     font-family: @brand-font;
@@ -88,7 +62,11 @@ h5 {
 
 #marketing {
     max-width: 960px;
-    margin: 0 auto;
+    min-height: 100%;
+    height: auto !important;
+    /* Negative indent footer by its height */
+    margin: 0 auto -@footer-height;
+    padding-top: @nav-height;
 
     .marketing-hero {
         article {
@@ -113,7 +91,34 @@ h5 {
     }
 }
 
+/* Set the fixed height of the footer here */
+#footer {
+    height: @footer-height;
+    background-color: @gray-dark;
+    border-top: 4px solid @gray;
+    color: @white;
+    padding-top: 30px;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+    #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+/* end sticky footer */
+
 /* Admin page -------------------------------------------------------- */
+
+#app {
+    min-height: 100%;
+    height: 100%;
+    position: absolute;
+}
 
 .icon-clickable {
     cursor: pointer;

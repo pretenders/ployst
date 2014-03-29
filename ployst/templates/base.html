@@ -30,12 +30,8 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
-        <div id="wrap">
-            {% block page_header %}{% endblock %}
-
-            {# Main area where angular views will display #}
-            {% block content %}{% endblock %}
-        </div>
+        {% block page_header %}{% endblock %}
+        {% block content %}{% endblock %}
         {% block page_footer %}{% endblock %}
     </body>
 
