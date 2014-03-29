@@ -43,7 +43,7 @@
             ng.controllers.profile
         ])
         .controller('providers', [
-            '$scope', 'Provider',
+            '$location', '$routeParams', '$scope', 'Provider',
             ng.controllers.providers
         ])
         .controller('teams', [

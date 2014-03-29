@@ -16,7 +16,7 @@
                 controller: 'teams',
                 templateUrl: STATIC_URL + 'templates/teams.html'
             })
-            .when('/providers', {
+            .when('/providers/:provider?', {
                 controller: 'providers',
                 templateUrl: STATIC_URL + 'templates/providers.html'
             })
@@ -38,8 +38,23 @@
         $scope.user = User.user;
     };
 
-    ng.controllers.providers = function ($scope, Provider) {
-        $scope.providers = Provider.providers;
+    ng.controllers.providers = function ($location, $routeParams, $scope, Provider) {
+
+        // Select active provider once they have loaded
+        Provider.providers.$promise.then(function(result) {
+            $scope.providers = result;
+            var found = false;
+
+            if ($routeParams.provider) {
+                found = $.grep($scope.providers, function(item, i) {
+                    return ($routeParams.provider === item.slug);
+                });
+                $scope.provider = found[0];
+            } else {
+                provider = $scope.providers[0];
+                $location.path('/providers/' + provider.slug);
+            }
+        });
     };
 
     ng.controllers.teams = function ($http, $scope, Project, Team, User) {
