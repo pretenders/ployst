@@ -16,7 +16,11 @@ class GithubConf(AppConf):
     """
     NAME = "github"
 
+    CORE_API_ADDRESS = ""
+    "The url of the core API"
+
     CORE_API_TOKEN = ""
+    "The token used for authenticating with the core API"
 
     HOOK_TOKEN_SALT = "ChAnGeThIsOnPrOdUcTiOn"
     "The salt used when creating a hook token that github pushes to"
