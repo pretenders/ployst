@@ -20,7 +20,8 @@ def start(request):
     """
     return HttpResponseRedirect(
         'https://github.com/login/oauth/authorize?'
-        'client_id={0}&scope=repo,write:repo_hook&state={1}'.format(
+        'client_id={0}&scope=repo,write:repo_hook,write:public_key'
+        '&state={1}'.format(
             settings.GITHUB_CLIENT_ID,
             settings.GITHUB_OAUTH_STATE)
     )
