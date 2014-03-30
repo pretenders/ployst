@@ -43,7 +43,7 @@ class TestOAuthBehaviour(TestCase):
             }
         )
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 302)
         self.assertEquals(oauth_exchange.call_count, 1)
         self.assertEquals(oauth_exchange.call_args[0], ('secret_github_code',))
 
