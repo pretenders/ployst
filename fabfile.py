@@ -76,6 +76,7 @@ def heroku_configure():
           'ON_HEROKU=true '
           'DJANGO_SETTINGS_MODULE=ployst.settings.heroku')
 
+
 @task
 def heroku_deploy():
     """

@@ -12,6 +12,8 @@ from .. import client
 
 LOGGER = logging.getLogger(__name__)
 
+OAUTH_SCOPE = ["repo", "write:repo_hook", "write:public_key"]
+
 
 @require_http_methods(['GET'])
 def start(request):
@@ -20,16 +22,19 @@ def start(request):
     """
     return HttpResponseRedirect(
         'https://github.com/login/oauth/authorize?'
-        'client_id={0}&scope=repo,write:repo_hook&state={1}'.format(
-            settings.GITHUB_CLIENT_ID,
-            settings.GITHUB_OAUTH_STATE)
+        'client_id={client}&scope={scope}'
+        '&state={state}'.format(
+            client=settings.GITHUB_CLIENT_ID,
+            scope=','.join(OAUTH_SCOPE),
+            state=settings.GITHUB_OAUTH_STATE)
     )
 
 
 @require_http_methods(['GET'])
 def receive(request):
     """End point to receive the redirect back from github"""
-    if request.GET['state'] != settings.GITHUB_OAUTH_STATE:
+    if ('state' not in request.GET or
+            request.GET['state'] != settings.GITHUB_OAUTH_STATE):
         return HttpResponseBadRequest()
     exchange_for_access_token(request.GET['code'])
     # This url will eventually exist, for now it will redirect to /profile

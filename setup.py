@@ -18,7 +18,8 @@ setup(
     # install_requires=['django', 'argparse'],
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
+        ('License :: OSI Approved :: '
+         'GNU Library or Lesser General Public License (LGPL)'),
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2',
     ],

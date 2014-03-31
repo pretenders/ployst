@@ -22,7 +22,7 @@ class TestOAuthBehaviour(TestCase):
             response['location'],
             ('https://github.com/login/oauth/authorize?'
              'client_id=fred&'
-             'scope=repo,write:repo_hook&'
+             'scope=repo,write:repo_hook,write:public_key&'
              'state=jill'
              )
         )
@@ -94,7 +94,7 @@ class TestAccessTokenExchange(TestCase):
         """
         Test what happens when github comes back with some non-200 status.
 
-        We expect to LOG this sitation for now as the docs don't give us any
+        We expect to LOG this situation for now as the docs don't give us any
         other expectation.
         """
-        pass
+        raise NotImplementedError("This test needs writing")

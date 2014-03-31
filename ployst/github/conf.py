@@ -7,7 +7,7 @@ from appconf import AppConf
 
 class GithubConf(AppConf):
     """
-    Config settings for this app.
+    Overridable config settings for this app.
 
     .. note::
 
@@ -17,6 +17,7 @@ class GithubConf(AppConf):
     NAME = "github"
 
     CORE_API_TOKEN = ""
+    "The token used for authenticating with the core API"
 
     HOOK_TOKEN_SALT = "ChAnGeThIsOnPrOdUcTiOn"
     "The salt used when creating a hook token that github pushes to"
