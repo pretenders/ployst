@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm
+from django import forms
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
@@ -17,3 +18,10 @@ class LoginForm(AuthenticationForm):
             'password',
             Submit('signin', 'Sign in', css_class='col-lg-offset-3'),
         )
+
+
+class EmailForm(forms.Form):
+    """
+    A form to simplify validation of email addresses.
+    """
+    email = forms.EmailField()

@@ -11,20 +11,6 @@ from ..models import ProjectProviderSettings
 TEST_TEAM = '8d7de2c4-4849-452f-82af-e142641c4b6d'
 
 
-class TestTeams(CoreApiClientTestMixin, TestCase):
-    fixtures = ['users.json', 'teams.json', 'teamusers.json']
-
-    def test_get_team_by_guid(self):
-        "Test we can get a team by id"
-
-        url = reverse('core:accounts:team-detail', args=[TEST_TEAM])
-
-        response = self.client.get(url, **self.get_token_headers())
-
-        team = json.loads(response.content)
-        self.assertEquals(team['name'], 'Pretenders')
-
-
 class TestProjects(CoreApiClientTestMixin, TestCase):
 
     def test_get_projects_by_team_guid(self):

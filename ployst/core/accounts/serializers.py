@@ -24,7 +24,9 @@ class ProjectManagerSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    managers = ProjectManagerSerializer(many=True)
+    managers = ProjectManagerSerializer(many=True, required=False)
+
+    read_only_fields = ('managers',)
 
     class Meta:
         model = Project
@@ -35,17 +37,22 @@ class TeamSerializer(serializers.ModelSerializer):
     User data for a profile and logged-in page.
 
     """
-    users = UserSerializer(many=True)
+    users = UserSerializer(many=True, required=False)
     managers = serializers.SerializerMethodField('get_managers')
-    projects = ProjectSerializer(many=True)
+    projects = ProjectSerializer(many=True, required=False)
+
+    read_only_fields = ('users', 'managers', 'projects')
 
     class Meta:
         model = Team
         depth = 2
 
     def get_managers(self, team):
+        """
+        List of user ids of managers for a team.
+        """
         if team:
-            return team.users.filter(
-                teamuser__manager=True).values_list('id', flat=True)
+            users = team.users.filter(teamuser__manager=True)
+            return users.values_list('id', flat=True)
         else:
             return []

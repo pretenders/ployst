@@ -24,23 +24,22 @@
             '$routeProvider', '$locationProvider',
             ng.config.routing
         ])
-        .factory('Projects', [
-            '$resource', ng.factories.Projects
+        .factory('Project', [
+            '$resource', ng.factories.Project
         ])
-        .factory('Teams', [
-            '$resource', ng.factories.Teams
+        .factory('Team', [
+            '$resource', ng.factories.Team
         ])
-        .factory('User', [
+        .service('User', [
             '$resource',
-            ng.factories.User
+            ng.services.User
         ])
         .controller('profile', [
             '$scope', 'User',
             ng.controllers.profile
         ])
         .controller('teams', [
-            '$scope', 'Teams', 'Projects',
+            '$http', '$scope', 'Project', 'Team', 'User',
             ng.controllers.teams
         ]);
 })();
-

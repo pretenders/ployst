@@ -33,10 +33,12 @@ class TestOAuthBehaviour(TestCase):
         """
         When github posts back with the access token as part of the oauth
         dance, we need to exchange the token for an access token.
+        Upon success, we get redirected to the right place.
         """
         oauth_exchange.return_value = True
+        url = reverse('github:oauth-callback')
         response = self.client.get(
-            reverse('github:oauth-callback'),
+            url,
             data={
                 'code': "secret_github_code",
                 'state': 'jill'
@@ -44,6 +46,8 @@ class TestOAuthBehaviour(TestCase):
         )
 
         self.assertEquals(response.status_code, 302)
+        self.assertEquals(response['Location'],
+                          'http://testserver/ui/#/providers/github')
         self.assertEquals(oauth_exchange.call_count, 1)
         self.assertEquals(oauth_exchange.call_args[0], ('secret_github_code',))
 

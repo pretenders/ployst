@@ -1,5 +1,6 @@
 -r runtime.txt
 
+coverage
 factory-boy==2.3.0
 httpretty           # Used for mocking http responses in unit tests.
 mock
