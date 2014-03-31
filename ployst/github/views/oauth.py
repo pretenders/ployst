@@ -31,7 +31,7 @@ def start(request):
 def receive(request):
     """End point to receive the redirect back from github"""
     if ('state' not in request.GET or
-        request.GET['state'] != settings.GITHUB_OAUTH_STATE):
+            request.GET['state'] != settings.GITHUB_OAUTH_STATE):
         return HttpResponseBadRequest()
     exchange_for_access_token(request.GET['code'])
     # This url will eventually exist, for now it will redirect to /profile

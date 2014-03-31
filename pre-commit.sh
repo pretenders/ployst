@@ -17,9 +17,10 @@ FORBIDDEN_FILES=`git diff --cached --name-only | \
 RETVAL=$?
 git stash pop -q
 
-[ $RETVAL -eq 1 ] && exit 0
+# [ $RETVAL -eq 1 ] && exit 0
 
 FLAKE8_ERRORS=`flake8 --exclude assets,migrations`
 [ -n "$FLAKE8_ERRORS" ] && echo "COMMIT REJECTED \n$FLAKE8_ERRORS"
+
 RETVAL=$?
 [ $RETVAL -eq 1 ] && exit 0
