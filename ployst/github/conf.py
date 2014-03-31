@@ -7,7 +7,7 @@ from appconf import AppConf
 
 class GithubConf(AppConf):
     """
-    Config settings for this app.
+    Overridable config settings for this app.
 
     .. note::
 
@@ -15,9 +15,6 @@ class GithubConf(AppConf):
         for use in settings. In this case GITHUB_CORE_API_TOKEN.
     """
     NAME = "github"
-
-    CORE_API_ADDRESS = ""
-    "The url of the core API"
 
     CORE_API_TOKEN = ""
     "The token used for authenticating with the core API"
