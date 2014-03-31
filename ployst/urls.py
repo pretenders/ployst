@@ -2,7 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic.base import TemplateView
 
-#from .core.accounts.views import LoginView
 
 admin.autodiscover()
 
@@ -25,5 +24,4 @@ urlpatterns = patterns(
     # providers
     url(r'^providers/github/',
         include('ployst.github.urls', namespace='github')),
-
 )

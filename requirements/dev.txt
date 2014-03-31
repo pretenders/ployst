@@ -1,14 +1,9 @@
--r test.txt
+-r build.txt
 
 Fabric
 
 # dependency management
 nodeenv
 
-# documentation
-Sphinx==1.2b3
-sphinx_bootstrap_theme==0.3.2
-
 # Pdb made awesome
 pdbpp
-flake8

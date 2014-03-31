@@ -11,6 +11,18 @@ class UserFactory(factory.DjangoModelFactory):
     username = factory.Sequence(lambda n: 'user-{0}'.format(n))
     email = factory.Sequence(lambda n: 'user-{0}@example.com'.format(n))
 
+    @classmethod
+    def _prepare(cls, create, **kwargs):
+        "Set password in proper django way"
+
+        user = super(UserFactory, cls)._prepare(create, **kwargs)
+        if 'password' in kwargs:
+            password = kwargs.pop('password')
+            user.set_password(password)
+        if create:
+            user.save()
+        return user
+
 
 class TeamFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Team
