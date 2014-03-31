@@ -15,7 +15,7 @@ Markup:
 
 */
 
-@sidebar-width: 220px;
+@sidebar-width: 180px;
 @sidebar-padding: 16px;
 @sidebar-heading-background: @gray-dark;
 @sidebar-heading-border: 8px solid lighten(@sidebar-heading-background, 30%);
@@ -34,7 +34,7 @@ Markup:
     width: @sidebar-width;
     z-index: 100;
 
-    .box-shadow(8px 0 4px rgba(0,0,0,0.4));
+    .box-shadow(4px 0 4px rgba(0,0,0,0.4));
 
     p {
         padding: 0 @sidebar-padding @sidebar-padding;
@@ -68,7 +68,6 @@ Markup:
                 color: @white;
             }
         }
-
     }
 
     header, footer {
@@ -108,13 +107,11 @@ Markup:
         bottom: 0;
         color: @white;
 
+        a, p {
+            color: @white;
+        }
         p {
             margin: 0;
-        }
-        input {
-            width: @sidebar-width * 0.6;
-            color: @black;
-            display: inline;
         }
     }
 }
@@ -137,11 +134,15 @@ Markup:
     header, footer {
         background-color: lighten(@sidebar-heading-background, 20%) !important;
         padding: 8px @sidebar-padding;
-        padding-left: 2 * @sidebar-padding;
+        input {
+            width: @sidebar-width - 60px;
+            color: @black;
+            display: inline;
+        }
     }
 
     ul > li > a {
-        padding-left: 2 * @sidebar-padding;
+        padding-left: @sidebar-padding;
     }
 }
 

@@ -4,7 +4,11 @@
 <div ng-app="ployst" id="app">
     <aside class="sidebar">
         <header>
-            <h1>[ployst]</h1>
+            <h1>[ployst]
+                <span class="pull-right">
+                <a href="{% url 'logout' %}" title="Log out"><i class="fa fa-fw fa-sign-out"></i></a>
+        </span>
+    </h1>
             <p><small>hi</small>&nbsp;{{ user }}</p>
         </header>
         <ul>
@@ -12,19 +16,15 @@
                 <a href="#/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
             </li>
             <li>
-                <a href="#/teams"><i class="fa fa-fw fa-group"></i> Teams and Projects</a>
+                <a href="#/teams"><i class="fa fa-fw fa-group"></i> Teams</a>
             </li>
             <li>
                 <a href="#/providers"><i class="fa fa-fw fa-gears"></i> Providers</a>
             </li>
             <li class="sidebar-divider"></li>
             <li>
-                <a href="{% url 'logout' %}"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
             </li>
         </ul>
-        <footer>
-            <p><small>&copy; 2013-2014<br>Alex Couper &amp; Carles Barrob&eacute;s</small></p>
-        </footer>
     </aside>
     <div class="sidebar-rest">
         <div ng-view ng-cloak>
