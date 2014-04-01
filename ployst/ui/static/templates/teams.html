@@ -1,10 +1,8 @@
-<main-menu></main-menu>
+<main-menu menu-collapsed="true"></main-menu>
+<menu-teams></menu-teams>
 
 <div class="sidebar-rest">
-
-    <menu-teams></menu-teams>
-
-    <div ng-if="team && (team !== 'unknown')" class="sidebar-rest sidebar-rest-padded">
+    <div ng-if="team && (team !== 'unknown')">
         <div class="container-fluid">
             <h2><i class="fa fa-group"></i> Team {{ team.name }}</h2>
             <div class="row-fluid">

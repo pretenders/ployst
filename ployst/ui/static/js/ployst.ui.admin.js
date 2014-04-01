@@ -40,6 +40,7 @@
     ng.controllers.profile = function ($route, $scope, User) {
         $scope.user = User.user;
         $scope.menu = $route.current.$$route.menu;
+        $scope.collapsed = false;
     };
 
     ng.controllers.providers = function ($location, $routeParams, $scope, Provider) {
@@ -164,20 +165,25 @@
             restrict: 'E',
             templateUrl: STATIC_URL + 'templates/mainMenu.html',
             controller: 'profile',
+            transclude: true,
+            replace: true,
+            scope: {
+                collapsed: '@menuCollapsed'
+            }
         };
     };
 
     ng.directives.menuTeams = function () {
         return {
             restrict: 'E',
-            templateUrl: STATIC_URL + 'templates/menuTeams.html',
+            templateUrl: STATIC_URL + 'templates/menuTeams.html'
         };
     };
 
     ng.directives.menuProviders = function () {
         return {
             restrict: 'E',
-            templateUrl: STATIC_URL + 'templates/menuProviders.html',
+            templateUrl: STATIC_URL + 'templates/menuProviders.html'
         };
     };
 
