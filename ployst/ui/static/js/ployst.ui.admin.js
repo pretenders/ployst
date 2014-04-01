@@ -159,11 +159,25 @@
 
     ng.directives = ng.directives || {};
 
-    ng.directives.mainMenu = function ($route) {
+    ng.directives.mainMenu = function () {
         return {
             restrict: 'E',
             templateUrl: STATIC_URL + 'templates/mainMenu.html',
             controller: 'profile',
+        };
+    };
+
+    ng.directives.menuTeams = function () {
+        return {
+            restrict: 'E',
+            templateUrl: STATIC_URL + 'templates/menuTeams.html',
+        };
+    };
+
+    ng.directives.menuProviders = function () {
+        return {
+            restrict: 'E',
+            templateUrl: STATIC_URL + 'templates/menuProviders.html',
         };
     };
 

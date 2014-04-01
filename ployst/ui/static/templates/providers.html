@@ -1,19 +1,7 @@
 <main-menu></main-menu>
 
 <div class="sidebar-rest">
-    <aside class="sidebar sidebar-inner">
-        <header>
-            <h1>Providers</h1>
-        </header>
-        <ul>
-            <li ng-repeat="p in providers" ng-class="{active: p===provider}">
-                <a href="#/providers/{{ p.slug }}">
-                    <i class="fa fa-fw fa-{{ p.icon }}"></i> {{ p.name }}
-                </a>
-            </li>
-        </ul>
-    </aside>
-
+    <menu-providers ></menu-providers>
     <div class="sidebar-rest sidebar-rest-padded">
         <div class="container-fluid">
             <h2><i class="fa fa-fw fa-{{ provider.icon }}"></i> {{ provider.name }}</h2>

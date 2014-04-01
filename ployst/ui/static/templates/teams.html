@@ -1,24 +1,8 @@
 <main-menu></main-menu>
 
 <div class="sidebar-rest">
-    <aside class="sidebar sidebar-inner">
-        <header>
-            <h1>My Teams</h1>
-        </header>
-        <ul>
-            <li ng-repeat="t in teams" ng-class="{active: t===team}">
-                <a ng-click="selectTeam(t)">
-                    <i class="fa fa-fw fa-group"></i> {{ t.name }}
-                </a>
-            </li>
-        </ul>
-        <footer>Create a team:
-            <input ng-model="newTeam.name" name="name" placeholder="name..."></input>
-            <i ng-click="createTeam(newTeam)"
-                class="fa fa-fw fa-lg fa-plus-square icon-clickable"
-                title="Create Team"></i>
-        </footer>
-    </aside>
+
+    <menu-teams></menu-teams>
 
     <div ng-if="team && (team !== 'unknown')" class="sidebar-rest sidebar-rest-padded">
         <div class="container-fluid">

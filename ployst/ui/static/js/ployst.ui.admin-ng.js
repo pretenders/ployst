@@ -52,7 +52,14 @@
         ])
         .directive('mainMenu',
             ng.directives.mainMenu
-        );
+        )
+        .directive('menuProviders',
+            ng.directives.menuProviders
+        )
+        .directive('menuTeams',
+            ng.directives.menuTeams
+        )
+        ;
 })();
 
 
