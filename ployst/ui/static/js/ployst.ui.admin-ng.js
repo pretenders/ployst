@@ -39,7 +39,7 @@
             ng.services.User
         ])
         .controller('profile', [
-            '$scope', 'User',
+            '$route', '$scope', 'User',
             ng.controllers.profile
         ])
         .controller('providers', [
@@ -49,5 +49,10 @@
         .controller('teams', [
             '$http', '$scope', 'Project', 'Team', 'User',
             ng.controllers.teams
-        ]);
+        ])
+        .directive('mainMenu',
+            ng.directives.mainMenu
+        );
 })();
+
+

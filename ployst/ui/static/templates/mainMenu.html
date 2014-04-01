@@ -1,0 +1,25 @@
+<aside class="sidebar">
+    <header>
+        <h1>[ployst]
+            <span class="pull-right">
+            <a href="/auth/logout/" title="Log out"><i class="fa fa-fw fa-sign-out"></i></a>
+    </span>
+</h1>
+        <p><small>hi</small>&nbsp;{{ user.username }}</p>
+    </header>
+    <ul>
+        <li ng-class="{active: menu==='profile'}">
+            <a href="#/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+        </li>
+        <li ng-class="{active: menu==='teams'}">
+            <a href="#/teams"><i class="fa fa-fw fa-group"></i> Teams</a>
+        </li>
+        <li ng-class="{active: menu==='providers'}">
+            <a href="#/providers"><i class="fa fa-fw fa-gears"></i> Providers</a>
+        </li>
+        <li class="sidebar-divider"></li>
+        <li>
+        </li>
+    </ul>
+</aside>
+

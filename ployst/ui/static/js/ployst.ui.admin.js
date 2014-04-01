@@ -10,15 +10,18 @@
         $routeProvider
             .when('/profile', {
                 controller: 'profile',
-                templateUrl: STATIC_URL + 'templates/profile.html'
+                templateUrl: STATIC_URL + 'templates/profile.html',
+                menu: 'profile'
             })
             .when('/teams', {
                 controller: 'teams',
-                templateUrl: STATIC_URL + 'templates/teams.html'
+                templateUrl: STATIC_URL + 'templates/teams.html',
+                menu: 'teams'
             })
             .when('/providers/:provider?', {
                 controller: 'providers',
-                templateUrl: STATIC_URL + 'templates/providers.html'
+                templateUrl: STATIC_URL + 'templates/providers.html',
+                menu: 'providers'
             })
             .otherwise({
                 redirectTo: '/profile'
@@ -34,8 +37,9 @@
 
     ng.controllers = ng.controllers || {};
 
-    ng.controllers.profile = function ($scope, User) {
+    ng.controllers.profile = function ($route, $scope, User) {
         $scope.user = User.user;
+        $scope.menu = $route.current.$$route.menu;
     };
 
     ng.controllers.providers = function ($location, $routeParams, $scope, Provider) {
@@ -154,6 +158,15 @@
     // directives -----------------------------------------------------------
 
     ng.directives = ng.directives || {};
+
+    ng.directives.mainMenu = function ($route) {
+        return {
+            restrict: 'E',
+            templateUrl: STATIC_URL + 'templates/mainMenu.html',
+            controller: 'profile',
+        };
+    };
+
 
     // factories ------------------------------------------------------------
 
