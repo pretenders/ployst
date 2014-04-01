@@ -49,7 +49,8 @@ class TestOAuthBehaviour(TestCase):
         self.assertEquals(response['Location'],
                           'http://testserver/ui/#/providers/github')
         self.assertEquals(oauth_exchange.call_count, 1)
-        self.assertEquals(oauth_exchange.call_args[0], ('secret_github_code',))
+        self.assertEquals(oauth_exchange.call_args[0],
+                          (None, 'secret_github_code',))
 
     @override_settings(GITHUB_OAUTH_STATE='jill')
     def test_callback_from_github_rejects_invalid_states(self):
@@ -82,12 +83,12 @@ class TestAccessTokenExchange(TestCase):
             }),
             status=200)
 
-        exchange_for_access_token('somecode')
+        exchange_for_access_token(12, 'somecode')
 
         self.assertEquals(set_access_token.call_count, 1)
         self.assertEquals(
             set_access_token.call_args[0],
-            ('github', access_token)
+            (12, 'github', access_token)
         )
 
     @httpretty.activate
@@ -106,7 +107,7 @@ class TestAccessTokenExchange(TestCase):
             status=400
         )
 
-        exchange_for_access_token('somecode')
+        exchange_for_access_token(12, 'somecode')
 
         self.assertEquals(set_access_token.call_count, 0)
         self.assertTrue(

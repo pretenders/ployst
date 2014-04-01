@@ -6,7 +6,8 @@ from rest_framework.viewsets import ModelViewSet
 from .forms import EmailForm
 from .mixins import PermissionsViewSetMixin
 from .models import (
-    Project, ProjectManager, ProjectProviderSettings, Team, TeamUser, User
+    Project, ProjectManager, ProjectProviderSettings, Team, TeamUser, User,
+    UserOAuthToken
 )
 from .serializers import ProjectSerializer, TeamSerializer, UserSerializer
 
@@ -103,3 +104,7 @@ class TeamViewSet(PermissionsViewSetMixin, ModelViewSet):
 
 class ProjectProviderSettingsViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = ProjectProviderSettings
+
+
+class UserTokenViewSet(PermissionsViewSetMixin, ModelViewSet):
+    model = UserOAuthToken

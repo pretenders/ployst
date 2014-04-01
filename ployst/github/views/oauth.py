@@ -36,13 +36,13 @@ def receive(request):
     if ('state' not in request.GET or
             request.GET['state'] != settings.GITHUB_OAUTH_STATE):
         return HttpResponseBadRequest()
-    exchange_for_access_token(request.GET['code'])
+    exchange_for_access_token(request.user.id, request.GET['code'])
     # This url will eventually exist, for now it will redirect to /profile
     github_provider_url = reverse('ui:home') + '#/providers/github'
     return HttpResponseRedirect(github_provider_url)
 
 
-def exchange_for_access_token(code):
+def exchange_for_access_token(user_id, code_to_exchange):
     """
     Exchange the given code for a real access token and save to the db.
 
@@ -51,7 +51,7 @@ def exchange_for_access_token(code):
     data = {
         'client_id': settings.GITHUB_CLIENT_ID,
         'client_secret': settings.GITHUB_CLIENT_SECRET,
-        'code': code,
+        'code': code_to_exchange,
     }
     response = requests.post(
         "https://github.com/login/oauth/access_token",
@@ -65,5 +65,11 @@ def exchange_for_access_token(code):
             "exchange: {1}".format(response.status_code, str(response))
         )
         return
-    token = response.json()['access_token']
-    client.set_access_token('github', token)
+    json = response.json()
+    if 'access_token' not in json:
+        LOGGER.error("Github didn't give us any access_token back when "
+                     "exchanging")
+        return
+
+    token = json['access_token']
+    client.set_access_token(user_id, 'github', token)
