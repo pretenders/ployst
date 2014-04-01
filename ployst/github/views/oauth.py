@@ -58,5 +58,12 @@ def exchange_for_access_token(code):
         data=data,
         headers={'Accept': 'application/json'},
     )
+
+    if response.status_code != 200:
+        LOGGER.error(
+            "Received a {0} response from Github during key "
+            "exchange: {1}".format(response.status_code, str(response))
+        )
+        return
     token = response.json()['access_token']
     client.set_access_token('github', token)

@@ -90,11 +90,26 @@ class TestAccessTokenExchange(TestCase):
             ('github', access_token)
         )
 
-    def test_github_returns_error(self):
+    @httpretty.activate
+    @patch(__name__ + '.views.oauth.LOGGER')
+    @patch(__name__ + '.views.oauth.client.set_access_token')
+    def test_github_returns_error(self, set_access_token, LOGGER):
         """
         Test what happens when github comes back with some non-200 status.
 
         We expect to LOG this situation for now as the docs don't give us any
         other expectation.
         """
-        raise NotImplementedError("This test needs writing")
+        httpretty.register_uri(
+            httpretty.POST,
+            "https://github.com/login/oauth/access_token",
+            status=400
+        )
+
+        exchange_for_access_token('somecode')
+
+        self.assertEquals(set_access_token.call_count, 0)
+        self.assertTrue(
+            'Received a 400 response from Github'
+            in LOGGER.error.call_args[0][0]
+        )
