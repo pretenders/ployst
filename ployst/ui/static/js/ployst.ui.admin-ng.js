@@ -30,16 +30,36 @@
         .factory('Team', [
             '$resource', ng.factories.Team
         ])
+        .service('Provider', [
+            '$resource',
+            ng.services.Provider
+        ])
         .service('User', [
             '$resource',
             ng.services.User
         ])
         .controller('profile', [
-            '$scope', 'User',
+            '$route', '$scope', 'User',
             ng.controllers.profile
+        ])
+        .controller('providers', [
+            '$location', '$routeParams', '$scope', 'Provider',
+            ng.controllers.providers
         ])
         .controller('teams', [
             '$http', '$scope', 'Project', 'Team', 'User',
             ng.controllers.teams
-        ]);
+        ])
+        .directive('mainMenu',
+            ng.directives.mainMenu
+        )
+        .directive('menuProviders',
+            ng.directives.menuProviders
+        )
+        .directive('menuTeams',
+            ng.directives.menuTeams
+        )
+        ;
 })();
+
+

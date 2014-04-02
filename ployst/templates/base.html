@@ -30,14 +30,8 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
-        <div id="wrap">
-            {% block page_header %}{% endblock %}
-
-            {# Main area where angular views will display #}
-            <section id="content" class="container-fluid">
-                {% block content %}{% endblock %}
-            </section>
-        </div>
+        {% block page_header %}{% endblock %}
+        {% block content %}{% endblock %}
         {% block page_footer %}{% endblock %}
     </body>
 

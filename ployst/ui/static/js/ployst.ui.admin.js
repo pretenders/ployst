@@ -10,11 +10,18 @@
         $routeProvider
             .when('/profile', {
                 controller: 'profile',
-                templateUrl: STATIC_URL + 'templates/profile.html'
+                templateUrl: STATIC_URL + 'templates/profile.html',
+                menu: 'profile'
             })
             .when('/teams', {
                 controller: 'teams',
-                templateUrl: STATIC_URL + 'templates/teams.html'
+                templateUrl: STATIC_URL + 'templates/teams.html',
+                menu: 'teams'
+            })
+            .when('/providers/:provider?', {
+                controller: 'providers',
+                templateUrl: STATIC_URL + 'templates/providers.html',
+                menu: 'providers'
             })
             .otherwise({
                 redirectTo: '/profile'
@@ -30,8 +37,29 @@
 
     ng.controllers = ng.controllers || {};
 
-    ng.controllers.profile = function ($scope, User) {
+    ng.controllers.profile = function ($route, $scope, User) {
         $scope.user = User.user;
+        $scope.menu = $route.current.$$route.menu;
+        $scope.collapsed = false;
+    };
+
+    ng.controllers.providers = function ($location, $routeParams, $scope, Provider) {
+
+        // Select active provider once they have loaded
+        Provider.providers.$promise.then(function(result) {
+            $scope.providers = result;
+            var found = false;
+
+            if ($routeParams.provider) {
+                found = $.grep($scope.providers, function(item, i) {
+                    return ($routeParams.provider === item.slug);
+                });
+                $scope.provider = found[0];
+            } else {
+                provider = $scope.providers[0];
+                $location.path('/providers/' + provider.slug);
+            }
+        });
     };
 
     ng.controllers.teams = function ($http, $scope, Project, Team, User) {
@@ -132,34 +160,44 @@
 
     ng.directives = ng.directives || {};
 
+    ng.directives.mainMenu = function () {
+        return {
+            restrict: 'E',
+            templateUrl: STATIC_URL + 'templates/mainMenu.html',
+            controller: 'profile',
+            transclude: true,
+            replace: true,
+            scope: {
+                collapsed: '@menuCollapsed'
+            }
+        };
+    };
+
+    ng.directives.menuTeams = function () {
+        return {
+            restrict: 'E',
+            templateUrl: STATIC_URL + 'templates/menuTeams.html'
+        };
+    };
+
+    ng.directives.menuProviders = function () {
+        return {
+            restrict: 'E',
+            templateUrl: STATIC_URL + 'templates/menuProviders.html'
+        };
+    };
+
+
     // factories ------------------------------------------------------------
 
     ng.factories = ng.factories || {};
 
     ng.factories.Project = function($resource) {
-        return $resource(
-            '/core/accounts/project/:id',
-            {},
-            {
-                query: {
-                    method: 'GET',
-                    params: {id: ''},
-                    isArray: true
-                }
-            });
+        return $resource('/core/accounts/project/:id');
     };
 
     ng.factories.Team = function($resource) {
-        return $resource(
-            '/core/accounts/team/:guid',
-            {},
-            {
-                query: {
-                    method: 'GET',
-                    params: {guid: ''},
-                    isArray: true
-                }
-            });
+        return $resource('/core/accounts/team/:guid');
     };
 
     // services -------------------------------------------------------------
@@ -167,10 +205,13 @@
     ng.services = ng.services || {};
 
     ng.services.User = function($resource) {
-        var userResource = $resource(
-            '/core/accounts/me', {}, {query: {method: 'GET'}}
-        );
+        var userResource = $resource('/core/accounts/me');
         this.user = userResource.get();
+    };
+ 
+    ng.services.Provider = function($resource) {
+        var providerResource = $resource('/core/providers');
+        this.providers = providerResource.query();
     };
  
 })();
