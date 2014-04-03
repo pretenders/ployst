@@ -3,6 +3,8 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from ployst.apibase.permissions import IsAuthenticated
+
 from .forms import EmailForm
 from .mixins import PermissionsViewSetMixin
 from .models import (
@@ -18,6 +20,7 @@ class MyAccountView(RetrieveAPIView):
     To be used in a profile page.
 
     """
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
     def retrieve(self, request, *args, **kwargs):
