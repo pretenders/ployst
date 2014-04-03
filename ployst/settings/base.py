@@ -214,4 +214,3 @@ INSTALLED_PROVIDERS = (
 )
 
 CORE_API_ADDRESS = "http://localhost:8000/"
-

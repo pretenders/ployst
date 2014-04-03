@@ -7,6 +7,7 @@ router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'project', views.ProjectViewSet)
 router.register(r'team', views.TeamViewSet)
 router.register(r'settings', views.ProjectProviderSettingsViewSet)
+router.register(r'token', views.UserTokenViewSet)
 
 urlpatterns = patterns(
     '',

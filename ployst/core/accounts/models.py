@@ -113,3 +113,13 @@ class ProjectProviderSettings(models.Model):
 
     class Meta:
         unique_together = ('project', 'provider')
+        verbose_name_plural = "ProjectProviderSettings"
+
+
+class UserOAuthToken(models.Model):
+    """
+    Users OAuth tokens.
+    """
+    user = models.ForeignKey(User, related_name='tokens')
+    token = models.CharField(max_length=100)
+    identifier = models.CharField(max_length=20)
