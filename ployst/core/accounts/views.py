@@ -108,3 +108,14 @@ class ProjectProviderSettingsViewSet(PermissionsViewSetMixin, ModelViewSet):
 
 class UserTokenViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = UserOAuthToken
+
+    def pre_save(self, instance):
+        """
+        We ensure older tokens for the same user and identifier get replaced.
+
+        We do this by deleting all older tokens before saving.
+
+        """
+        UserOAuthToken.objects.filter(
+            user=instance.user, identifier=instance.identifier
+        ).delete()
