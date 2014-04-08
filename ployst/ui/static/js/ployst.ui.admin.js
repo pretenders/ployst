@@ -30,7 +30,7 @@
     };
 
     ng.run = function ($http, $cookies) {
-        $http.defaults.headers.common['X-CSRFToken'] = $cookies['csrftoken'];
+        $http.defaults.headers.common['X-CSRFToken'] = $cookies.csrftoken;
     };
 
     // controllers ----------------------------------------------------------
@@ -209,10 +209,10 @@
         var userResource = $resource('/core/accounts/me');
         this.user = userResource.get();
     };
- 
+
     ng.services.Provider = function($resource) {
         var providerResource = $resource('/core/providers');
         this.providers = providerResource.query();
     };
- 
+
 })();
