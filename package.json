@@ -2,6 +2,7 @@
   "name": "ployst",
   "version": "0.0.0",
   "main": "index.js",
+  "description": "Ployst packages for npm",
   "directories": {
     "doc": "docs"
   },

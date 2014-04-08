@@ -19,7 +19,7 @@
 
 # [ $RETVAL -eq 1 ] && exit 0
 
-FLAKE8_ERRORS=`flake8 --exclude assets,migrations,.tox`
+FLAKE8_ERRORS=`flake8 --exclude assets,migrations,docs,.tox`
 [ -n "$FLAKE8_ERRORS" ] && echo "COMMIT REJECTED \n$FLAKE8_ERRORS"
 
 RETVAL=$?
