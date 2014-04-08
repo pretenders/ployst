@@ -40,7 +40,6 @@
     ng.controllers.profile = function ($route, $scope, User) {
         $scope.user = User.user;
         $scope.menu = $route.current.$$route.menu;
-        $scope.collapsed = false;
     };
 
     ng.controllers.providers = function ($location, $routeParams, $scope, Provider) {
