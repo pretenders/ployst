@@ -42,7 +42,9 @@
         $scope.menu = $route.current.$$route.menu;
     };
 
-    ng.controllers.providers = function ($location, $routeParams, $scope, Provider) {
+    ng.controllers.providers = function (
+        $location, $routeParams, $scope, Provider
+    ) {
 
         // Select active provider once they have loaded
         Provider.providers.$promise.then(function(result) {
