@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.test.utils import override_settings
 import httpretty
 from mock import patch
+import unittest
 
 from .. import views  # noqa
 from ..views.oauth import exchange_for_access_token
@@ -90,6 +91,7 @@ class TestAccessTokenExchange(TestCase):
             ('github', access_token)
         )
 
+    @unittest.skip("This test needs writing")
     def test_github_returns_error(self):
         """
         Test what happens when github comes back with some non-200 status.
