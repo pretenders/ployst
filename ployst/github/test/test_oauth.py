@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.test.utils import override_settings
 import httpretty
 from mock import patch
+import unittest
 
 from .. import views  # noqa
 from ..views.oauth import exchange_for_access_token
