@@ -18,6 +18,7 @@ Contents:
    development-setup
    celery
    security
+   coredata
 
    deployment
 

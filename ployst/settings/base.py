@@ -53,7 +53,8 @@ INSTALLED_APPS = (
     'ployst.ui',                    # The main Ployst UI
 
     # Providers
-    'ployst.github'
+    'ployst.github',
+    'ployst.coredata'
 )
 
 MIDDLEWARE_CLASSES = (

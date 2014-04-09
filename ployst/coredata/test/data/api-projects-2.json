@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "limit": 20,
+    "next": null,
+    "offset": 0,
+    "previous": null,
+    "total_count": 2
+  },
+  "objects": [
+    {
+      "aspects": {},
+      "associated_contacts_id": [],
+      "associated_users": [],
+      "connected_users": [
+        "Administrator"
+      ],
+      "contacts": [],
+      "created": "2014-04-09T20:00:10",
+      "created_by": "Administrator Administrator",
+      "description": "",
+      "due_date": null,
+      "dynatype": {
+        "caption_plural": "dynatypes_labels:Project_plural:",
+        "caption_singular": "dynatypes_labels:Project_singular:",
+        "id": "457f508a-bf39-11e3-b325-5cf938a42124"
+      },
+      "id": "8e6cc942-c021-11e3-8bfe-5cf938a42124",
+      "identifier": "2014-1",
+      "modified": "2014-04-09T20:00:10",
+      "modified_by": null,
+      "resource_uri": "/api/v2/projects/8e6cc942-c021-11e3-8bfe-5cf938a42124/",
+      "responsible_users": [],
+      "space": {
+        "id": "7849a856-c021-11e3-93ca-5cf938a42124",
+        "title": "CDD"
+      },
+      "status": "project_status:Pending:",
+      "status_message": "",
+      "tags": [],
+      "title": "Alex test project",
+      "type": "Project",
+      "version": "None.0"
+    },
+    {
+      "aspects": {},
+      "associated_contacts_id": [],
+      "associated_users": [],
+      "connected_users": [
+        "Administrator"
+      ],
+      "contacts": [],
+      "created": "2014-04-09T20:23:09",
+      "created_by": "Administrator Administrator",
+      "description": "",
+      "due_date": null,
+      "dynatype": {
+        "caption_plural": "dynatypes_labels:Project_plural:",
+        "caption_singular": "dynatypes_labels:Project_singular:",
+        "id": "457f508a-bf39-11e3-b325-5cf938a42124"
+      },
+      "id": "c47f227a-c024-11e3-ad7f-5cf938a42124",
+      "identifier": "2014-2",
+      "modified": "2014-04-09T20:23:09",
+      "modified_by": null,
+      "resource_uri": "/api/v2/projects/c47f227a-c024-11e3-ad7f-5cf938a42124/",
+      "responsible_users": [],
+      "space": {
+        "id": "7849a856-c021-11e3-93ca-5cf938a42124",
+        "title": "CDD"
+      },
+      "status": "project_status:Pending:",
+      "status_message": "",
+      "tags": [],
+      "title": "Another project",
+      "type": "Project",
+      "version": "None.0"
+    }
+  ]
+}
