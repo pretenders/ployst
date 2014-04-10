@@ -30,7 +30,7 @@
     };
 
     ng.run = function ($http, $cookies) {
-        $http.defaults.headers.common['X-CSRFToken'] = $cookies['csrftoken'];
+        $http.defaults.headers.common['X-CSRFToken'] = $cookies.csrftoken;
     };
 
     // controllers ----------------------------------------------------------
@@ -40,10 +40,11 @@
     ng.controllers.profile = function ($route, $scope, User) {
         $scope.user = User.user;
         $scope.menu = $route.current.$$route.menu;
-        $scope.collapsed = false;
     };
 
-    ng.controllers.providers = function ($location, $routeParams, $scope, Provider) {
+    ng.controllers.providers = function (
+        $location, $routeParams, $scope, Provider
+    ) {
 
         // Select active provider once they have loaded
         Provider.providers.$promise.then(function(result) {
@@ -208,10 +209,10 @@
         var userResource = $resource('/core/accounts/me');
         this.user = userResource.get();
     };
- 
+
     ng.services.Provider = function($resource) {
         var providerResource = $resource('/core/providers');
         this.providers = providerResource.query();
     };
- 
+
 })();

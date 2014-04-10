@@ -40,7 +40,7 @@ def develop():
     if not venv:
         abort('You must be in a virtual environment')
 
-    if not venv in npm:
+    if venv not in npm:
         if confirm('Install npm in your virtual env {0}?'.format(venv)):
             local('nodeenv -p')
             install_npm_mods = True
