@@ -1,12 +1,38 @@
 from .client import CoredataClient
 from .conf import settings
 
+from . import ployst_client
+
+
+def convert_project_to_feature(coredata_project):
+    """
+    Convert a coredata project into a ployst core feature.
+    """
+    return {
+        "provider": settings.COREDATA_NAME,
+        "feature_id": coredata_project["identifier"],
+        "type": "Story",
+        "title": coredata_project["title"],
+    }
+
 
 def start():
-    client = CoredataClient(
-        settings.COREDATA_HOST_NAME,
-        settings.COREDATA_API_USER,
-        settings.COREDATA_API_KEY,
+    coredata_enabled_projects = ployst_client.get_projects_by_provider(
+        settings.COREDATA_NAME
     )
-    print client.get_projects()
-    # TODO: get the raw projects and save them to core.
+
+    for ployst_project in coredata_enabled_projects:
+        prov_settings = ployst_client.get_provider_settings(
+            ployst_project,
+            settings.COREDATA_NAME
+        )
+        client = CoredataClient(
+            prov_settings['host_name'],
+            prov_settings['api_user'],
+            prov_settings['api_key'],
+        )
+        for core_project in client.get_projects():
+            print core_project
+            # TODO: convert these raw projects into a suitable format.
+            feature = convert_project_to_feature(core_project)
+            ployst_client.create_or_update_feature_information(feature)

@@ -14,11 +14,7 @@ class CoredataConf(AppConf):
         ``AppConf`` will auto convert these to be eg. <appname>_HOST_NAME
         for use in settings. In this case COREDATA_HOST_NAME.
     """
-    HOST_NAME = ""
-    "The Coredata hostname"
+    NAME = "coredata"
 
-    API_KEY = ""
-    "The API key used for authenticating with Coredata"
-
-    API_USER = ""
-    "The API user for authenticating with Coredata"
+    CORE_API_TOKEN = ""
+    "The token used for authenticating with the core API"

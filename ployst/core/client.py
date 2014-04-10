@@ -68,6 +68,9 @@ class Client(object):
     def get_projects_by_team(self, team_id):
         return self.ployst.features.project(team=team_id)
 
+    def get_projects_by_provider(self, provider):
+        pass
+
     # Repos
     def get_branch_by_name(self, repo, name):
         """
