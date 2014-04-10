@@ -8,11 +8,14 @@ Getting started
 
     http://<coredata host>/admin/tastypie/apikey/
 
-2. Enter the host and key details into your settings file::
+2. Enter the host and key details into provider settings via the ployst admin
+   interface.
 
-    COREDATA_HOST_NAME = "http://localhost:8100"
-    COREDATA_API_KEY = "my-little-secret"
-    COREDATA_API_USER = "Administrator"
+    {
+        "api_key": "my-little-secret",
+        "host_name": "http://localhost:8100",
+        "api_user": "Administrator"
+    }
 
 3. Test that you have everything set up correctly by running the management
    command to fetch the projects::

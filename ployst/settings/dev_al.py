@@ -6,7 +6,3 @@ GITHUB_CLIENT_ID = '65b3c03217a4774e29d4'
 GITHUB_CLIENT_SECRET = getenv('GITHUB_CLIENT_SECRET')
 
 CORE_API_ADDRESS = "http://localhost:5000/"
-
-COREDATA_HOST_NAME = "http://localhost:8100"
-COREDATA_API_KEY = "my-little-secret"
-COREDATA_API_USER = "Administrator"
