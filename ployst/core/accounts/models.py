@@ -115,10 +115,15 @@ class ProjectProviderSettings(models.Model):
         unique_together = ('project', 'provider')
         verbose_name_plural = "ProjectProviderSettings"
 
+    def __unicode__(self):
+        return "{0} - {1}".format(self.project, self.provider)
+
 
 class UserOAuthToken(models.Model):
     """
     Users OAuth tokens.
+
+    TODO: Document why these exists. I don't see their use anywhere.
     """
     user = models.ForeignKey(User, related_name='tokens')
     token = models.CharField(max_length=100)
