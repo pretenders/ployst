@@ -11,4 +11,5 @@ class FeatureSerializer(DynamicFieldsSerializerMixin,
 
     class Meta:
         model = Feature
-        fields = ('id', 'provider', 'feature_id', 'type', 'title', 'branches')
+        fields = ('id', 'provider', 'feature_id', 'type', 'title', 'branches',
+                  'project')

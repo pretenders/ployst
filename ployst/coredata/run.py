@@ -1,3 +1,5 @@
+import json
+
 from .client import CoredataClient
 from .conf import settings
 
@@ -17,22 +19,21 @@ def convert_project_to_feature(coredata_project):
 
 
 def start():
-    coredata_enabled_projects = ployst_client.get_projects_by_provider(
-        settings.COREDATA_NAME
+    coredata_enabled_proj_settings = (
+        ployst_client.get_provider_settings_by_provider(settings.COREDATA_NAME)
     )
 
-    for ployst_project in coredata_enabled_projects:
-        prov_settings = ployst_client.get_provider_settings(
-            ployst_project,
-            settings.COREDATA_NAME
-        )
+    for settings_data in coredata_enabled_proj_settings:
+
+        prov_settings = json.loads(settings_data['settings'])
         client = CoredataClient(
             prov_settings['host_name'],
             prov_settings['api_user'],
             prov_settings['api_key'],
         )
-        for core_project in client.get_projects():
-            print core_project
-            # TODO: convert these raw projects into a suitable format.
-            feature = convert_project_to_feature(core_project)
+        for coredata_project in client.get_projects():
+            print coredata_project
+            feature = convert_project_to_feature(coredata_project)
+            feature['project'] = settings_data['project']
+
             ployst_client.create_or_update_feature_information(feature)

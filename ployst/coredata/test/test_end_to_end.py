@@ -1,3 +1,5 @@
+import json
+
 from django.test import TestCase
 
 import httpretty
@@ -16,16 +18,19 @@ class MockPloystClient(object):
     def __init__(self):
         self.create_or_update_feature_information = Mock()
 
-    def get_provider_settings(self, team, provider_name):
-        return {
+    def get_provider_settings_by_provider(self, provider):
+        provider_settings = {
             "host_name": coredata_host,
             "api_key": api_key,
             "api_user": api_user,
         }
 
-    def get_projects_by_provider(self, provider):
         return [
-            {'id': 1},
+            {
+                'id': 1,
+                'project': 3,
+                'settings': json.dumps(provider_settings),
+            }
         ]
 
 
@@ -73,5 +78,6 @@ class TestEndToEnd(TestCase):
                 "feature_id": "2014-1",
                 "type": "Story",
                 "title": "Alex test project",
+                "project": 3,
             }
         )

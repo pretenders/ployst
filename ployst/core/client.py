@@ -58,6 +58,9 @@ class Client(object):
         else:
             self.post('accounts/settings/', data)
 
+    def get_provider_settings_by_provider(self, provider):
+        return self.ployst.accounts.settings(provider=provider)
+
     # Features
     def get_features_by_id(self, feature_id):
         return self.ployst.features.feature(feature_id=feature_id)
@@ -67,9 +70,6 @@ class Client(object):
 
     def get_projects_by_team(self, team_id):
         return self.ployst.features.project(team=team_id)
-
-    def get_projects_by_provider(self, provider):
-        pass
 
     # Repos
     def get_branch_by_name(self, repo, name):
@@ -103,6 +103,37 @@ class Client(object):
                      branch_info)
         else:
             self.post('repos/branch/', branch_info)
+
+    def create_or_update_feature_information(self, feature_info):
+        """
+        Create or update feature information using details given.
+        """
+        existing_feature = self.ployst.features.feature(
+            project=feature_info['project'],
+            feature_id=feature_info['feature_id'],
+        )
+
+        if existing_feature:
+            return self.put(
+                'features/feature/{}'.format(existing_feature[0]['id']),
+                )
+        else:
+            # TODO: Seek some Carles wisdom about how we can turn off
+            # a required field.
+            # Go to http://localhost:5000/core/features/feature and try to
+            # create a new feature through the admin interface. I get:
+            #
+            # HTTP 400 BAD REQUEST
+            # Vary: Accept
+            # Content-Type: text/html; charset=utf-8
+            # Allow: GET, POST, HEAD, OPTIONS
+
+            # {
+            #     "branches": [
+            #         "This field is required."
+            #     ]
+            # }
+            return self.post('features/feature', feature_info)
 
     def set_access_token(self, user_id, oauth_provider, access_token):
         self.post(
