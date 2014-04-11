@@ -18,13 +18,9 @@ class bash(object):
     def bash(self, cmd):
         sub_commands = cmd.split('|')
         for command in sub_commands:
-            popen_kwargs = {
-                'stdout': PIPE,
-                'stdin': PIPE,
-            }
             args = split(command)
-            self.p = Popen(args, **popen_kwargs)
-            self.output, self.err = self.p.communicate(input=self.output)
+            self.p = Popen(args, stdout=PIPE, stdin=PIPE)
+            self.output, err = self.p.communicate(input=self.output)
         return self
 
     def __str__(self):
@@ -33,9 +29,13 @@ class bash(object):
     def __nonzero__(self):
         return bool(str(self))
 
+# TODO:
+# Stash the non-committed git changes before running these things.
+# And unstash afterwards
 
 # TODO:
 # Add configurability to what hooks you want to run.
+
 
 def python_files_for_commit():
     files_pattern = '\.py(\..+)?$'
