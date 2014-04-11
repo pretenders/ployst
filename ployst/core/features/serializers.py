@@ -7,7 +7,7 @@ from .models import Feature
 
 class FeatureSerializer(DynamicFieldsSerializerMixin,
                         serializers.ModelSerializer):
-    branches = BranchSerializer(many=True)
+    branches = BranchSerializer(many=True, read_only=True)
 
     class Meta:
         model = Feature
