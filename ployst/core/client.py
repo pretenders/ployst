@@ -4,7 +4,8 @@ from apitopy import Api
 import requests
 
 
-class UnexpectedResponse(Exception): pass
+class UnexpectedResponse(Exception):
+    pass
 
 
 class Client(object):
