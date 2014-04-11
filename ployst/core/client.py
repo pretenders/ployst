@@ -4,6 +4,9 @@ from apitopy import Api
 import requests
 
 
+class UnexpectedResponse(Exception): pass
+
+
 class Client(object):
 
     def __init__(self, base_url, access_token):
@@ -23,6 +26,11 @@ class Client(object):
             data=data,
             headers={'X-Ployst-Access-Token': self.access_token}
         )
+        if response.status_code not in [200, 201]:
+            raise UnexpectedResponse("{0}: {1}".format(
+                response.status_code,
+                response.content)
+            )
         return response.json()
 
     def post(self, path, data):
@@ -122,17 +130,7 @@ class Client(object):
             # a required field.
             # Go to http://localhost:5000/core/features/feature and try to
             # create a new feature through the admin interface. I get:
-            #
-            # HTTP 400 BAD REQUEST
-            # Vary: Accept
-            # Content-Type: text/html; charset=utf-8
-            # Allow: GET, POST, HEAD, OPTIONS
 
-            # {
-            #     "branches": [
-            #         "This field is required."
-            #     ]
-            # }
             return self.post('features/feature', feature_info)
 
     def set_access_token(self, user_id, oauth_provider, access_token):
