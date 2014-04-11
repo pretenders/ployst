@@ -217,6 +217,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Ployst-specific settings ------------------------------------------------
 INSTALLED_PROVIDERS = (
+    'ployst.coredata',
     'ployst.github',
     'ployst.targetprocess',
 )
