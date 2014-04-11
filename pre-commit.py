@@ -30,8 +30,7 @@ class bash(object):
         return bool(str(self))
 
 # TODO:
-# Stash the non-committed git changes before running these things.
-# And unstash afterwards
+# Write tests
 
 # TODO:
 # Add configurability to what hooks you want to run.
@@ -73,11 +72,21 @@ def no_flake8():
     return not errors
 
 
+def gitstash(func):
+    def wrapped():
+        bash("git stash -q --keep-index")
+        exit_code = func()
+        bash("git stash pop -q")
+        sys.exit(exit_code)
+    return wrapped
+
+
+@gitstash
 def main():
     if not (no_pdb() and no_flake8()):
         print "Rejecting commit"
-        sys.exit(1)
-    sys.exit(0)
+        return 1
+    return 0
 
 
 if __name__ == '__main__':
