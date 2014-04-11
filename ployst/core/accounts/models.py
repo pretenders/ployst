@@ -123,7 +123,8 @@ class UserOAuthToken(models.Model):
     """
     Users OAuth tokens.
 
-    TODO: Document why these exists. I don't see their use anywhere.
+    These are OAuth tokens that are intended to be collected by providers for
+    connecting to external APIs.
     """
     user = models.ForeignKey(User, related_name='tokens')
     token = models.CharField(max_length=100)
