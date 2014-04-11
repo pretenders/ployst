@@ -52,8 +52,9 @@ class TestEndToEnd(TestCase):
         )
 
     def tearDown(self):
-        httpretty.disable()  # disable afterwards, so that you will have no
-                             # problems in code that uses that socket module
+        # disable afterwards, so that you will have no
+        # problems in code that uses that socket module
+        httpretty.disable()
         httpretty.reset()
 
     @patch(__name__ + '.run.ployst_client', MockPloystClient())
