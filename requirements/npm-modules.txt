@@ -1,7 +1,0 @@
-bower==1.2.8           # front-end package manager
-less==1.4.2            # LESS/CSS compiler
-karma==0.12.6          # Javascript test runner
-karma-cli              # CLI for karma
-karma-coverage==0.2.1  # coverage reporter for karma
-phantomjs==1.9.1-0     # headless browser
-jshint==2.3.0          # JS code style check and lint
