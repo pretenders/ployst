@@ -7,6 +7,7 @@
 tags
 .ropeproject/
 /assets/lib
+/node_modules/
 
 # This may be a sublime thing
 .project
@@ -15,6 +16,7 @@ tags
 .coverage
 .tox
 /cover
+/coverage
 /docs/build
 /ployst.egg-info
 /static

@@ -1,0 +1,3 @@
+alias bower=./node_modules/bower/bin/bower
+alias jshint=./node_modules/jshint/bin/jshint
+alias karma=./node_modules/karma-cli/bin/karma
