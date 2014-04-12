@@ -51,7 +51,7 @@ def develop():
         install_from_file('npm install -g', 'npm-modules', '@')
         local('bower install')
 
-    local("ln -s -f ../../pre-commit.py .git/hooks/pre-commit")
+    local("ln -s -f ../../pre_commit.py .git/hooks/pre-commit")
 
 
 @task
