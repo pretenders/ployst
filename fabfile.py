@@ -48,7 +48,7 @@ def develop():
         install_npm_mods = True
 
     if install_npm_mods:
-        install_from_file('npm install -g', 'npm-modules', '@')
+        install_from_file('npm install', 'npm-modules', '@')
         local('bower install')
 
 
