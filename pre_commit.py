@@ -16,11 +16,8 @@ class bash(object):
         self.bash(cmd)
 
     def bash(self, cmd):
-        sub_commands = cmd.split('|')
-        for command in sub_commands:
-            args = split(command)
-            self.p = Popen(args, stdout=PIPE, stdin=PIPE)
-            self.output, err = self.p.communicate(input=self.output)
+        self.p = Popen(cmd, shell=True, stdout=PIPE, stdin=PIPE)
+        self.output, err = self.p.communicate(input=self.output)
         return self
 
     def __str__(self):
@@ -28,9 +25,6 @@ class bash(object):
 
     def __nonzero__(self):
         return bool(str(self))
-
-# TODO:
-# Write tests
 
 # TODO:
 # Add configurability to what hooks you want to run.
