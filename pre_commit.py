@@ -1,7 +1,23 @@
 #!/usr/bin/env python
+"""
+A pre commit hook for git.
+
+This will look at the [githooks] section of tox.ini file to see which checks
+you would like to run.
+
+To add a new check:
+
+    1. Create a function that returns True for success and False
+       for failure.
+    2. Add that function to ``CHECKS``.
+    3. Add a corresponding line (the name of the function) to your tox.ini file
+       with 'on' (run this check) or 'off' (don't). The default behaviour is to
+       run all checks defined in ``CHECKS``.
+"""
+import ConfigParser
+from contextlib import contextmanager
 import sys
 from subprocess import Popen, PIPE
-from shlex import split
 
 
 class bash(object):
@@ -26,8 +42,12 @@ class bash(object):
     def __nonzero__(self):
         return bool(str(self))
 
-# TODO:
-# Add configurability to what hooks you want to run.
+
+def title_print(msg):
+    bar = '=' * 79
+    print bar
+    print msg
+    print bar
 
 
 def python_files_for_commit():
@@ -66,21 +86,56 @@ def no_flake8():
     return not errors
 
 
-def gitstash(func):
-    def wrapped():
-        bash("git stash -q --keep-index")
-        exit_code = func()
+@contextmanager
+def gitstash():
+    """
+    Validate the commit diff.
+
+    Stash the unstaged changes first and unstash afterwards regardless of
+    failure.
+    """
+    bash("git stash -q --keep-index")
+    try:
+        yield
+    finally:
         bash("git stash pop -q")
-        sys.exit(exit_code)
-    return wrapped
 
 
-@gitstash
+def get_config():
+    """
+    Return the configuration options set in tox.ini
+
+    Return an empty dict if none are set.
+    """
+    config = ConfigParser.ConfigParser()
+    config.readfp(open('tox.ini'))
+    if config.has_section('githooks'):
+        return {key: value for key, value in config.items('githooks')}
+    return {}
+
+CHECKS = (no_pdb, no_flake8)
+
+
 def main():
-    if not (no_pdb() and no_flake8()):
-        print "Rejecting commit"
-        return 1
-    return 0
+    """
+    Run the configured code checks.
+
+    Return system exit code.
+        1 - reject commit
+        0 - accept commit
+    """
+    exit_code = 0
+    conf_githooks = get_config()
+    with gitstash():
+        for func in CHECKS:
+            name = func.__name__
+            if conf_githooks.get(name, 'on') == 'on':
+                title_print("Checking {0}".format(name))
+                if not func():
+                    exit_code = 1
+    if exit_code == 1:
+        title_print("Rejecting commit")
+    sys.exit(exit_code)
 
 
 if __name__ == '__main__':
