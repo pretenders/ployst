@@ -6,7 +6,7 @@ import httpretty
 from mock import patch, Mock
 
 from . import read_data
-from .. import run  # noqa
+from ..runners import fetch_projects  # noqa
 
 coredata_host = 'http://alextest.coredata.is'
 api_key = 'my-secret'
@@ -57,7 +57,7 @@ class TestEndToEnd(TestCase):
         httpretty.disable()
         httpretty.reset()
 
-    @patch(__name__ + '.run.ployst_client', MockPloystClient())
+    @patch(__name__ + '.fetch_projects.ployst_client', MockPloystClient())
     def test_start_end_to_end(self):
         """
         Perform a full end to end test with the start function in run.
@@ -65,9 +65,9 @@ class TestEndToEnd(TestCase):
         Running start should fetch all projects for all coredata-enabled ployst
         projects and save them to the coredatabase.
         """
-        from ..run import ployst_client
+        from ..runners.fetch_projects import ployst_client
 
-        run.start()
+        fetch_projects.start()
 
         self.maxDiff = None
         self.assertEquals(
