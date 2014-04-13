@@ -83,19 +83,29 @@ def flake8():
     return bash("flake8 {0}".format(py_files.replace('\n', ' ')))
 
 
+def changes_to_stash():
+    "Check there are changes to stash"
+    return bool(bash('git diff'))
+
+
 @contextmanager
-def gitstash():
+def gitstash(stash=True):
     """
     Validate the commit diff.
 
     Stash the unstaged changes first and unstash afterwards regardless of
     failure.
     """
-    bash("git stash -q --keep-index")
+    if stash and not changes_to_stash():
+        stash = False
+
+    if stash:
+        bash("git stash -q --keep-index")
     try:
         yield
     finally:
-        bash("git stash pop -q")
+        if stash:
+            bash("git stash pop -q")
 
 
 def get_hook_checks():
@@ -113,7 +123,7 @@ def get_hook_checks():
 CHECKS = (pdb, flake8)
 
 
-def main():
+def main(stash):
     """
     Run the configured code checks.
 
@@ -123,7 +133,7 @@ def main():
     """
     exit_code = 0
     hook_checks = get_hook_checks()
-    with gitstash():
+    with gitstash(stash):
         for func in CHECKS:
             name = func.__name__
             if hook_checks.get(name, 'on') == 'on':
@@ -138,4 +148,9 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-n', '--nostash', action='store_true')
+    args = parser.parse_args()
+    main(stash=not args.nostash)
