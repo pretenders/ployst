@@ -22,8 +22,6 @@ def develop():
 
     local("ln -s -f ../../pre_commit.py .git/hooks/pre-commit")
 
-    local("ln -s -f ../../pre-commit.sh .git/hooks/pre-commit")
-
 
 @task
 def heroku_package_npm():

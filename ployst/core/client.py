@@ -127,11 +127,6 @@ class Client(object):
                 'features/feature/{}'.format(existing_feature[0]['id']),
                 )
         else:
-            # TODO: Seek some Carles wisdom about how we can turn off
-            # a required field.
-            # Go to http://localhost:5000/core/features/feature and try to
-            # create a new feature through the admin interface. I get:
-
             return self.post('features/feature', feature_info)
 
     def set_access_token(self, user_id, oauth_provider, access_token):
