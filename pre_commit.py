@@ -52,11 +52,13 @@ def title_print(msg):
 
 
 def python_files_for_commit():
-    "Get all python files that are staged for commit."
+    "Get all python files that are staged for commit, that are not deleted."
     files_pattern = '\.py(\..+)?$'
     return bash((
-        "git diff --cached --name-only | "
-        "grep -E '{files_pattern}'"
+        "git diff --cached --name-status | "
+        "grep -E '{files_pattern}' | "
+        "grep -v -E '^D' | "
+        "awk '{{ print ( $(NF) ) }}' "
     ).format(files_pattern=files_pattern))
 
 
