@@ -33,3 +33,6 @@ class GithubConf(AppConf):
     The state used when doing an OAuth dance. Used to confirm that the POST
     from github is actually a reply from a GET from us.
     """
+
+    REPOSITORY_LOCATION = '/tmp'
+    "The location to clone repositories to."

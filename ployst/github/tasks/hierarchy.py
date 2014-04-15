@@ -1,9 +1,9 @@
 from ployst.celery import app
 
-from .conf import settings
-from .lib import match_features, HierarchyHandler
+from ..conf import settings
+from ..lib import match_features, HierarchyHandler
 
-from . import client
+from .. import client
 
 
 @app.task

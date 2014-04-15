@@ -19,6 +19,7 @@ Contents:
    celery
    security
    coredata
+   github
 
    deployment
 
