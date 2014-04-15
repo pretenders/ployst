@@ -115,10 +115,16 @@ class ProjectProviderSettings(models.Model):
         unique_together = ('project', 'provider')
         verbose_name_plural = "ProjectProviderSettings"
 
+    def __unicode__(self):
+        return "{0} - {1}".format(self.project, self.provider)
+
 
 class UserOAuthToken(models.Model):
     """
     Users OAuth tokens.
+
+    These are OAuth tokens that are intended to be collected by providers for
+    connecting to external APIs.
     """
     user = models.ForeignKey(User, related_name='tokens')
     token = models.CharField(max_length=100)

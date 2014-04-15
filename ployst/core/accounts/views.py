@@ -107,6 +107,7 @@ class TeamViewSet(PermissionsViewSetMixin, ModelViewSet):
 
 class ProjectProviderSettingsViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = ProjectProviderSettings
+    filter_fields = ('provider',)
 
 
 class UserTokenViewSet(PermissionsViewSetMixin, ModelViewSet):

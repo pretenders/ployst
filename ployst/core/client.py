@@ -4,6 +4,10 @@ from apitopy import Api
 import requests
 
 
+class UnexpectedResponse(Exception):
+    pass
+
+
 class Client(object):
 
     def __init__(self, base_url, access_token):
@@ -23,6 +27,11 @@ class Client(object):
             data=data,
             headers={'X-Ployst-Access-Token': self.access_token}
         )
+        if response.status_code not in [200, 201]:
+            raise UnexpectedResponse("{0}: {1}".format(
+                response.status_code,
+                response.content)
+            )
         return response.json()
 
     def post(self, path, data):
@@ -57,6 +66,9 @@ class Client(object):
                 existing_settings[0]['id']), data)
         else:
             self.post('accounts/settings/', data)
+
+    def get_provider_settings_by_provider(self, provider):
+        return self.ployst.accounts.settings(provider=provider)
 
     # Features
     def get_features_by_id(self, feature_id):
@@ -100,6 +112,22 @@ class Client(object):
                      branch_info)
         else:
             self.post('repos/branch/', branch_info)
+
+    def create_or_update_feature_information(self, feature_info):
+        """
+        Create or update feature information using details given.
+        """
+        existing_feature = self.ployst.features.feature(
+            project=feature_info['project'],
+            feature_id=feature_info['feature_id'],
+        )
+
+        if existing_feature:
+            return self.put(
+                'features/feature/{}'.format(existing_feature[0]['id']),
+                )
+        else:
+            return self.post('features/feature', feature_info)
 
     def set_access_token(self, user_id, oauth_provider, access_token):
         self.post(

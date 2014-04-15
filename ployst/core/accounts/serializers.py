@@ -24,9 +24,7 @@ class ProjectManagerSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    managers = ProjectManagerSerializer(many=True, required=False)
-
-    read_only_fields = ('managers',)
+    managers = ProjectManagerSerializer(many=True, read_only=True)
 
     class Meta:
         model = Project
@@ -37,11 +35,9 @@ class TeamSerializer(serializers.ModelSerializer):
     User data for a profile and logged-in page.
 
     """
-    users = UserSerializer(many=True, required=False)
+    users = UserSerializer(many=True, read_only=True)
     managers = serializers.SerializerMethodField('get_managers')
-    projects = ProjectSerializer(many=True, required=False)
-
-    read_only_fields = ('users', 'managers', 'projects')
+    projects = ProjectSerializer(many=True, read_only=True)
 
     class Meta:
         model = Team

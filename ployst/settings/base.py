@@ -53,7 +53,8 @@ INSTALLED_APPS = (
     'ployst.ui',                    # The main Ployst UI
 
     # Providers
-    'ployst.github'
+    'ployst.github',
+    'ployst.coredata'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -216,6 +217,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Ployst-specific settings ------------------------------------------------
 INSTALLED_PROVIDERS = (
+    'ployst.coredata',
     'ployst.github',
     'ployst.targetprocess',
 )
