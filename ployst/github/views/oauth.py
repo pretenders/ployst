@@ -32,12 +32,16 @@ def start(request):
 
 @require_http_methods(['GET'])
 def receive(request):
-    """End point to receive the redirect back from github"""
+    """
+    End point to receive the redirect back from github.
+
+    WARN: This relies on the fact that github provider and core run on the same
+    project, else request.user would not be available (?).
+    """
     if ('state' not in request.GET or
             request.GET['state'] != settings.GITHUB_OAUTH_STATE):
         return HttpResponseBadRequest()
     exchange_for_access_token(request.user.id, request.GET['code'])
-    # This url will eventually exist, for now it will redirect to /profile
     github_provider_url = reverse('ui:home') + '#/providers/github'
     return HttpResponseRedirect(github_provider_url)
 

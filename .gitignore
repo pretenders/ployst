@@ -1,4 +1,5 @@
 # Untracked file types
+*.orig
 *.pyc
 *.swp
 *.sqlite3
