@@ -9,9 +9,10 @@
     </ul>
     <div ng-if="selectedOrganisation" class="col-md-6">
         <h4>Repos for {{ selectedOrganisation.login }}</h4>
-        <ul class="list-unstyled col-md-4">
+        <ul class="list-unstyled">
             <li ng-repeat="repo in repos">
                 {{ repo.name }}
+                <i ng-if="repo.fork" class="fa fa-fw fa-code-fork"></i>
             </li>
         </ul>
     </div>
