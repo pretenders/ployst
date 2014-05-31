@@ -13,9 +13,11 @@ class UserOrganisations(APIView):
     Retrieve user's organisations from github.
 
     """
+
     def get(self, request):
         gh = GithubClient(request.user.id)
-        orgs = gh.my_organisations()
+        personal = gh.github_user
+        orgs = [personal] + gh.my_organisations()
         return Response([org.to_json() for org in orgs])
 
 

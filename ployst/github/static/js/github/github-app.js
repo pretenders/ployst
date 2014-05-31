@@ -27,6 +27,7 @@
                 var loadData = function() {
                     Organisations.query(function(orgs) {
                         $scope.organisations = orgs;
+                        orgs[0].selected = true;
                     });
                     Repos.query(function(repos) {
                         $scope.myRepos = repos;

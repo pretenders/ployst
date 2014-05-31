@@ -13,6 +13,7 @@ class GithubClient(object):
     def __init__(self, user_id):
         token_data = ployst_core.get_access_token(user_id, 'github')
         self.gh = login(token=token_data['token'])
+        self.github_user = self.gh.user()
 
     def my_organisations(self):
         """

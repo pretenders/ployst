@@ -1,12 +1,10 @@
 <div ng-if="hasToken">
-    <h3>Your organisations</h3>
-    <ul>
-        <li ng-repeat="org in organisations">
-            {{ org.login }}
+    <ul class="list-group col-md-8">
+        <li ng-repeat="org in organisations" class="list-group-item" ng-class="{'list-group-item-warning': org.selected}">
+            <img src="{{ org.avatar_url }}" width=32 height=32> {{ org.login }}
         </li>
     </ul>
-    <h3>Your personal repositories</h3>
-    <ul>
+    <ul class="list-unstyled col-md-4">
         <li ng-repeat="repo in myRepos">
             {{ repo.name }}
         </li>
