@@ -43,7 +43,7 @@
     };
 
     ng.controllers.providers = function (
-        $location, $routeParams, $scope, Provider
+        $compile, $location, $routeParams, $scope, Provider
     ) {
 
         // Select active provider once they have loaded
@@ -57,9 +57,16 @@
                 });
                 $scope.provider = found[0];
             } else {
-                provider = $scope.providers[0];
-                $location.path('/providers/' + provider.slug);
+                $scope.provider = $scope.providers[0];
+                $location.path('/providers/' + $scope.provider.slug);
             }
+
+            // insert directive for provider configuration
+            var directive = $scope.provider.slug + '-config';
+            directive = '<' + directive + '></' + directive + '>';
+            var compiled = $compile(directive);
+            var el = compiled($scope);
+            angular.element('#provider-config').append(el);
         });
     };
 

@@ -1,0 +1,18 @@
+<div ng-if="hasToken">
+    <h3>Your organisations</h3>
+    <ul>
+        <li ng-repeat="org in organisations">
+            {{ org.login }}
+        </li>
+    </ul>
+    <h3>Your personal repositories</h3>
+    <ul>
+        <li ng-repeat="repo in myRepos">
+            {{ repo.name }}
+        </li>
+    </ul>
+</div>
+
+<div ng-if="!hasToken">
+    <a href="/providers/github/oauth-start/" class="btn btn-primary">Assimilate Github account</a>
+</div>

@@ -1,8 +1,7 @@
-from django.utils.importlib import import_module
-
-from django.conf import settings
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
+
+from . import get_all_providers_meta
 
 
 class ProvidersView(RetrieveAPIView):
@@ -13,12 +12,5 @@ class ProvidersView(RetrieveAPIView):
 
     """
     def retrieve(self, request, *args, **kwargs):
-
-        data = []
-
-        for provider_path in settings.INSTALLED_PROVIDERS:
-            provider = import_module(provider_path)
-            meta = provider.META
-            data.append(meta)
-
+        data = get_all_providers_meta()
         return Response(data)

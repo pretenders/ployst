@@ -11,4 +11,7 @@
 {{ block.super }}
 <script src="{{ STATIC_URL }}js/ployst.ui.admin.js"></script>
 <script src="{{ STATIC_URL }}js/ployst.ui.admin-ng.js"></script>
+{% for provider in providers %}
+    <script src="{{ STATIC_URL }}js/{{ provider.slug }}/{{ provider.slug }}-app.js"></script>
+{% endfor %}
 {% endblock %}
