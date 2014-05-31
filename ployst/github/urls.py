@@ -18,5 +18,8 @@ urlpatterns = patterns(
         name='user-orgs'),
     url(r'^user-repos',
         github_data.UserRepos.as_view(),
-        name='user-orgs'),
+        name='user-repos'),
+    url(r'^org-repos/(?P<name>\w+)',
+        github_data.OrganisationRepos.as_view(),
+        name='org-repos'),
 )

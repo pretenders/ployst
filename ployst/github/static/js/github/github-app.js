@@ -13,25 +13,47 @@
                 return $resource('/providers/github/user-repos');
             }
         ])
+        .factory('OrgRepos', [
+            '$resource', function($resource) {
+                return $resource(
+                    '/providers/github/org-repos/:id',
+                    {id: '@id'}
+                );
+            }
+        ])
         .factory('GithubToken', [
             '$resource', function($resource) {
                 return $resource('/core/accounts/token?identifier=github');
             }
         ])
         .controller('githubCtl', [
-            '$scope', 'GithubToken', 'Organisations', 'Repos',
-            function($scope, GithubToken, Organisations, Repos) {
+            '$scope', 'GithubToken', 'Organisations', 'OrgRepos', 'Repos',
+            function($scope, GithubToken, Organisations, OrgRepos, Repos) {
 
                 $scope.hasToken = false;
 
                 var loadData = function() {
                     Organisations.query(function(orgs) {
                         $scope.organisations = orgs;
-                        orgs[0].selected = true;
+                        $scope.selectedOrganisation = orgs[0];
                     });
                     Repos.query(function(repos) {
-                        $scope.myRepos = repos;
+                        $scope.repos = repos;
                     });
+                };
+
+                $scope.selectOrganisation = function(org) {
+                    $scope.selectedOrganisation = org;
+                    $scope.repos = [];
+                    if(org.type === 'User') {
+                        Repos.query(function(repos) {
+                            $scope.repos = repos;
+                        });
+                    } else {
+                        OrgRepos.query({id: org.login}, function(repos) {
+                            $scope.repos = repos;
+                        });
+                    }
                 };
 
                 GithubToken.query(function(token) {

@@ -28,11 +28,22 @@ class UserRepos(APIView):
     """
     keys = ['id', 'name', 'description', 'html_url', 'fork']
 
-    def get(self, request):
-        gh = GithubClient(request.user.id)
-        repos = gh.my_repos()
+    def get_repos(self):
+        return self.gh.my_repos()
+
+    def get(self, request, *args, **kwargs):
+        self.gh = GithubClient(request.user.id)
+        repos = self.get_repos()
         repos = sorted(repos, key=lambda k: (k.fork, k.name))
         return Response([
             restrict_keys(repo.to_json(), self.keys)
             for repo in repos
         ])
+
+
+class OrganisationRepos(UserRepos):
+
+    def get_repos(self):
+        org_name = self.kwargs['name']
+        org = self.gh.gh.organization(org_name)
+        return self.gh.org_repos(org)
