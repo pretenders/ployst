@@ -35,19 +35,3 @@ class GithubClient(object):
 
         """
         return list(org.iter_repos())
-
-    def orgs_and_repos(self):
-        """
-        Return a dict with data from all organisations and repos.
-
-        """
-        orgs = self.my_organisations()
-        all_orgs = [
-            {
-                'name': org.login,
-                'avatar': org.avatar_url,
-                'repos': [r.name for r in self.org_repos(org)],
-            }
-            for org in orgs
-        ]
-        return all_orgs
