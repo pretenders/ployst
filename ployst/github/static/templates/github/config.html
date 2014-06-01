@@ -1,3 +1,13 @@
+<p ng-if="hasToken === null">
+    Loading...
+</p>
+
+<div ng-if="hasToken === false">
+    <p>You still haven't authorised ployst to access your Github account.</p>
+    <a href="/providers/github/oauth-start/" class="btn btn-primary">Assimilate Github account</a>
+</div>
+
+
 <div ng-if="hasToken">
     <ul class="list-group col-md-6">
         <li ng-repeat="org in organisations"
@@ -9,15 +19,13 @@
     </ul>
     <div ng-if="selectedOrganisation" class="col-md-6">
         <h4>Repos for {{ selectedOrganisation.login }}</h4>
-        <ul class="list-unstyled">
+        <ul class="list-unstyled" ng-show="repos.length">
             <li ng-repeat="repo in repos">
                 {{ repo.name }}
                 <i ng-if="repo.fork" class="fa fa-fw fa-code-fork"></i>
             </li>
         </ul>
+        <p class="alert alert-info" ng-show="repos.length === 0">No repos found.</p>
+        <p ng-show="!repos">Loading...</p>
     </div>
-</div>
-
-<div ng-if="!hasToken">
-    <a href="/providers/github/oauth-start/" class="btn btn-primary">Assimilate Github account</a>
 </div>

@@ -26,11 +26,12 @@
                 return $resource('/core/accounts/token?identifier=github');
             }
         ])
-        .controller('githubCtl', [
+        .controller('github', [
             '$scope', 'GithubToken', 'Organisations', 'OrgRepos', 'Repos',
             function($scope, GithubToken, Organisations, OrgRepos, Repos) {
 
-                $scope.hasToken = false;
+                $scope.hasToken = null;
+                $scope.repos = null;
 
                 var loadData = function() {
                     Organisations.query(function(orgs) {
@@ -44,7 +45,8 @@
 
                 $scope.selectOrganisation = function(org) {
                     $scope.selectedOrganisation = org;
-                    $scope.repos = [];
+                    $scope.repos = null;
+
                     if(org.type === 'User') {
                         Repos.query(function(repos) {
                             $scope.repos = repos;
@@ -58,15 +60,17 @@
 
                 GithubToken.query(function(token) {
                     if(token.length > 0) {
-                        $scope.hasToken = true;
                         loadData();
+                        $scope.hasToken = true;
+                    } else {
+                        $scope.hasToken = false;
                     }
                 });
             }
         ])
         .directive('githubConfig', function() {
             return {
-                controller: 'githubCtl',
+                controller: 'github',
                 restrict: 'E',
                 templateUrl: STATIC_URL + 'templates/github/config.html'
             };
