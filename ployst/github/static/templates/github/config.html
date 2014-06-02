@@ -9,20 +9,35 @@
 
 
 <div ng-if="hasToken">
-    <ul class="list-group col-md-6">
+    <ul class="list-unstyled col-md-3">
+        <h4>Your Organisations</h4>
         <li ng-repeat="org in organisations"
-            class="list-group-item"
             ng-class="{'list-group-item-warning': org===selectedOrganisation}"
             ng-click="selectOrganisation(org)">
             <img src="{{ org.avatar_url }}" width=32 height=32> {{ org.login }}
         </li>
     </ul>
-    <div ng-if="selectedOrganisation" class="col-md-6">
-        <h4>Repos for {{ selectedOrganisation.login }}</h4>
-        <ul class="list-unstyled" ng-show="repos.length">
-            <li ng-repeat="repo in repos">
-                {{ repo.name }}
+    <div ng-if="selectedOrganisation" class="col-md-9">
+        <p class="well">
+            <strong>{{ selectedOrganisation.login }}</strong>
+            <small class="text-muted" ng-if="selectedOrganisation.type==='User'">(personal account)</small>
+            <span class="btn-group pull-right">
+                <a class="btn btn-small btn-info"
+                   title="Import organisation as team, and all repos as projects">
+                    <i class="fa fa-group"></i> import as team
+                </a>
+            </span>
+        </p>
+        <h5>Repositories</h5>
+        <ul class="list-group actionable-list" ng-show="repos.length">
+            <li ng-repeat="repo in repos"
+                class="list-group-item">
+                <span title="{{ repo.description }}">{{ repo.name }}</span>
                 <i ng-if="repo.fork" class="fa fa-fw fa-code-fork"></i>
+                <span class="pull-right">
+                    <a class="hover-options" href="{{ repo.html_url }}" target="_blank"><i class="fa fa-fw fa-github-alt"></i> github</a>
+                    <a><i class="fa fa-fw fa-folder"></i> import</a>
+                </span>
             </li>
         </ul>
         <p class="alert alert-info" ng-show="repos.length === 0">No repos found.</p>
