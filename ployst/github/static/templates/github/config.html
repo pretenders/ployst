@@ -9,14 +9,14 @@
 
 
 <div ng-if="hasToken">
-    <div class="col-md-3">
+    <div class="panel panel-default col-md-3">
         <h4>Your Organisations</h4>
-        <ul class="list-unstyled">
+        <ul class="list-unstyled actionable-list">
             <li ng-show="!organisations">Loading...</li>
             <li ng-repeat="org in organisations"
                 ng-class="{'list-group-item-warning': org===selectedOrganisation}"
                 ng-click="selectOrganisation(org)">
-                <img src="{{ org.avatar_url }}" width=32 height=32> {{ org.login }}
+                <img src="{{ org.avatar_url }}" width=24 height=24> {{ org.login }}
             </li>
         </ul>
     </div>
