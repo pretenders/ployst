@@ -33,6 +33,7 @@
 
                 $scope.hasToken = null;
                 $scope.repos = null;
+                $scope.organisations = null;
 
                 var loadData = function() {
                     GHOrganisations.query(function(orgs) {
