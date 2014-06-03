@@ -1,8 +1,8 @@
 -r test.txt
 
 # documentation
-Sphinx==1.2b3
-sphinx_bootstrap_theme==0.3.2
+Sphinx==1.2.2
+sphinx_bootstrap_theme==0.4.0
 
 # code checks
 flake8
