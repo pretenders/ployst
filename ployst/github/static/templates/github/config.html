@@ -16,7 +16,7 @@
             <li ng-repeat="org in organisations"
                 ng-class="{'list-group-item-warning': org===selectedOrganisation}"
                 ng-click="selectOrganisation(org)">
-                <img src="{{ org.avatar_url }}" width=24 height=24> {{ org.login }}
+                <img ng-src="{{ org.avatar_url }}" width=24 height=24> {{ org.login }}
             </li>
         </ul>
     </div>
