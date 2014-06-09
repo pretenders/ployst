@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_http_methods
 import requests
 
+from ployst.core.client import UnexpectedResponse
+
 from ..conf import settings
 from .. import client
 
@@ -76,4 +78,13 @@ def exchange_for_access_token(user_id, code_to_exchange):
         return
 
     token = json['access_token']
-    client.set_access_token(user_id, 'github', token)
+    try:
+        client.set_access_token(user_id, 'github', token)
+    except UnexpectedResponse:
+        LOGGER.exception(
+            'Github provider is not set up properly. It is likely that '
+            'you received a 401 as a result of not creating an API token '
+            'and assigning it to GITHUB_CORE_API_TOKEN in the appropriate '
+            'settings file.'
+        )
+        raise
