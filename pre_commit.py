@@ -78,11 +78,15 @@ def pdb():
 
 
 def flake8():
-    "Check flake8 errors in the code base."
-    py_files = str(python_files_for_commit())
+    """Check flake8 errors in the code base.
+
+    Skip migrations.
+    """
+    py_files = str(python_files_for_commit()).split('\n')
+    py_files = filter(lambda x: '/migrations/' not in x, py_files)
     if not py_files:
         return
-    return bash("flake8 {0}".format(py_files.replace('\n', ' ')))
+    return bash("flake8 {0}".format(' '.join(py_files)))
 
 
 def changes_to_stash():
