@@ -1,9 +1,10 @@
 from django.db import models
 
 from ..accounts.models import Project, TeamObject
+from ..providers.models import HasProviderData
 
 
-class Feature(TeamObject):
+class Feature(TeamObject, HasProviderData):
     """
     A work item for a software project.
 

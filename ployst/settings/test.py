@@ -17,3 +17,5 @@ LOGGING['loggers'].update({
         'propagate': True,
     },
 })
+
+SOUTH_TESTS_MIGRATE = False
