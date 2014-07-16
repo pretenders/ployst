@@ -129,11 +129,9 @@ def ensure_clones_for_project(project_id):
 
     gh = github3.login(token=oauth_token)
     for repo_path in configured_repos:
-        # TODO: cloned_already will be a lookup via the client to see if
-        # there are any repos with the given path - and confirming that the
-        # repo does in fact exist.
-        cloned_already = False
-        if not cloned_already:
+
+        destination = get_destination(repo_path)
+        if not os.path.exists(destination):
             owner, repo_name = repo_path.split('/')
             repo = gh.repository(owner, repo_name)
             if not repo:
@@ -141,7 +139,6 @@ def ensure_clones_for_project(project_id):
                 continue
             private, public = get_ssh_key(repo)
             create_deploy_key(repo, open(public, 'r').read())
-            destination = get_destination(repo)
             clone_repo(repo, private, destination)
         # TODO: We need to now ensure that a repo.repository model instance
         # exists for the project in question. (cloned_already could be True
