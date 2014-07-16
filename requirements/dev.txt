@@ -8,5 +8,3 @@ nodeenv
 # Pdb made awesome
 pdbpp
 
-# For checking files to be committed
-captainhook
