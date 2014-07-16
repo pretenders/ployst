@@ -65,7 +65,7 @@ class TestEndToEnd(TestCase):
     def setUp(self):
         ensure_dummy_clone_available()
 
-    @patch(__name__ + '.tasks.client', MockClient())
+    @patch(__name__ + '.tasks.hierarchy.client', MockClient())
     def test_receive_hook_end_to_end(self):
         """
         Perform a full end to end test with the receive hook.
@@ -73,7 +73,7 @@ class TestEndToEnd(TestCase):
         A github-like POST to the receive hook should result in branch(es)
         being updated in core.
         """
-        from ..tasks import client as core_client
+        from ..tasks.hierarchy import client as core_client
 
         data = read_data('end-to-end.json')
 

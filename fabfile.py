@@ -20,7 +20,7 @@ def develop():
     local('pip install -r requirements/dev.txt')
     local('npm install')
 
-    local("ln -s -f ../../pre_commit.py .git/hooks/pre-commit")
+    local('captainhook install')
 
 
 @task

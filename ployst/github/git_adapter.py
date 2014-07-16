@@ -59,4 +59,7 @@ class PythonGitAdapter(GitAdapter):
         return commit in (c.hexsha for c in self.repo.iter_commits(branch))
 
     def fetch(self):
+        # TODO: This will need to be called.
+        # TODO: We need to somehow use the ssh_key associated with the repo
+        # when doing this.
         self.remote.fetch()

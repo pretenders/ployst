@@ -1,9 +1,9 @@
 import json
 
-from .client import CoredataClient
-from .conf import settings
+from ..client import CoredataClient
+from ..conf import settings
 
-from . import ployst_client
+from .. import ployst_client
 
 
 def convert_project_to_feature(coredata_project):
