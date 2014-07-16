@@ -82,7 +82,6 @@ class Project(TeamObject):
 
     """
     name = models.CharField(max_length=100)
-    url = models.URLField()
     team = models.ForeignKey(Team, related_name='projects')
 
     team_lookup = 'team'

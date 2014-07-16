@@ -138,7 +138,6 @@
         $scope.createProject = function(team, newProject) {
             var project = new Project({
                 name: newProject.name,
-                url: newProject.url,
                 team: team.guid
                 // managers: [$scope.user.id]
             });
@@ -146,7 +145,6 @@
                 // remove from UI once deleted in backend
                 team.projects.push(project);
                 newProject.name = '';
-                newProject.url = '';
             });
         };
 
