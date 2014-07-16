@@ -11,7 +11,9 @@ South==0.8.4
 apitopy==0.3.0
 requests==2.3.0
 
+
 # Git provider requirements
-GitPython==0.3.2.RC1             # access git repositories
+GitPython==0.3.2.RC1             # access local git repositories
+github3.py==0.8.2                # access github repositories
 
 celery==3.1.11

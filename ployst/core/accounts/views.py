@@ -112,6 +112,7 @@ class ProjectProviderSettingsViewSet(PermissionsViewSetMixin, ModelViewSet):
 
 class UserTokenViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = UserOAuthToken
+    filter_fields = ('user', 'identifier')
 
     def pre_save(self, instance):
         """

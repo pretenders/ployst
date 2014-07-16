@@ -34,6 +34,9 @@ class Client(object):
             )
         return response.json()
 
+    def get(self, path, data):
+        return self._http('get', path, data)
+
     def post(self, path, data):
         return self._http('post', path, data)
 
@@ -125,9 +128,19 @@ class Client(object):
         if existing_feature:
             return self.put(
                 'features/feature/{}'.format(existing_feature[0]['id']),
-                )
+            )
         else:
             return self.post('features/feature', feature_info)
+
+    def get_access_token(self, user_id, oauth_provider):
+        response = self.get(
+            'accounts/token',
+            data={
+                'user': user_id,
+                'identifier': oauth_provider,
+            },
+        )
+        return response[0]
 
     def set_access_token(self, user_id, oauth_provider, access_token):
         self.post(

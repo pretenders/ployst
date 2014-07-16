@@ -1,9 +1,12 @@
+import logging
+
 from rest_framework import permissions
 
 from .models import Token
 
-TOKEN_HEADER = 'X-Ployst-Access-Token'
 
+LOGGER = logging.getLogger('ployst.api')
+TOKEN_HEADER = 'X-Ployst-Access-Token'
 HTTP_TOKEN_LOOKUP = "HTTP_" + TOKEN_HEADER.replace('-', '_').upper()
 
 
@@ -20,8 +23,13 @@ def contains_valid_token(request):
     if access_token is None:
         access_token = request.GET.get(TOKEN_HEADER)
 
-    return (access_token is not None
-            and Token.objects.filter(key=access_token).exists())
+    if access_token is not None:
+        token_matched = Token.objects.filter(key=access_token).exists()
+        if not token_matched:
+            LOGGER.error("Token provided didn't match any existing token")
+        return token_matched
+
+    return False
 
 
 class ClientTokenPermission(permissions.BasePermission):
