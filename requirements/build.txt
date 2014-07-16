@@ -4,5 +4,5 @@
 Sphinx==1.2.2
 sphinx_bootstrap_theme==0.4.0
 
-# For checking files to be committed
-captainhook
+# code checks
+flake8

@@ -118,15 +118,6 @@ def ensure_clones_for_project(project_id):
        - Get an ssh key for the repo.
        - Clone the repo.
     """
-    # TODO: Discuss with Carles whether we should have another level of
-    # indirection. Should we have a project-repo many to many table? It would
-    # make sense to me at least.
-    # Given that::
-    #    - We only want one clone of any repo.
-    #    - Many projects can access the same repo.
-    # Currently we just have a repository table with potentially multiple rows
-    # containing identical repo information pointing to different projects.
-
     # Get settings by project id.
     prov_settings = client.get_provider_settings(
         project_id, settings.GITHUB_NAME)
