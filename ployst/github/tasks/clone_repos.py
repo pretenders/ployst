@@ -125,7 +125,7 @@ def ensure_clones_for_project(project_id):
     configured_repos = prov_settings['repositories']
     oauth_user_id = prov_settings['oauth_user']
 
-    oauth_token = client.get_access_token(oauth_user_id)[0].token
+    oauth_token = client.get_access_token(oauth_user_id, 'github').token
 
     gh = github3.login(token=oauth_token)
     for repo_path in configured_repos:
