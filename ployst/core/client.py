@@ -151,6 +151,3 @@ class Client(object):
                 'token': access_token,
             },
         )
-
-    def get_access_token(self, user_id):
-        return self.ployst.accounts.token(user=user_id)
