@@ -27,54 +27,34 @@ def create_deploy_key(repo, pub_key):
         LOGGER.error(e.response.content)
 
 
-def get_ssh_key():
+def create_ssh_key(location):
     """
-    Get the correct ssh key to use for the repo given.
+    Generate ssh keys and store them in the location given.
     """
-    # TODO: I suspect that using the same SSH public key as the deploy key
-    # for all repos cloned is a bad idea. One private key leak would expose
-    # access to everyones repository.
-    # I suggest a one key pair per actual repo in ployst.
-
-    private = join(APP_ROOT, 'test', 'data', 'test_rsa')
+    private = join(location, 'ssh-key')
     public = private + '.pub'
+    os.system('ssh-keygen -b 2048 -t rsa -f {0} -q -N ""'.format(private))
+
     return private, public
 
 
-def get_destination(repo):
+def get_destination(repo_path):
     """Create a system path to clone the repo to.
 
     Generate a system path for storing the repo in and create any
     necessary folders.
 
-    :param repo:
-        A github3 ``Repository`` to generate a destination for.
-
-    TODO:
-    The current implementation generates locations within the GITHUB_REPOSITORY
-    at the same level, based on the path of the repo.
-
-    eg. ``pretenders/ployst`` would be stored at
-    ``{GITHUB_REPOSITORY_LOCATION}/pretenders/ployst``.
-
-    This is inadequate in the long term as n organisations will result in n
-    folders all at the same level, this will result (I believe) in slow
-    performance of system commands at the ``GITHUB_REPOSITORY_LOCATION`` level.
-    It might be better to generate guids for each repo and then partition where
-    these are stored by the first 2 digits.
+    :param repo_path:
+        A path of a git repo.
     """
-    paths = repo.ssh_url.replace('.git', '').split(':')[1].split('/')
+    paths = repo_path.split('/')
 
     location = join(settings.GITHUB_REPOSITORY_LOCATION, *paths)
 
-    folder_to_create = os.path.dirname(location)
-
-    # TODO: When we upgrade the code base to python 3 (V SOON)
-    # We should change this to do os.makedirs(path, exist_ok=True)
     try:
-        os.makedirs(folder_to_create)
+        os.makedirs(location)
     except OSError as exc:
-        if exc.errno == os.errno.EEXIST and isdir(folder_to_create):
+        if exc.errno == os.errno.EEXIST and isdir(location):
             pass
         else:
             raise
@@ -125,21 +105,29 @@ def ensure_clones_for_project(project_id):
     configured_repos = prov_settings['repositories']
     oauth_user_id = prov_settings['oauth_user']
 
-    oauth_token = client.get_access_token(oauth_user_id, 'github').token
+    oauth_token = client.get_access_token(oauth_user_id, 'github')
 
     gh = github3.login(token=oauth_token)
-    for repo_path in configured_repos:
 
+    for repo_path in configured_repos:
         destination = get_destination(repo_path)
-        if not os.path.exists(destination):
+        clone_location = join(destination, 'clone')
+        if not os.path.exists(clone_location):
             owner, repo_name = repo_path.split('/')
             repo = gh.repository(owner, repo_name)
             if not repo:
                 LOGGER.error("Could not find repo {0}".format(repo_path))
                 continue
-            private, public = get_ssh_key(repo)
+            private, public = create_ssh_key(destination)
             create_deploy_key(repo, open(public, 'r').read())
-            clone_repo(repo, private, destination)
+            clone_repo(repo, private, clone_location)
         # TODO: We need to now ensure that a repo.repository model instance
         # exists for the project in question. (cloned_already could be True
         # but from a different project.)
+
+
+if __name__ == '__main__':
+    # TODO
+    # Need to come up with a way to integration test this, rather than running
+    # it.
+    ensure_clones_for_project(1)

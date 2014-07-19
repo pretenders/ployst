@@ -5,7 +5,7 @@ import unittest
 from django.test.utils import override_settings
 from mock import Mock, patch
 
-from ..tasks import clone_repos
+from ...tasks import clone_repos
 
 
 class MockGithub3Repo(object):
@@ -82,9 +82,7 @@ class TestGetDestination(unittest.TestCase):
 
     @override_settings(GITHUB_REPOSITORY_LOCATION='/tmp')
     def test_generates_location(self):
-        repo = MockGithub3Repo(path='pretenders/project.git')
-
-        location = clone_repos.get_destination(repo)
+        location = clone_repos.get_destination('pretenders/project')
 
         self.assertEquals(location, self.expected_location)
         self.assertTrue(os.path.exists(self.expected_creation))

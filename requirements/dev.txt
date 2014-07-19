@@ -9,5 +9,5 @@ nodeenv
 pdbpp
 
 # For checking files to be committed
-captainhook
+captainhook>=0.8.5
 
