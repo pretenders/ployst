@@ -15,7 +15,7 @@ class MockClient(object):
     def __init__(self):
         self.create_or_update_branch_information = Mock()
 
-    def get_repos_by_url(self, url):
+    def get_repos(self, **kwargs):
         return dotify([
             {
                 "id": 1,

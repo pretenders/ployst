@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase
 from ployst.core.accounts.test.mixins import ProjectTestMixin
 
 from ..models import Branch
-from .factories import BranchFactory, RepositoryFactory
+from .factories import BranchFactory, RepositoryFactory, ProjectFactory
 
 
 class TestFiltering(ProjectTestMixin, APITestCase):
@@ -23,6 +23,22 @@ class TestFiltering(ProjectTestMixin, APITestCase):
         url = reverse('core:repos:repository-list')
 
         response = self.client.get('{0}?url={1}'.format(url, repo_url))
+
+        repos = json.loads(response.content)
+        self.assertEquals(len(repos), 1)
+        self.assertEquals(repos[0]['name'], repo1.name)
+
+    def test_get_repos_by_project(self):
+        """
+        Search by project to get a list of matching repos.
+        """
+        project2 = ProjectFactory(team=self.team)
+        repo1 = RepositoryFactory(name='PloystTest', project=self.project)
+        RepositoryFactory(name='PloystTest', project=project2)
+        url = reverse('core:repos:repository-list')
+
+        response = self.client.get('{0}?project={1}'.format(
+            url, self.project.id))
 
         repos = json.loads(response.content)
         self.assertEquals(len(repos), 1)

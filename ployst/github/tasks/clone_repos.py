@@ -102,7 +102,7 @@ def ensure_clones_for_project(project_id):
     prov_settings = client.get_provider_settings(
         project_id, settings.GITHUB_NAME)
 
-    configured_repos = prov_settings['repositories']
+    configured_repos = client.get_repos(project=project_id)
     oauth_user_id = prov_settings['oauth_user']
 
     oauth_token = client.get_access_token(oauth_user_id, 'github')
