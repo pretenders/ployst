@@ -109,7 +109,8 @@ def ensure_clones_for_project(project_id):
 
     gh = github3.login(token=oauth_token)
 
-    for repo_path in configured_repos:
+    for repo in configured_repos:
+        repo_path = repo['path']
         destination = get_destination(repo_path)
         clone_location = join(destination, 'clone')
         if not os.path.exists(clone_location):

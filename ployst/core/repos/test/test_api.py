@@ -27,6 +27,7 @@ class TestFiltering(ProjectTestMixin, APITestCase):
         repos = json.loads(response.content)
         self.assertEquals(len(repos), 1)
         self.assertEquals(repos[0]['name'], repo1.name)
+        self.assertEquals(repos[0]['path'], repo1.path)
 
     def test_get_repos_by_project(self):
         """

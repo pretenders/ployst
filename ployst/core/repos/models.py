@@ -43,6 +43,10 @@ class Repository(TeamObject):
     class Meta:
         verbose_name_plural = 'repositories'
 
+    @property
+    def path(self):
+        return self.url.split('http://github.com/')[-1]
+
     def __unicode__(self):
         return self.name
 
