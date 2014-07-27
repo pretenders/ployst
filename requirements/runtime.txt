@@ -5,6 +5,7 @@ django-crispy-forms==1.4.0       # better control over form rendering
 django-filter==0.7               # provides generic filtering in API
 djangorestframework==2.3.12
 django-registration==1.0         # user accounts and registration
+drf-extensions==0.2.5            # DRF enhancements, including nested routers
 South==0.8.4
 
 # API client requirements
