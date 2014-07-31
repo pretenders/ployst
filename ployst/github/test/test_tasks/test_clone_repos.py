@@ -7,6 +7,8 @@ from mock import Mock, patch
 
 from ...tasks import clone_repos
 
+from .. import MockClient
+
 
 class MockGithub3Repo(object):
 
@@ -86,3 +88,28 @@ class TestGetDestination(unittest.TestCase):
 
         self.assertEquals(location, self.expected_location)
         self.assertTrue(os.path.exists(self.expected_creation))
+
+
+class TestEnsureClonesForProject(unittest.TestCase):
+
+    def tearDown(self):
+        shutil.rmtree('/tmp/test-ensure-clones')
+
+    @override_settings(GITHUB_REPOSITORY_LOCATION='/tmp/test-ensure-clones')
+    @patch(__name__ + '.clone_repos.github3')
+    @patch(__name__ + '.clone_repos.client', MockClient())
+    def test_clones_configured_repos(self, github3):
+        mock_repo = MockGithub3Repo(path='pretenders/dummyrepo')
+        github3.login().repository.return_value = mock_repo
+
+        clone_repos.ensure_clones_for_project(1)
+
+        expected_paths = [
+            '/tmp/test-ensure-clones/pretenders/dummyrepo',
+            '/tmp/test-ensure-clones/pretenders/dummyrepo/ssh-key',
+            '/tmp/test-ensure-clones/pretenders/dummyrepo/ssh-key.pub',
+            '/tmp/test-ensure-clones/pretenders/dummyrepo/clone/README.md',
+        ]
+        for path in expected_paths:
+            self.assertTrue(os.path.exists(path),
+                            "{0} did not exist".format(path))

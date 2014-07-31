@@ -58,6 +58,13 @@ class MockClient(object):
             }
         ]
 
+    def get_access_token(self, user_id, oauth_provider):
+        return {
+            'user': user_id,
+            'identifier': oauth_provider,
+            'token': 'test-token'
+        }
+
 
 def ensure_dummy_clone_available():
     """
