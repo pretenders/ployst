@@ -99,6 +99,3 @@ def ensure_clones_for_project(project_id):
             private, public = create_ssh_key(destination)
             create_deploy_key(repo, open(public, 'r').read())
             clone_repo(repo, private, clone_location)
-        # TODO: We need to now ensure that a repo.repository model instance
-        # exists for the project in question. (cloned_already could be True
-        # but from a different project.)
