@@ -1,3 +1,6 @@
+import re
+
+from django.core.exceptions import ValidationError
 from django.db import models
 from south.modelsinspector import add_introspection_rules
 
@@ -25,6 +28,24 @@ class Revision(models.CharField):
 add_introspection_rules([], ["^ployst\.core\.repos\.models\.Revision"])
 
 
+def get_path_from_url(url):
+    regex = "https?://github.com/(?P<path>[a-zA-Z0-9\-]*/[a-zA-Z0-9\-]*)"
+    match = re.match(regex, url)
+    if not match:
+        return None
+    return match.group('path')
+
+
+def validate_path(url):
+    """
+    Validate the given url can be converted into a path.
+    """
+    if not get_path_from_url(url):
+        raise ValidationError(
+            '{0} cannot be converted into a path'.format(url)
+        )
+
+
 class Repository(TeamObject):
     """
     A Git Repository.
@@ -34,7 +55,7 @@ class Repository(TeamObject):
     """
     project = models.ForeignKey(Project, related_name='repositories')
     name = models.CharField(max_length=100)
-    url = models.URLField()
+    url = models.URLField(validators=[validate_path])
     active = models.BooleanField(default=True)
 
     team_lookup = 'project__team'
@@ -44,7 +65,7 @@ class Repository(TeamObject):
 
     @property
     def path(self):
-        return self.url.split('http://github.com/')[-1]
+        return get_path_from_url(self.url)
 
     def __unicode__(self):
         return self.name
