@@ -102,10 +102,3 @@ def ensure_clones_for_project(project_id):
         # TODO: We need to now ensure that a repo.repository model instance
         # exists for the project in question. (cloned_already could be True
         # but from a different project.)
-
-
-if __name__ == '__main__':
-    # TODO
-    # Need to come up with a way to integration test this, rather than running
-    # it.
-    ensure_clones_for_project(1)
