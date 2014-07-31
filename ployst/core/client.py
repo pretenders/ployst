@@ -96,8 +96,8 @@ class Client(object):
         """
         return self.ployst.repos.branch(repo=repo, name=name)
 
-    def get_repos_by_url(self, url):
-        return self.ployst.repos.repo(url=url)
+    def get_repos(self, **kwargs):
+        return self.ployst.repos.repo(**kwargs)
 
     def create_or_update_branch_information(self, branch_info):
         """
@@ -128,6 +128,7 @@ class Client(object):
         if existing_feature:
             return self.put(
                 'features/feature/{}'.format(existing_feature[0]['id']),
+                feature_info
             )
         else:
             return self.post('features/feature', feature_info)

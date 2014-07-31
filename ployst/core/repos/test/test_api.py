@@ -6,23 +6,22 @@ from rest_framework.test import APITestCase
 from ployst.core.accounts.test.mixins import ProjectTestMixin
 
 from ..models import Branch
-from .factories import BranchFactory, RepositoryFactory
+from .factories import BranchFactory, RepositoryFactory, ProjectFactory
 
 
 class TestFiltering(ProjectTestMixin, APITestCase):
 
-    def test_get_repos_by_url(self):
+    def test_get_repos_by_project(self):
         """
-        Search by url to get a list of matching repos.
-
+        Search by project to get a list of matching repos.
         """
-        repo_url = 'http://github.com/pretenders/ployst'
-        repo1 = RepositoryFactory(
-            name='PloystTest', url=repo_url, project=self.project)
-        RepositoryFactory(name='PloystTest', project=self.project)
+        project2 = ProjectFactory(team=self.team)
+        repo1 = RepositoryFactory(name='PloystTest', project=self.project)
+        RepositoryFactory(name='PloystTest', project=project2)
         url = reverse('core:repos:repository-list')
 
-        response = self.client.get('{0}?url={1}'.format(url, repo_url))
+        response = self.client.get('{0}?project={1}'.format(
+            url, self.project.id))
 
         repos = json.loads(response.content)
         self.assertEquals(len(repos), 1)
@@ -48,9 +47,8 @@ class TestBranchCreation(ProjectTestMixin, APITestCase):
 
     def setUp(self):
         super(TestBranchCreation, self).setUp()
-        repo_url = 'http://github.com/pretenders/ployst'
         self.repo1 = RepositoryFactory(
-            name='PloystTest', url=repo_url, project=self.project)
+            name='ployst', owner='pretenders', project=self.project)
 
     def test_can_create_branch(self):
         """

@@ -25,3 +25,5 @@ tags
 # Some OSX specific thing
 *.DS_Store
 /.tox/
+
+ployst/github/test/data/

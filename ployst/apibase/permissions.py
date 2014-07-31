@@ -26,7 +26,10 @@ def contains_valid_token(request):
     if access_token is not None:
         token_matched = Token.objects.filter(key=access_token).exists()
         if not token_matched:
-            LOGGER.error("Token provided didn't match any existing token")
+            LOGGER.error(
+                "Token provided ({0}) "
+                "didn't match any existing token".format(access_token)
+            )
         return token_matched
 
     return False

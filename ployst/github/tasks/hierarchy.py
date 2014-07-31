@@ -4,6 +4,7 @@ from ..conf import settings
 from ..lib import match_features, HierarchyHandler
 
 from .. import client
+from ..path import get_destination
 
 
 @app.task
@@ -32,7 +33,7 @@ def recalculate(repo_url, branch_name):
         - dev branch (merged in)
         - dev branch 2 (not merged in)
     """
-    repos = client.get_repos_by_url(repo_url)
+    repos = client.get_repos(url=repo_url)
     for repo in repos:
 
         prov_settings = client.get_provider_settings(
@@ -52,7 +53,8 @@ def recalculate(repo_url, branch_name):
         if not matched_features:
             continue
 
-        controller = HierarchyHandler(path=repo['local_path'])
+        location = get_destination(repo['owner'], repo['name'])
+        controller = HierarchyHandler(path=location)
 
         for feature in matched_features:
             hierarchy = controller.get_branch_hierarchy(

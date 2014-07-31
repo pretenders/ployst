@@ -29,14 +29,16 @@ class Repository(TeamObject):
     """
     A Git Repository.
 
+    Currently this really represents a github repo. Some work and thought will
+    need to go into supporting other repos, including adding a type to this.
+
     If required in the future, this can be extended to support other
     repo types, such as mercurial, subversion etc.
     """
     project = models.ForeignKey(Project, related_name='repositories')
     name = models.CharField(max_length=100)
-    url = models.URLField()
+    owner = models.CharField(max_length=100)
     active = models.BooleanField(default=True)
-    local_path = models.CharField(max_length=100)
 
     team_lookup = 'project__team'
 

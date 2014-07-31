@@ -5,7 +5,9 @@ import unittest
 from django.test.utils import override_settings
 from mock import Mock, patch
 
-from ..tasks import clone_repos
+from ...tasks import clone_repos
+
+from .. import MockClient
 
 
 class MockGithub3Repo(object):
@@ -82,9 +84,31 @@ class TestGetDestination(unittest.TestCase):
 
     @override_settings(GITHUB_REPOSITORY_LOCATION='/tmp')
     def test_generates_location(self):
-        repo = MockGithub3Repo(path='pretenders/project.git')
-
-        location = clone_repos.get_destination(repo)
+        location = clone_repos.get_destination('pretenders', 'project')
 
         self.assertEquals(location, self.expected_location)
         self.assertTrue(os.path.exists(self.expected_creation))
+
+
+class TestEnsureClonesForProject(unittest.TestCase):
+
+    def tearDown(self):
+        shutil.rmtree('/tmp/test-ensure-clones')
+
+    @override_settings(GITHUB_REPOSITORY_LOCATION='/tmp/test-ensure-clones')
+    @patch(__name__ + '.clone_repos.github3')
+    @patch(__name__ + '.clone_repos.client', MockClient())
+    @patch(__name__ + '.clone_repos.clone_repo')
+    def test_clones_configured_repos(self, clone_repo, github3):
+        mock_repo = MockGithub3Repo(path='pretenders/dummyrepo')
+        github3.login().repository.return_value = mock_repo
+
+        clone_repos.ensure_clones_for_project(1)
+
+        self.assertEqual(clone_repo.call_count, 1)
+        self.assertEqual(
+            clone_repo.call_args[0][2],
+            '/tmp/test-ensure-clones/pretenders/dummyrepo/clone'
+            )
+        ssh_key = '/tmp/test-ensure-clones/pretenders/dummyrepo/ssh-key'
+        self.assertTrue(os.path.exists(ssh_key))
