@@ -50,6 +50,9 @@ class Repository(TeamObject):
     """
     A Git Repository.
 
+    Currently this really represents a github repo. Some work and thought will
+    need to go into supporting other repos, including adding a type to this.
+
     If required in the future, this can be extended to support other
     repo types, such as mercurial, subversion etc.
     """
