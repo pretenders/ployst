@@ -84,7 +84,7 @@ def ensure_clones_for_project(project_id):
 
     oauth_token = client.get_access_token(oauth_user_id, 'github')
 
-    gh = github3.login(token=oauth_token)
+    gh = github3.login(token=oauth_token['token'])
 
     for repo in configured_repos:
         repo_path = repo['path']

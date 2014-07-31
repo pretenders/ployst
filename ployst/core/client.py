@@ -141,7 +141,7 @@ class Client(object):
                 'identifier': oauth_provider,
             },
         )
-        return response[0]['token']
+        return response[0]
 
     def set_access_token(self, user_id, oauth_provider, access_token):
         self.post(
