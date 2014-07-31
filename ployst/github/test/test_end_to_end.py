@@ -2,10 +2,13 @@ import json
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.test.utils import override_settings
 
 from mock import patch
 
-from . import read_data, ensure_dummy_clone_available, MockClient
+from . import (
+    read_data, ensure_dummy_clone_available, MockClient, DUMMY_CODE_DIR
+)
 from .. import tasks  # noqa
 from ..views.hook import create_token
 
@@ -16,6 +19,7 @@ class TestEndToEnd(TestCase):
         ensure_dummy_clone_available()
 
     @patch(__name__ + '.tasks.hierarchy.client', MockClient())
+    @override_settings(GITHUB_REPOSITORY_LOCATION=DUMMY_CODE_DIR)
     def test_receive_hook_end_to_end(self):
         """
         Perform a full end to end test with the receive hook.

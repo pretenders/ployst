@@ -19,4 +19,4 @@ class RepositorySerializer(DynamicFieldsSerializerMixin,
     class Meta:
         model = Repository
         fields = ('id', 'name', 'branches', 'url', 'project',
-                  'team', 'local_path', 'path')
+                  'team', 'path')

@@ -4,6 +4,7 @@ from ..conf import settings
 from ..lib import match_features, HierarchyHandler
 
 from .. import client
+from ..path import get_destination
 
 
 @app.task
@@ -52,7 +53,8 @@ def recalculate(repo_url, branch_name):
         if not matched_features:
             continue
 
-        controller = HierarchyHandler(path=repo['local_path'])
+        repo_path = repo['path']
+        controller = HierarchyHandler(path=get_destination(repo_path))
 
         for feature in matched_features:
             hierarchy = controller.get_branch_hierarchy(

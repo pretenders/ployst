@@ -1,6 +1,6 @@
 import logging
 import os
-from os.path import isdir, join
+from os.path import join
 
 import github3
 
@@ -8,6 +8,7 @@ from ployst.celery import app
 
 from .. import APP_ROOT, client
 from ..conf import settings
+from ..path import get_destination
 
 LOGGER = logging.getLogger('github.runners.clone_repos')
 GIT_SCRIPT = join(APP_ROOT, 'scripts', 'git.sh')
@@ -36,30 +37,6 @@ def create_ssh_key(location):
     os.system('ssh-keygen -b 2048 -t rsa -f {0} -q -N ""'.format(private))
 
     return private, public
-
-
-def get_destination(repo_path):
-    """Create a system path to clone the repo to.
-
-    Generate a system path for storing the repo in and create any
-    necessary folders.
-
-    :param repo_path:
-        A path of a git repo.
-    """
-    paths = repo_path.split('/')
-
-    location = join(settings.GITHUB_REPOSITORY_LOCATION, *paths)
-
-    try:
-        os.makedirs(location)
-    except OSError as exc:
-        if exc.errno == os.errno.EEXIST and isdir(location):
-            pass
-        else:
-            raise
-
-    return location
 
 
 def clone_repo(repo, private_key_path, destination):

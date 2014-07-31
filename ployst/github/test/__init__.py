@@ -7,7 +7,7 @@ from supermutes.dot import dotify
 DATA_FOLDER = join(dirname(__file__), 'data')
 
 DUMMY_CODE_DIR = join(dirname(__file__), 'data')
-DUMMY_REPO = join(DUMMY_CODE_DIR, 'dummyrepo')
+DUMMY_REPO = join(DUMMY_CODE_DIR, 'pretenders', 'dummyrepo')
 
 
 class MockClient(object):
@@ -24,7 +24,7 @@ class MockClient(object):
                 "url": "http://github.com/pretenders/dummyrepo",
                 "project": 1,
                 "team": "10123",
-                "local_path": DUMMY_REPO
+                "path": 'pretenders/dummyrepo'
             },
         ])
 
@@ -66,12 +66,12 @@ def ensure_dummy_clone_available():
     """
     if not exists(DUMMY_CODE_DIR):
         os.mkdir(DUMMY_CODE_DIR)
-    folder_name = join(DUMMY_CODE_DIR, 'dummyrepo')
-    if not exists("{0}/.git".format(folder_name)):
+
+    if not exists("{0}/.git".format(DUMMY_REPO)):
         os.system('git clone git://github.com/pretenders/dummyrepo.git {0}'
-                  .format(folder_name))
+                  .format(DUMMY_REPO))
     else:
-        cmd = 'git --git-dir="{0}/.git" fetch'.format(folder_name)
+        cmd = 'git --git-dir="{0}/.git" fetch'.format(DUMMY_REPO)
         ans = os.system(cmd)
         if ans != 0:
             raise Exception("Git fetch failed")

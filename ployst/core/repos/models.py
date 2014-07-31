@@ -36,7 +36,6 @@ class Repository(TeamObject):
     name = models.CharField(max_length=100)
     url = models.URLField()
     active = models.BooleanField(default=True)
-    local_path = models.CharField(max_length=100)
 
     team_lookup = 'project__team'
 
