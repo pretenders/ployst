@@ -84,13 +84,16 @@ class TestGetDestination(unittest.TestCase):
 
     @override_settings(GITHUB_REPOSITORY_LOCATION='/tmp')
     def test_generates_location(self):
-        location = clone_repos.get_destination('pretenders/project')
+        location = clone_repos.get_destination('pretenders', 'project')
 
         self.assertEquals(location, self.expected_location)
         self.assertTrue(os.path.exists(self.expected_creation))
 
 
 class TestEnsureClonesForProject(unittest.TestCase):
+
+    def tearDown(self):
+        shutil.rmtree('/tmp/test-ensure-clones')
 
     @override_settings(GITHUB_REPOSITORY_LOCATION='/tmp/test-ensure-clones')
     @patch(__name__ + '.clone_repos.github3')
@@ -107,3 +110,5 @@ class TestEnsureClonesForProject(unittest.TestCase):
             clone_repo.call_args[0][2],
             '/tmp/test-ensure-clones/pretenders/dummyrepo/clone'
             )
+        ssh_key = '/tmp/test-ensure-clones/pretenders/dummyrepo/ssh-key'
+        self.assertTrue(os.path.exists(ssh_key))

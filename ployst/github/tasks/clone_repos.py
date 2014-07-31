@@ -87,14 +87,14 @@ def ensure_clones_for_project(project_id):
     gh = github3.login(token=oauth_token['token'])
 
     for repo in configured_repos:
-        repo_path = repo['path']
-        destination = get_destination(repo_path)
+        owner = repo['owner']
+        name = repo['name']
+        destination = get_destination(owner, name)
         clone_location = join(destination, 'clone')
         if not os.path.exists(clone_location):
-            owner, repo_name = repo_path.split('/')
-            repo = gh.repository(owner, repo_name)
+            repo = gh.repository(owner, name)
             if not repo:
-                LOGGER.error("Could not find repo {0}".format(repo_path))
+                LOGGER.error("Could not find repo {0}/{1}".format(owner, name))
                 continue
             private, public = create_ssh_key(destination)
             create_deploy_key(repo, open(public, 'r').read())

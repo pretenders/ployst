@@ -53,8 +53,8 @@ def recalculate(repo_url, branch_name):
         if not matched_features:
             continue
 
-        repo_path = repo['path']
-        controller = HierarchyHandler(path=get_destination(repo_path))
+        location = get_destination(repo['owner'], repo['name'])
+        controller = HierarchyHandler(path=location)
 
         for feature in matched_features:
             hierarchy = controller.get_branch_hierarchy(

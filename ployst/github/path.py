@@ -4,18 +4,25 @@ from os.path import isdir, join
 from .conf import settings
 
 
-def get_destination(repo_path):
+def get_destination(owner, name):
     """Create a system path to clone the repo to.
 
     Generate a system path for storing the repo in and create any
     necessary folders.
 
-    :param repo_path:
-        A path of a git repo.
-    """
-    paths = repo_path.split('/')
+    :param owner:
+        The owner of the repo.
+    :param name:
+        The name of the repo
 
-    location = join(settings.GITHUB_REPOSITORY_LOCATION, *paths)
+    Eg. get_destination('pretenders', 'ployst') will create folders for
+
+        {GITHUB_REPOSITORY_LOCATION}/pretenders/ployst
+
+    and return the path.
+    """
+
+    location = join(settings.GITHUB_REPOSITORY_LOCATION, owner, name)
 
     try:
         os.makedirs(location)

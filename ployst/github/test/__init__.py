@@ -19,12 +19,11 @@ class MockClient(object):
         return dotify([
             {
                 "id": 1,
-                "name": "DummyRepo",
+                "name": "dummyrepo",
                 "branches": [],
-                "url": "http://github.com/pretenders/dummyrepo",
+                "owner": 'pretenders',
                 "project": 1,
-                "team": "10123",
-                "path": 'pretenders/dummyrepo'
+                "team": "10123"
             },
         ])
 
