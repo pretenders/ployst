@@ -12,7 +12,7 @@ urlpatterns = patterns(
         include('ployst.core.builds.urls', namespace='builds')),
     url(r'^features/',
         include('ployst.core.features.urls', namespace='features')),
-    url(r'^providers/',
+    url(r'^providers/?$',
         include('ployst.core.providers.urls', namespace='providers')),
     url(r'^repos/',
         include('ployst.core.repos.urls', namespace='repos')),
