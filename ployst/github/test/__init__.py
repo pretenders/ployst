@@ -31,7 +31,6 @@ class MockClient(object):
     def get_provider_settings(self, project, provider_name):
         return {
             "branch_finders": ["^master$", ".*(?i){feature_id}.*"],
-            "repositories": ['pretenders/ployst'],
             "oauth_user": ['1'],
         }
 
