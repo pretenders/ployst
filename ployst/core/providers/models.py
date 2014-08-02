@@ -92,10 +92,25 @@ class HasProviderData(models.Model):
     def content_type(self):
         return ContentType.objects.get_for_model(self)
 
-    def extra_data(self, provider):
+    @property
+    def extra_data(self):
+        """
+        Return extra data fields for all providers as a dict.
+
+        Key will be property name, value will a tuple of (display value,
+        display_type, provider).
+        """
+        return {
+            v.name: (v.display_value, v.display_type, v.provider)
+            for v in self.provider_data.all()
+        }
+
+    def extra_data_for_provider(self, provider):
         """
         Return data for a given provider as a dict.
 
+        Key will be property name, value will a tuple of (display value,
+        display_type)
         """
         return {
             v.name: (v.display_value, v.display_type)
