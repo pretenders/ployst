@@ -1,5 +1,4 @@
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ImproperlyConfigured
 from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveAPIView,
@@ -8,6 +7,7 @@ from rest_framework.generics import (
 from rest_framework.response import Response
 
 from .models import ProviderData
+from .serializers import ProviderDataSerializer
 from . import get_all_providers_meta
 
 
@@ -24,7 +24,7 @@ class ProvidersView(RetrieveAPIView):
 
 
 class ProviderDataMixin(object):
-    model = ProviderData
+    serializer_class = ProviderDataSerializer
 
     def get_queryset(self):
         provider = self.kwargs.get('provider')

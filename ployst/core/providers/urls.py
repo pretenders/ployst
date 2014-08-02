@@ -8,7 +8,7 @@ urlpatterns = patterns(
     url(r'^/(?P<provider>\w+)/(?P<entity>\w+)/(?P<pk>\d+)$',
         views.ProviderDataView.as_view(),
         name='provider-data'),
-    url(r'^/(?P<provider>\w+)/(?P<entity>\w+)/(?P<pk>\d+)/(?P<name>\w+)$',
+    url(r'^/(?P<provider>\w+)/(?P<entity>\w+)/(?P<pk>\d+)/(?P<name>.+)$',
         views.ProviderDataValueView.as_view(),
         name='provider-data'),
 )
