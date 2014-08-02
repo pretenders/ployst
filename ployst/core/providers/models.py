@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -100,10 +102,10 @@ class HasProviderData(models.Model):
         Key will be property name, value will a tuple of (display value,
         display_type, provider).
         """
-        return {
-            v.name: (v.display_value, v.display_type, v.provider)
-            for v in self.provider_data.all()
-        }
+        data = defaultdict(dict)
+        for v in self.provider_data.all():
+            data[v.provider][v.name] = (v.display_value, v.display_type)
+        return data
 
     def extra_data_for_provider(self, provider):
         """
@@ -116,3 +118,21 @@ class HasProviderData(models.Model):
             v.name: (v.display_value, v.display_type)
             for v in self.provider_data.filter(provider=provider)
         }
+
+    def set_extra_data(self, provider, name, display_value,
+                       display_type=ProviderData.STRING, private_value=None):
+        """
+        Set a data item for a provider
+
+        """
+        data, created = ProviderData.objects.get_or_create(
+            content_type=self.content_type,
+            object_id=self.id,
+            provider=provider,
+            name=name
+        )
+        data.display_value = display_value
+        data.display_type = display_type
+        data.private_value = private_value
+        data.save()
+        return data
