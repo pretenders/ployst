@@ -5,18 +5,18 @@
     ng.modules.main = angular.module('ployst')
         .factory('github.Organisations', [
             '$resource', function($resource) {
-                return $resource('/providers/github/user-orgs');
+                return $resource('/github/user-orgs');
             }
         ])
         .factory('github.Repos', [
             '$resource', function($resource) {
-                return $resource('/providers/github/user-repos');
+                return $resource('/github/user-repos');
             }
         ])
         .factory('github.OrgRepos', [
             '$resource', function($resource) {
                 return $resource(
-                    '/providers/github/org-repos/:id',
+                    '/github/org-repos/:id',
                     {id: '@id'}
                 );
             }
