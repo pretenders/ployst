@@ -51,11 +51,16 @@ class ProviderData(models.Model):
         max_length=40,
         help_text="The name of this data item",
     )
+    value = models.TextField(
+        blank=True, null=True,
+        help_text="Internal representation of this value, for provider use"
+    )
+
+    # display the value to humans
     display_value = models.CharField(
         max_length=100,
         help_text="Value to display",
     )
-
     STRING, TRAFFIC_LIGHT = range(2)
     display_type = models.IntegerField(
         choices=(
@@ -64,11 +69,6 @@ class ProviderData(models.Model):
         ), default=STRING,
         verbose_name='Display Type',
         help_text='How do you want this value to be displayed',
-    )
-
-    private_value = models.TextField(
-        blank=True, null=True,
-        help_text="Internal representation of this value, for provider use"
     )
 
     def __unicode__(self):
@@ -120,7 +120,7 @@ class HasProviderData(models.Model):
         }
 
     def set_extra_data(self, provider, name, display_value,
-                       display_type=ProviderData.STRING, private_value=None):
+                       display_type=ProviderData.STRING, value=None):
         """
         Set a data item for a provider
 
@@ -133,6 +133,6 @@ class HasProviderData(models.Model):
         )
         data.display_value = display_value
         data.display_type = display_type
-        data.private_value = private_value
+        data.value = value
         data.save()
         return data

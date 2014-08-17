@@ -100,7 +100,7 @@ class TestProviderDataApi(CoreApiClientTestMixin, TestCase):
             data=json.dumps({
                 'provider': 'github',
                 'name': 'assimilated',
-                'private_value': '',
+                'value': '???',
                 'display_value': '2014-10-12',
                 'display_type': ProviderData.STRING,
             }),
