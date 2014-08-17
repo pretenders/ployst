@@ -2,6 +2,7 @@ from django.test import TestCase
 
 from .factories import ProviderDataFactory
 from .models import DummyModelWithProviderData
+from ..models import ProviderData
 
 
 class TestModelsProviderData(TestCase):
@@ -20,7 +21,8 @@ class TestModelsProviderData(TestCase):
         data = dummy.extra_data
         self.assertDictEqual(
             data,
-            {'github': {'p1': ('v1', 0)}, 'tp': {'p2': ('v2', 0)}}
+            {'github': {'p1': ('v1', ProviderData.STRING)},
+             'tp': {'p2': ('v2', ProviderData.STRING)}}
         )
 
     def test_retrieve_single_provider_data(self):
@@ -35,7 +37,8 @@ class TestModelsProviderData(TestCase):
         )
 
         data = dummy.extra_data_for_provider('github')
-        self.assertDictEqual(data, {'p1': ('v1', 0), 'p2': ('v2', 0)})
+        self.assertDictEqual(data, {'p1': ('v1', ProviderData.STRING),
+                                    'p2': ('v2', ProviderData.STRING)})
 
     def test_set_provider_data(self):
         """
@@ -44,7 +47,7 @@ class TestModelsProviderData(TestCase):
         dummy = DummyModelWithProviderData.objects.create()
         dummy.set_extra_data('shithub', 'name', 'value')
         data = dummy.extra_data_for_provider('shithub')
-        self.assertDictEqual(data, {'name': ('value', 0)})
+        self.assertDictEqual(data, {'name': ('value', ProviderData.STRING)})
 
     def test_update_provider_data(self):
         """
@@ -57,7 +60,8 @@ class TestModelsProviderData(TestCase):
         data = dummy.extra_data_for_provider('shithub')
         self.assertDictEqual(
             data,
-            {'name': ('another', 0), 'points': ('33', 0)})
+            {'name': ('another', ProviderData.STRING),
+             'points': ('33', ProviderData.STRING)})
 
     def test_different_providers_no_overwrite(self):
         """
@@ -69,5 +73,6 @@ class TestModelsProviderData(TestCase):
         data = dummy.extra_data
         self.assertDictEqual(
             data,
-            {'github': {'name': ('one', 0)}, 'shithub': {'name': ('two', 0)}}
+            {'github': {'name': ('one', ProviderData.STRING)},
+             'shithub': {'name': ('two', ProviderData.STRING)}}
         )

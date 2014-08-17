@@ -118,6 +118,6 @@ class TestProviderDataApi(CoreApiClientTestMixin, TestCase):
         data = self.project.extra_data
         self.assertDictEqual(
             data,
-            {'github': {'organisation': ('pretenders', 0),
-                        'assimilated': ('2014-10-12', 0)}}
+            {'github': {'organisation': ('pretenders', ProviderData.STRING),
+                        'assimilated': ('2014-10-12', ProviderData.STRING)}}
         )
