@@ -26,14 +26,18 @@ class ProvidersView(RetrieveAPIView):
 class ProviderDataMixin(object):
     serializer_class = ProviderDataSerializer
 
+    def get_content_object(self):
+        entity = self.kwargs.get('entity')
+        object_id = self.kwargs.get('id', None)
+        content_type = ContentType.objects.get(model=entity)
+        return content_type, object_id
+
     def get_queryset(self):
         provider = self.kwargs.get('provider')
-        entity = self.kwargs.get('entity')
-        pk = self.kwargs.get('pk', None)
-        content_type = ContentType.objects.get(model=entity)
+        content_type, object_id = self.get_content_object()
         return ProviderData.objects.filter(provider=provider,
                                            content_type=content_type,
-                                           object_id=pk)
+                                           object_id=object_id)
 
 
 class ProviderDataValueView(ProviderDataMixin, RetrieveUpdateDestroyAPIView):
@@ -46,4 +50,14 @@ class ProviderDataValueView(ProviderDataMixin, RetrieveUpdateDestroyAPIView):
 
 
 class ProviderDataView(ProviderDataMixin, ListCreateAPIView):
-    pass
+
+    def pre_save(self, obj):
+        """
+        Properly populate content object.
+
+        We must populate content_type and object_id in the new provider data
+        instance from the entity and object_id in the URL.
+
+        """
+        obj.content_type, obj.object_id = self.get_content_object()
+        return super(ProviderDataView, self).pre_save(obj)
