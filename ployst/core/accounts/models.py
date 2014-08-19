@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
+from ..providers.models import HasProviderData
 from .managers import TeamObjectsManager
 
 
@@ -73,7 +74,7 @@ class TeamUser(models.Model):
         )
 
 
-class Project(TeamObject):
+class Project(TeamObject, HasProviderData):
     """
     A project groups artifacts together.
 

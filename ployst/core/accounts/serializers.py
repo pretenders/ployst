@@ -25,6 +25,7 @@ class ProjectManagerSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     managers = ProjectManagerSerializer(many=True, read_only=True)
+    extra_data = serializers.Field(source='extra_data')
 
     class Meta:
         model = Project

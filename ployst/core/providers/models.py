@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -49,11 +51,16 @@ class ProviderData(models.Model):
         max_length=40,
         help_text="The name of this data item",
     )
+    value = models.TextField(
+        blank=True, null=True,
+        help_text="Internal representation of this value, for provider use"
+    )
+
+    # display the value to humans
     display_value = models.CharField(
         max_length=100,
         help_text="Value to display",
     )
-
     STRING, TRAFFIC_LIGHT = range(2)
     display_type = models.IntegerField(
         choices=(
@@ -62,11 +69,6 @@ class ProviderData(models.Model):
         ), default=STRING,
         verbose_name='Display Type',
         help_text='How do you want this value to be displayed',
-    )
-
-    private_value = models.TextField(
-        blank=True, null=True,
-        help_text="Internal representation of this value, for provider use"
     )
 
     def __unicode__(self):
@@ -92,12 +94,45 @@ class HasProviderData(models.Model):
     def content_type(self):
         return ContentType.objects.get_for_model(self)
 
-    def extra_data(self, provider):
+    @property
+    def extra_data(self):
+        """
+        Return extra data fields for all providers as a dict.
+
+        Key will be property name, value will a tuple of (display value,
+        display_type, provider).
+        """
+        data = defaultdict(dict)
+        for v in self.provider_data.all():
+            data[v.provider][v.name] = (v.display_value, v.display_type)
+        return data
+
+    def extra_data_for_provider(self, provider):
         """
         Return data for a given provider as a dict.
 
+        Key will be property name, value will a tuple of (display value,
+        display_type)
         """
         return {
             v.name: (v.display_value, v.display_type)
             for v in self.provider_data.filter(provider=provider)
         }
+
+    def set_extra_data(self, provider, name, display_value,
+                       display_type=ProviderData.STRING, value=None):
+        """
+        Set a data item for a provider
+
+        """
+        data, created = ProviderData.objects.get_or_create(
+            content_type=self.content_type,
+            object_id=self.id,
+            provider=provider,
+            name=name
+        )
+        data.display_value = display_value
+        data.display_type = display_type
+        data.value = value
+        data.save()
+        return data

@@ -22,6 +22,6 @@ urlpatterns = patterns(
     url(r'^ui/', include('ployst.ui.urls', namespace='ui')),
 
     # providers
-    url(r'^providers/github/',
+    url(r'^github/',
         include('ployst.github.urls', namespace='github')),
 )
