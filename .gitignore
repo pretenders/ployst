@@ -1,7 +1,6 @@
 # Untracked file types
 *.orig
 *.pyc
-*.swp
 *.sqlite3
 
 # untracked files and directories
@@ -10,8 +9,10 @@ tags
 /assets/lib
 /node_modules/
 
-# This may be a sublime thing
+# Editors and IDEs
 .project
+*~
+*.sw[op]
 
 # Build byproducts
 .coverage
