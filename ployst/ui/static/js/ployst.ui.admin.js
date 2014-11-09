@@ -13,15 +13,10 @@
                 templateUrl: STATIC_URL + 'templates/profile.html',
                 menu: 'profile'
             })
-            .when('/teams', {
-                controller: 'teams',
-                templateUrl: STATIC_URL + 'templates/teams.html',
-                menu: 'teams'
-            })
-            .when('/providers/:provider?', {
-                controller: 'providers',
-                templateUrl: STATIC_URL + 'templates/providers.html',
-                menu: 'providers'
+            .when('/projects', {
+                controller: 'projects',
+                templateUrl: STATIC_URL + 'templates/projects.html',
+                menu: 'projects'
             })
             .otherwise({
                 redirectTo: '/profile'
@@ -70,63 +65,63 @@
         });
     };
 
-    ng.controllers.teams = function ($http, $scope, Project, Team, User) {
-        $scope.newProject = {};
+    ng.controllers.projects = function ($http, $scope, Project, User) {
         $scope.newUser = {};
         $scope.user = User.user;
-        // prior to team loading, to avoid UI flicker with "no teams" message:
-        $scope.team = 'unknown';
+        // prior to project loading, to avoid UI flicker with "no projects"
+        // message:
+        $scope.project = 'unknown';
 
-        Team.query(function(teams) {
-            $scope.teams = teams;
-            $scope.setDefaultTeam();
+        Project.query(function(projects) {
+            $scope.projects = projects;
+            $scope.setDefaultProject();
         });
 
-        $scope.isManager = function(team, user) {
-            return (team.managers.indexOf(user.id) !== -1);
+        $scope.isManager = function(project, user) {
+            return (project.managers.indexOf(user.id) !== -1);
         };
 
-        $scope.setDefaultTeam = function() {
-            // set first team as active
-            if($scope.teams.length > 0) {
-                $scope.team = $scope.teams[0];
+        $scope.setDefaultProject = function() {
+            // set first project as active
+            if($scope.projects.length > 0) {
+                $scope.project = $scope.projects[0];
             } else {
-                $scope.team = null;
+                $scope.project = null;
             }
         };
 
-        $scope.selectTeam = function(team) {
-            $scope.team = team;
+        $scope.selectProject = function(project) {
+            $scope.project = project;
         };
 
-        $scope.createTeam = function(newTeam) {
-            var team = new Team({name: newTeam.name});
-            team.$save(function(team) {
+        $scope.createProject = function(newProject) {
+            var project = new Project({name: newProject.name});
+            project.$save(function(project) {
                 // Add to UI
-                $scope.teams.push(team);
-                $scope.team = team;
-                newTeam.name = '';
+                $scope.projects.push(project);
+                $scope.project = project;
+                newProject.name = '';
             });
         };
 
-        $scope.deleteTeam = function(team) {
-            Team.delete({guid: team.guid}, function() {
+        $scope.deleteProject = function(project) {
+            Project.delete({guid: project.guid}, function() {
                 // remove from UI once deleted in backend
-                $scope.teams.splice($scope.teams.indexOf(team), 1);
-                $scope.setDefaultTeam();
+                $scope.projects.splice($scope.projects.indexOf(team), 1);
+                $scope.setDefaultProject();
             });
         };
 
-        $scope.inviteUser = function(team, user) {
+        $scope.inviteUser = function(project, user) {
             // invite user to join team: if email is recognised, add to team,
             // else the user will be sent an invite to join ployst
-            var url = '/core/accounts/team/' + team.guid + '/invite_user';
+            var url = '/core/accounts/project/' + project.guid + '/invite_user';
 
             $http.post(url, {email: user.email})
                 .success(function(data, status, headers, config) {
                     // this callback will be called asynchronously
                     // when the response is available
-                    team.users.push(data);
+                    project.users.push(data);
                     user.email = '';
                 })
                 .error(function(data, status, headers, config) {
@@ -134,33 +129,8 @@
                 }
             );
         };
-
-        $scope.createProject = function(team, newProject) {
-            var project = new Project({
-                name: newProject.name,
-                team: team.guid
-                // managers: [$scope.user.id]
-            });
-            project.$save(function(project) {
-                // remove from UI once deleted in backend
-                team.projects.push(project);
-                newProject.name = '';
-            });
-        };
-
-        $scope.deleteProject = function(project) {
-            Project.delete({id: project.id}, function() {
-                // remove from UI once deleted in backend
-                $.map($scope.teams, function(team) {
-                    if(team.guid === project.team) {
-                        team.projects.splice(
-                            team.projects.indexOf(project), 1
-                        );
-                    }
-                });
-            });
-        };
     };
+
 
     // directives -----------------------------------------------------------
 
@@ -179,17 +149,10 @@
         };
     };
 
-    ng.directives.menuTeams = function () {
+    ng.directives.menuProjects = function () {
         return {
             restrict: 'E',
-            templateUrl: STATIC_URL + 'templates/menuTeams.html'
-        };
-    };
-
-    ng.directives.menuProviders = function () {
-        return {
-            restrict: 'E',
-            templateUrl: STATIC_URL + 'templates/menuProviders.html'
+            templateUrl: STATIC_URL + 'templates/menuProjects.html'
         };
     };
 
@@ -202,9 +165,6 @@
         return $resource('/core/accounts/project/:id');
     };
 
-    ng.factories.Team = function($resource) {
-        return $resource('/core/accounts/team/:guid');
-    };
 
     // services -------------------------------------------------------------
 

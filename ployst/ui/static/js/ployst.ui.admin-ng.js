@@ -27,9 +27,6 @@
         .factory('Project', [
             '$resource', ng.factories.Project
         ])
-        .factory('Team', [
-            '$resource', ng.factories.Team
-        ])
         .service('Provider', [
             '$resource',
             ng.services.Provider
@@ -42,22 +39,15 @@
             '$route', '$scope', 'User',
             ng.controllers.profile
         ])
-        .controller('providers', [
-            '$compile', '$location', '$routeParams', '$scope', 'Provider',
-            ng.controllers.providers
-        ])
-        .controller('teams', [
-            '$http', '$scope', 'Project', 'Team', 'User',
-            ng.controllers.teams
+        .controller('projects', [
+            '$http', '$scope', 'Project', 'User',
+            ng.controllers.projects
         ])
         .directive('mainMenu',
             ng.directives.mainMenu
         )
-        .directive('menuProviders',
-            ng.directives.menuProviders
-        )
-        .directive('menuTeams',
-            ng.directives.menuTeams
+        .directive('menuProjects',
+            ng.directives.menuProjects
         )
         ;
 })();

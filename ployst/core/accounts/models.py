@@ -74,7 +74,7 @@ class TeamUser(models.Model):
         )
 
 
-class Project(TeamObject, HasProviderData):
+class Project(HasProviderData):
     """
     A project groups artifacts together.
 
@@ -83,9 +83,6 @@ class Project(TeamObject, HasProviderData):
 
     """
     name = models.CharField(max_length=100)
-    team = models.ForeignKey(Team, related_name='projects')
-
-    team_lookup = 'team'
 
     def __unicode__(self):
         return self.name
