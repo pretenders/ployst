@@ -8,7 +8,7 @@ from ployst.apibase.test.mixins import CoreApiClientTestMixin
 from .factories import (
     ProjectFactory, ProjectUserFactory, SettingsFactory, UserFactory
 )
-from ..models import ProjectProviderSettings
+from ..models import ProjectProviderSettings, ProjectUser
 
 
 class TestProjects(CoreApiClientTestMixin, TestCase):
@@ -37,6 +37,23 @@ class TestProjects(CoreApiClientTestMixin, TestCase):
         projects = json.loads(response.content)
         self.assertEquals(len(projects), 1)
         self.assertEquals(projects[0]['name'], self.project.name)
+
+    def test_create_project(self):
+        "A logged in user can create a project"
+        NAME = 'new project'
+        url = reverse('core:accounts:project-list')
+        user = UserFactory(email='test@ployst.com', password='secret')
+        data = {'name': NAME}
+        self.client.login(username=user.username, password='secret')
+
+        response = self.client.post(url, data=data)
+
+        self.assertEquals(response.status_code, 201)
+        project = json.loads(response.content)
+        self.assertEquals(project['name'], NAME)
+        project_user = ProjectUser.objects.get(project__name=NAME)
+        self.assertEquals(project_user.user, user)
+        self.assertTrue(project_user.manager)
 
     def test_invite_actual_user(self):
         "We can invite a user to join a project"
