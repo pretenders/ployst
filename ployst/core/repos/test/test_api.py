@@ -15,7 +15,7 @@ class TestFiltering(ProjectTestMixin, APITestCase):
         """
         Search by project to get a list of matching repos.
         """
-        project2 = ProjectFactory(team=self.team)
+        project2 = ProjectFactory()
         repo1 = RepositoryFactory(name='PloystTest', project=self.project)
         RepositoryFactory(name='PloystTest', project=project2)
         url = reverse('core:repos:repository-list')
@@ -27,7 +27,7 @@ class TestFiltering(ProjectTestMixin, APITestCase):
         self.assertEquals(len(repos), 1)
         self.assertEquals(repos[0]['name'], repo1.name)
 
-    def test_only_see_repos_for_my_team(self):
+    def test_only_see_repos_for_my_projects(self):
         """
         Should not be able to see all repos.
 

@@ -76,6 +76,7 @@ class ProjectProviderSettings(ProjectObject, models.Model):
     project = models.ForeignKey(Project, related_name='settings')
     provider = models.CharField(max_length=20)
     settings = models.TextField()
+    project_lookup = 'project'
 
     class Meta:
         unique_together = ('project', 'provider')

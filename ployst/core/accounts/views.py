@@ -8,7 +8,7 @@ from ployst.apibase.permissions import IsAuthenticated
 from .forms import EmailForm
 from .mixins import PermissionsViewSetMixin
 from .models import (
-    Project, ProjectManager, ProjectProviderSettings, TeamUser, User,
+    Project, ProjectUser, ProjectProviderSettings, User,
     UserOAuthToken
 )
 from .serializers import ProjectSerializer, UserSerializer
@@ -45,7 +45,8 @@ class ProjectViewSet(PermissionsViewSetMixin, ModelViewSet):
 
         """
         response = super(ProjectViewSet, self).create(request, *args, **kwargs)
-        ProjectManager.objects.create(project=self.object, user=request.user)
+        ProjectUser.objects.create(
+            project=self.object, user=request.user, manager=True)
         return response
 
     @action()
@@ -54,10 +55,10 @@ class ProjectViewSet(PermissionsViewSetMixin, ModelViewSet):
         Invite a user to your project, from email address.
 
         TODO: if user not found, generate an invite to sign up and process
-        team membership upon signup.
+        project membership upon signup.
 
         """
-        team = self.get_object()
+        project = self.get_object()
         form = EmailForm(request.DATA)
         error = None
         if form.is_valid():
@@ -68,16 +69,16 @@ class ProjectViewSet(PermissionsViewSetMixin, ModelViewSet):
                 # TODO this should become invite user to signup
                 error = 'User not recognised'
             else:
-                team_user, created = TeamUser.objects.get_or_create(
-                    team=team, user=user
+                project_user, created = ProjectUser.objects.get_or_create(
+                    project=project, user=user
                 )
                 if created:
-                    team_user.manager = False
-                    team_user.save()
+                    project_user.manager = False
+                    project_user.save()
                     serializer = UserSerializer(user)
                     return Response(serializer.data)
                 else:
-                    error = 'User already in team'
+                    error = 'User already in project'
         else:
             error = form.errors['email']
 

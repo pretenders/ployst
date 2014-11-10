@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Project, ProjectManager
+from .models import Project, ProjectUser
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -15,16 +15,16 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'first_name', 'last_name', 'email')
 
 
-class ProjectManagerSerializer(serializers.ModelSerializer):
+class ProjectUserSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
     class Meta:
-        model = ProjectManager
+        model = ProjectUser
         fields = ('user',)
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    managers = ProjectManagerSerializer(many=True, read_only=True)
+    users = ProjectUserSerializer(many=True, read_only=True)
     extra_data = serializers.Field(source='extra_data')
 
     class Meta:

@@ -15,17 +15,17 @@ class TestFeatures(ProjectTestMixin, TestCase):
         Get a feature by project id.
 
         """
-        project1 = self.project
-        project2 = ProjectFactory(team=self.team)
+        project1 = self.project  # owned by user running test
+        project2 = ProjectFactory()
 
-        FeatureFactory(project=project1, feature_id='US101')
-        feature2 = FeatureFactory(project=project2, feature_id='US202')
+        feature1 = FeatureFactory(project=project1, feature_id='US101')
+        FeatureFactory(project=project2, feature_id='US202')
 
         url = reverse('core:features:feature-list')
         response = self.client.get(
-            '{}?project={}'.format(url, project2.id)
+            '{}?project={}'.format(url, project1.id)
         )
         self.assertEquals(response.status_code, 200)
         features = json.loads(response.content)
         self.assertEquals(len(features), 1)
-        self.assertEquals(features[0]['feature_id'], feature2.feature_id)
+        self.assertEquals(features[0]['feature_id'], feature1.feature_id)

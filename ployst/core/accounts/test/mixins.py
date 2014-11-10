@@ -14,9 +14,9 @@ class ProjectTestMixin(object):
     """
     def setUp(self):
         """
-        Create a User, a Team and a Project, and log the user in.
+        Create a User and a Project, and log the user in.
 
         """
         super(ProjectTestMixin, self).setUp()
-        self.user, self.team, self.project = create_base_project()
+        self.user, self.project = create_base_project()
         self.client.login(username=self.user.username, password=TEST_PASSWORD)

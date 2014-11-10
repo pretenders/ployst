@@ -13,9 +13,7 @@ class BranchSerializer(serializers.ModelSerializer):
 class RepositorySerializer(DynamicFieldsSerializerMixin,
                            serializers.ModelSerializer):
     branches = BranchSerializer(many=True)
-    team = serializers.RelatedField(many=False)
 
     class Meta:
         model = Repository
-        fields = ('id', 'name', 'owner', 'branches', 'project',
-                  'team')
+        fields = ('id', 'name', 'owner', 'branches', 'project')

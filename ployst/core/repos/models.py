@@ -40,7 +40,7 @@ class Repository(ProjectObject):
     owner = models.CharField(max_length=100)
     active = models.BooleanField(default=True)
 
-    team_lookup = 'project__team'
+    project_lookup = 'project'
 
     class Meta:
         verbose_name_plural = 'repositories'
@@ -64,7 +64,7 @@ class Branch(ProjectObject):
     feature = models.ForeignKey(Feature, related_name='branches',
                                 blank=True, null=True)
 
-    team_lookup = 'repo__project__team'
+    project_lookup = 'repo__project'
 
     class Meta:
         verbose_name_plural = 'branches'
