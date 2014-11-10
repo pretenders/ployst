@@ -77,10 +77,6 @@
             $scope.setDefaultProject();
         });
 
-        $scope.isManager = function(project, user) {
-            return (project.managers.indexOf(user.id) !== -1);
-        };
-
         $scope.setDefaultProject = function() {
             // set first project as active
             if($scope.projects.length > 0) {
@@ -116,13 +112,13 @@
         $scope.inviteUser = function(project, user) {
             // invite user to join project: if email is recognised, add to
             // project, else the user will be sent an invite to join ployst
-            var url = '/core/accounts/project/' + project.guid + '/invite_user';
+            var url = '/core/accounts/project/' + project.id + '/invite_user';
 
             $http.post(url, {email: user.email})
                 .success(function(data, status, headers, config) {
                     // this callback will be called asynchronously
                     // when the response is available
-                    project.users.push(data);
+                    project.users.push({'user': data});
                     user.email = '';
                 })
                 .error(function(data, status, headers, config) {

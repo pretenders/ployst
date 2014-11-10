@@ -20,12 +20,22 @@ class ProjectUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProjectUser
-        fields = ('user',)
+        fields = ('user', 'manager')
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    users = ProjectUserSerializer(many=True, read_only=True)
+    users = ProjectUserSerializer(source='projectuser_set',
+                                  many=True, read_only=True)
+    am_manager = serializers.SerializerMethodField('managed_by_me')
+
     extra_data = serializers.Field(source='extra_data')
 
     class Meta:
         model = Project
+
+    def managed_by_me(self, obj):
+        request = self.context.get('request', None)
+        if request and not request.user.is_anonymous():
+            return obj.projectuser_set.filter(
+                user=request.user, manager=True).exists()
+        return False

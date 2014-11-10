@@ -9,13 +9,13 @@
                 <h4><i class="fa fa-user"></i> Users</h4>
                 <ul class="fa-ul">
                     <li ng-repeat="user in project.users">
-                        <i ng-if="isManager(project, user)"
+                        <i ng-if="user.manager"
                             class="fa fa-fw fa-star" title="manager"></i>
-                        <i ng-if="!isManager(project, user)"
+                        <i ng-if="!user.manager"
                             class="fa fa-fw"></i>
-                        <span>{{ user.username }}</span>
+                        <span>{{ user.user.username }}</span>
                     </li>
-                    <li ng-if="isManager(project, user)">
+                    <li ng-if="project.am_manager">
                         <h5>Invite a user to join {{ project.name }}:</h5>
                         <input ng-model="newUser.email" name="email" placeholder="email..."></input>
                         <i ng-click="inviteUser(project, newUser)"
