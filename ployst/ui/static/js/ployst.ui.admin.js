@@ -97,6 +97,7 @@
         $scope.createProject = function(newProject) {
             var project = new Project({name: newProject.name});
             project.$save(function(project) {
+                project = Project.get({id: project.id});
                 // Add to UI
                 $scope.projects.push(project);
                 $scope.project = project;
@@ -105,16 +106,16 @@
         };
 
         $scope.deleteProject = function(project) {
-            Project.delete({guid: project.guid}, function() {
+            Project.delete({id: project.id}, function() {
                 // remove from UI once deleted in backend
-                $scope.projects.splice($scope.projects.indexOf(team), 1);
+                $scope.projects.splice($scope.projects.indexOf(project), 1);
                 $scope.setDefaultProject();
             });
         };
 
         $scope.inviteUser = function(project, user) {
-            // invite user to join team: if email is recognised, add to team,
-            // else the user will be sent an invite to join ployst
+            // invite user to join project: if email is recognised, add to
+            // project, else the user will be sent an invite to join ployst
             var url = '/core/accounts/project/' + project.guid + '/invite_user';
 
             $http.post(url, {email: user.email})
