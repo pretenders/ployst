@@ -1,7 +1,7 @@
 import factory
 
 from django.contrib.auth.models import User
-from ..models import Project, Team, TeamUser, ProjectProviderSettings
+from ..models import Project, ProjectUser, ProjectProviderSettings
 
 TEST_PASSWORD = 's3cret-password'
 
@@ -25,21 +25,16 @@ class UserFactory(factory.DjangoModelFactory):
         return user
 
 
-class TeamFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Team
-
-
-class TeamUserFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = TeamUser
-    manager = True
-    user = factory.SubFactory(UserFactory)
-    team = factory.SubFactory(TeamFactory)
-
-
 class ProjectFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Project
     name = factory.Sequence(lambda n: 'project-{0}'.format(n))
-    team = factory.SubFactory(TeamFactory)
+
+
+class ProjectUserFactory(factory.DjangoModelFactory):
+    FACTORY_FOR = ProjectUser
+    manager = True
+    user = factory.SubFactory(UserFactory)
+    project = factory.SubFactory(ProjectFactory)
 
 
 class SettingsFactory(factory.DjangoModelFactory):
@@ -55,12 +50,11 @@ def create_base_project():
     to it. The user is the team manager.
 
     :returns:
-        A tuple (user, team, project)
+        A tuple (user, project)
 
     """
-    team_user = TeamUserFactory()
-    team_user.user.set_password(TEST_PASSWORD)
-    team_user.user.save()
+    project_user = ProjectUserFactory()
+    project_user.user.set_password(TEST_PASSWORD)
+    project_user.user.save()
 
-    project = ProjectFactory(team=team_user.team)
-    return team_user.user, team_user.team, project
+    return project_user.user, project_user.project
