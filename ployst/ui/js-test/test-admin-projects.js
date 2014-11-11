@@ -16,7 +16,7 @@ describe('test projects controller', function () {
 
     beforeEach(inject(
         function(_$httpBackend_, $controller, $rootScope, $route, Project,
-                 Project, User)
+            User)
         {
             $httpBackend = _$httpBackend_;
             $httpBackend.expectGET('/core/accounts/me')
