@@ -24,7 +24,7 @@ describe('test projects controller', function() {
                 .respond(mockUser);
             $httpBackend.expectGET('/core/accounts/project')
                 .respond(mockProjects);
-            $httpBackend.expectGET('/static/templates/profile.html')
+            $httpBackend.expectGET('/static/profile/profile.html')
                 .respond();
             User.user = mockUser;
             _Project = Project;

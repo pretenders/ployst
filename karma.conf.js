@@ -18,10 +18,9 @@ module.exports = function(config) {
 
             'assets/lib/angular-mocks/angular-mocks.js',
 
-            'ployst/**/js/*.admin.js',
-            'ployst/**/js/*.admin-ng.js',
-            'ployst/**/js-test/globals.js',
-            'ployst/**/js-test/test*.js'
+            'ployst/**/static/app.js',
+            'ployst/**/static/**/ployst.*.js',
+            'ployst/**/static/test/**.js',
         ],
 
         preprocessors: {
