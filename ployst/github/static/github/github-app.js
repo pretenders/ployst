@@ -79,7 +79,7 @@
             return {
                 controller: 'github',
                 restrict: 'E',
-                templateUrl: STATIC_URL + 'templates/github/config.html'
+                templateUrl: STATIC_URL + 'github/config.html'
             };
         });
 })();

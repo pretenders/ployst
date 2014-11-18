@@ -95,4 +95,13 @@ angular.module('ployst.projects', [
                 templateUrl: STATIC_URL + 'projects/menuProjects.html'
             };
         }
+    )
+    .directive('projectUsers',
+
+        function() {
+            return {
+                restrict: 'E',
+                templateUrl: STATIC_URL + 'projects/projectUsers.html'
+            };
+        }
     );

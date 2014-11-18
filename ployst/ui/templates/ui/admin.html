@@ -14,6 +14,6 @@
 <script src="{{ STATIC_URL }}projects/ployst.projects.js"></script>
 <script src="{{ STATIC_URL }}providers/ployst.providers.js"></script>
 {% for provider in providers %}
-    <script src="{{ STATIC_URL }}js/{{ provider.slug }}/{{ provider.slug }}-app.js"></script>
+    <script src="{{ STATIC_URL }}{{ provider.slug }}/{{ provider.slug }}-app.js"></script>
 {% endfor %}
 {% endblock %}
