@@ -44,7 +44,7 @@ def receive(request):
             request.GET['state'] != settings.GITHUB_OAUTH_STATE):
         return HttpResponseBadRequest()
     exchange_for_access_token(request.user.id, request.GET['code'])
-    github_provider_url = reverse('ui:home') + '#/providers/github'
+    github_provider_url = reverse('ui:home') + '#/projects'
     return HttpResponseRedirect(github_provider_url)
 
 
