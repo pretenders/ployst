@@ -4,13 +4,14 @@
 
 <div ng-if="hasToken === false">
     <p>You still haven't authorised ployst to access your Github account.</p>
-    <a href="/providers/github/oauth-start/" class="btn btn-primary">Assimilate Github account</a>
+    <a href="/github/oauth-start/" class="btn btn-primary">Assimilate Github account</a>
 </div>
 
 
 <div ng-if="hasToken">
+    <h4><i class="fa fa-code-fork"></i> Repositories</h4>
     <div class="panel panel-default col-md-3">
-        <h4>Your Organisations</h4>
+        <h5>Your Organisations</h5>
         <ul class="list-unstyled actionable-list">
             <li ng-show="!organisations">Loading...</li>
             <li ng-repeat="org in organisations"
@@ -21,17 +22,6 @@
         </ul>
     </div>
     <div ng-if="selectedOrganisation" class="col-md-9">
-        <p class="well">
-            <strong>{{ selectedOrganisation.login }}</strong>
-            <small class="text-muted" ng-if="selectedOrganisation.type==='User'">(personal account)</small>
-            <span class="btn-group pull-right">
-                <a class="btn btn-small btn-info"
-                   title="Import organisation as team, and all repos as projects">
-                    <i class="fa fa-group"></i> import as team
-                </a>
-            </span>
-        </p>
-        <h5>Repositories</h5>
         <p ng-show="!repos">Loading...</p>
         <p class="alert alert-info" ng-show="repos.length === 0">No repos found.</p>
         <ul class="list-group actionable-list" ng-show="repos.length">

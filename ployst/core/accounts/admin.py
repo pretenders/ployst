@@ -1,26 +1,17 @@
 from django.contrib import admin
 
 from .models import (
-    Project, ProjectManager, Team, ProjectProviderSettings,
-    UserOAuthToken)
+    Project, ProjectProviderSettings,
+    UserOAuthToken
+)
 
 
-class TeamUserInline(admin.TabularInline):
-    model = Team.users.through
-
-
-class TeamAdmin(admin.ModelAdmin):
-    inlines = (TeamUserInline,)
-
-admin.site.register(Team, TeamAdmin)
-
-
-class ProjectManagerInline(admin.TabularInline):
-    model = ProjectManager
+class ProjectUserInline(admin.TabularInline):
+    model = Project.users.through
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    inlines = (ProjectManagerInline,)
+    inlines = (ProjectUserInline,)
 
 admin.site.register(Project, ProjectAdmin)
 

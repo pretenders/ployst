@@ -1,7 +1,7 @@
 from django.db import models
 from south.modelsinspector import add_introspection_rules
 
-from ployst.core.accounts.models import TeamObject
+from ployst.core.accounts.models import ProjectObject
 from ployst.core.features.models import Feature, Project
 
 
@@ -25,7 +25,7 @@ class Revision(models.CharField):
 add_introspection_rules([], ["^ployst\.core\.repos\.models\.Revision"])
 
 
-class Repository(TeamObject):
+class Repository(ProjectObject):
     """
     A Git Repository.
 
@@ -40,7 +40,7 @@ class Repository(TeamObject):
     owner = models.CharField(max_length=100)
     active = models.BooleanField(default=True)
 
-    team_lookup = 'project__team'
+    project_lookup = 'project'
 
     class Meta:
         verbose_name_plural = 'repositories'
@@ -49,7 +49,7 @@ class Repository(TeamObject):
         return self.name
 
 
-class Branch(TeamObject):
+class Branch(ProjectObject):
     """
     A relevant branch in the repository.
 
@@ -64,7 +64,7 @@ class Branch(TeamObject):
     feature = models.ForeignKey(Feature, related_name='branches',
                                 blank=True, null=True)
 
-    team_lookup = 'repo__project__team'
+    project_lookup = 'repo__project'
 
     class Meta:
         verbose_name_plural = 'branches'

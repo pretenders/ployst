@@ -12,7 +12,7 @@ describe('test profile scope', function () {
 
         scope = $rootScope.$new();
         ctrl = $controller(
-            ployst.ng.controllers.profile,
+            'profile',
             {$scope: scope}
         );
     }));

@@ -2,17 +2,17 @@ from django.db.models.manager import Manager
 from django.db.models.query import QuerySet
 
 
-class TeamObjectsQuerySet(QuerySet):
+class ProjectObjectsQuerySet(QuerySet):
     """
     A special queryset to handle object-based permissions.
     """
 
-    def for_team(self, team):
+    def for_project(self, project):
         """
-        Filtered queryset only containing objects that belong to a team.
+        Filtered queryset only containing objects that belong to a project.
         """
         try:
-            perm_kwargs = {self.model.team_lookup: team}
+            perm_kwargs = {self.model.project_lookup: project}
             return self.filter(**perm_kwargs).distinct()
         except AttributeError:
             return self
@@ -21,13 +21,13 @@ class TeamObjectsQuerySet(QuerySet):
         """
         Filtered queryset only containing objects that belong to a user.
 
-        If team_lookup is None in the model, it means the object is linked
+        If project_lookup is None in the model, it means the object is linked
         directly to users via a ``users`` ManyToManyField.
         """
         try:
-            team_lookup = self.model.team_lookup
-            if team_lookup:
-                user_lookup = team_lookup + '__users'
+            project_lookup = self.model.project_lookup
+            if project_lookup:
+                user_lookup = project_lookup + '__users'
             else:
                 user_lookup = 'users'
             perm_kwargs = {user_lookup: user}
@@ -36,28 +36,28 @@ class TeamObjectsQuerySet(QuerySet):
             return self
 
 
-class TeamObjectsManager(Manager):
+class ProjectObjectsManager(Manager):
     """
     A Manager to access a custom QuerySet for owned objects.
 
-    It can filter objects that belong to a team or to a user
+    It can filter objects that belong to a project or to a user
     """
 
     def get_query_set(self):
         """
-        Return a team objects query set.
+        Return a project objects query set.
 
-        Reduce number of further DB queries for team lookups by using
+        Reduce number of further DB queries for project lookups by using
         ``select_related``.
         """
-        qs = TeamObjectsQuerySet(self.model, using=self._db)
-        return qs.select_related(self.model.team_lookup)
+        qs = ProjectObjectsQuerySet(self.model, using=self._db)
+        return qs.select_related(self.model.project_lookup)
 
-    def for_team(self, team):
+    def for_project(self, project):
         """
-        Return only team objects.
+        Return only project objects.
         """
-        return self.get_query_set().for_team(team)
+        return self.get_query_set().for_project(project)
 
     def for_user(self, user):
         """

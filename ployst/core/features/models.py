@@ -1,10 +1,10 @@
 from django.db import models
 
-from ..accounts.models import Project, TeamObject
+from ..accounts.models import Project, ProjectObject
 from ..providers.models import HasProviderData
 
 
-class Feature(TeamObject, HasProviderData):
+class Feature(ProjectObject, HasProviderData):
     """
     A work item for a software project.
 
@@ -38,7 +38,7 @@ class Feature(TeamObject, HasProviderData):
     description = models.TextField()
     url = models.URLField()
 
-    team_lookup = 'project__team'
+    project_lookup = 'project'
 
     def __unicode__(self):
         return "#{id}: {title}".format(

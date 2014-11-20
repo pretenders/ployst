@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from ployst.apibase.test.mixins import CoreApiClientTestMixin
-from ployst.core.accounts.test.factories import ProjectFactory, TeamFactory
+from ployst.core.accounts.test.factories import ProjectFactory
 
 from ..models import ProviderData
 
@@ -19,8 +19,7 @@ class TestProviderDataApi(CoreApiClientTestMixin, TestCase):
         Create a project with some initial provider data.
 
         """
-        team = TeamFactory()
-        self.project = ProjectFactory(name='Project One', team=team)
+        self.project = ProjectFactory(name='Project One')
         self.url = reverse(
             'core:providers:provider-data',
             kwargs={

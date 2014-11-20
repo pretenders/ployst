@@ -8,10 +8,10 @@ from ployst.apibase.permissions import IsAuthenticated
 from .forms import EmailForm
 from .mixins import PermissionsViewSetMixin
 from .models import (
-    Project, ProjectManager, ProjectProviderSettings, Team, TeamUser, User,
+    Project, ProjectUser, ProjectProviderSettings, User,
     UserOAuthToken
 )
-from .serializers import ProjectSerializer, TeamSerializer, UserSerializer
+from .serializers import ProjectSerializer, UserSerializer
 
 
 class MyAccountView(RetrieveAPIView):
@@ -36,49 +36,29 @@ class MyAccountView(RetrieveAPIView):
 class ProjectViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = Project
     serializer_class = ProjectSerializer
-    filter_fields = ('team',)
 
     def create(self, request, *args, **kwargs):
         """
-        Create a project within a team.
+        Create a project.
 
         The user that creates the project is made project manager.
 
         """
-        # TODO only allow creating a project on a team you manage
         response = super(ProjectViewSet, self).create(request, *args, **kwargs)
-        ProjectManager.objects.create(project=self.object, user=request.user)
+        ProjectUser.objects.create(
+            project=self.object, user=request.user, manager=True)
         return response
-
-
-class TeamViewSet(PermissionsViewSetMixin, ModelViewSet):
-    model = Team
-    serializer_class = TeamSerializer
-
-    def create(self, request, *args, **kwargs):
-        """
-        Create a team.
-
-        The user that creates the team is made team manager.
-
-        """
-        super(TeamViewSet, self).create(request, *args, **kwargs)
-        TeamUser.objects.create(
-            team=self.object, user=request.user, manager=True
-        )
-        serializer = self.get_serializer(self.object)
-        return Response(serializer.data)
 
     @action()
     def invite_user(self, request, pk=None):
         """
-        Invite a user to your team, from email address.
+        Invite a user to your project, from email address.
 
         TODO: if user not found, generate an invite to sign up and process
-        team membership upon signup.
+        project membership upon signup.
 
         """
-        team = self.get_object()
+        project = self.get_object()
         form = EmailForm(request.DATA)
         error = None
         if form.is_valid():
@@ -89,16 +69,16 @@ class TeamViewSet(PermissionsViewSetMixin, ModelViewSet):
                 # TODO this should become invite user to signup
                 error = 'User not recognised'
             else:
-                team_user, created = TeamUser.objects.get_or_create(
-                    team=team, user=user
+                project_user, created = ProjectUser.objects.get_or_create(
+                    project=project, user=user
                 )
                 if created:
-                    team_user.manager = False
-                    team_user.save()
+                    project_user.manager = False
+                    project_user.save()
                     serializer = UserSerializer(user)
                     return Response(serializer.data)
                 else:
-                    error = 'User already in team'
+                    error = 'User already in project'
         else:
             error = form.errors['email']
 

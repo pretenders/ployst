@@ -1,0 +1,30 @@
+<main-menu menu-collapsed="true"></main-menu>
+<menu-projects></menu-projects>
+
+<div class="sidebar-rest">
+    <div ng-if="project && (project !== 'unknown')">
+        <div class="container-fluid">
+            <h2><i class="fa fa-folder"></i> Project {{ project.name }}</h2>
+            <div class="row-fluid">
+                <div class="btn-group">
+                    <button ng-if="project.am_manager" ng-click="deleteProject(project)"
+                            type="button" class="btn btn-small btn-danger">
+                        Delete {{ project.name }}
+                    </button>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <project-users></project-users>
+            </div>
+            <div class="row-fluid">
+                <github-config></github-config>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="!project" class="row-fluid">
+        <div class="alert alert-info">
+            <strong>You have no projects yet.</strong> Why don't you go ahead and create one?
+        </div>
+    </div>
+</div>

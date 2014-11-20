@@ -1,7 +1,7 @@
 from os import getenv
 from .dev import *  # noqa
 
-GITHUB_CORE_API_TOKEN = '3af093d3-4ca0-4d33-a087-54831c3de3d4'
+GITHUB_CORE_API_TOKEN = '69c9dd0c-c978-4a20-8fb5-259a66318f46'
 GITHUB_CLIENT_ID = '625456564b1c75d6d21a'
 GITHUB_CLIENT_SECRET = getenv('GITHUB_CLIENT_SECRET')
 
