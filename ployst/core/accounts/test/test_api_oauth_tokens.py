@@ -60,3 +60,15 @@ class TestOAuthTokens(CoreApiClientTestMixin, TestCase):
         json_content = json.loads(response.content)
         self.assertEquals(len(json_content), 1)
         self.assertEquals(json_content[0]['token'], 'new token')
+
+    def test_delete_oauth_token(self):
+        obj = UserOAuthToken.objects.create(user=self.user, token='new token',
+                                            identifier='github')
+
+        response = self.client.delete(
+            "{0}?id={1}".format(self.url, obj.id),
+            **self.get_token_headers()
+        )
+
+        self.assertEquals(response.status_code, 204)
+        self.assertEquals(0, UserOAuthToken.objects.all().count())

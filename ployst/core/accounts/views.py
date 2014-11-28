@@ -94,6 +94,10 @@ class UserTokenViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = UserOAuthToken
     filter_fields = ('user', 'identifier')
 
+    def delete(self, request, *args, **kwargs):
+        self.kwargs = {'pk': request.GET['id']}
+        return self.destroy(request, *args, **kwargs)
+
     def pre_save(self, instance):
         """
         We ensure older tokens for the same user and identifier get replaced.

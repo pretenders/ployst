@@ -1,10 +1,13 @@
+import json
 import logging
 
 from django.http import (
-    HttpResponseBadRequest, HttpResponseRedirect
+    HttpResponseBadRequest, HttpResponseRedirect, HttpResponse
 )
 from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_http_methods
+from github3 import login as gh_login
+from github3.models import GitHubError
 import requests
 
 from ployst.core.client import UnexpectedResponse
@@ -88,3 +91,22 @@ def exchange_for_access_token(user_id, code_to_exchange):
             'settings file.'
         )
         raise
+
+
+@require_http_methods(['GET'])
+def token(request):
+    """
+    Get and validate the oauth token for github associated with this account.
+    """
+    tokens = []
+    token = client.get_access_token(request.user.id, 'github')
+
+    if token:
+        # Validate credentials
+        try:
+            gh_login(token=token['token']).user()
+            tokens = [token]
+        except GitHubError:
+            client.delete_access_token(token['id'])
+
+    return HttpResponse(json.dumps(tokens))

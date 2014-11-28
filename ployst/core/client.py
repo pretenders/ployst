@@ -20,28 +20,34 @@ class Client(object):
             headers={'X-Ployst-Access-Token': self.access_token}
         )
 
-    def _http(self, method, path, data):
+    def _http(self, method, path, data=None, params=None):
         meth = getattr(requests, method)
         response = meth(
             '{0}{1}'.format(self.base_url, path),
             data=data,
+            params=params,
             headers={'X-Ployst-Access-Token': self.access_token}
         )
-        if response.status_code not in [200, 201]:
+        if response.status_code > 299:
             raise UnexpectedResponse("{0}: {1}".format(
                 response.status_code,
                 response.content)
             )
-        return response.json()
 
-    def get(self, path, data):
-        return self._http('get', path, data)
+        if response.content:
+            return response.json()
+
+    def get(self, path, params):
+        return self._http('get', path, params=params)
 
     def post(self, path, data):
-        return self._http('post', path, data)
+        return self._http('post', path, data=data)
 
     def put(self, path, data):
-        return self._http('put', path, data)
+        return self._http('put', path, data=data)
+
+    def delete(self, path, params):
+        return self._http('delete', path, params=params)
 
     # Accounts
     def get_provider_settings(self, project_id, provider):
@@ -136,12 +142,12 @@ class Client(object):
     def get_access_token(self, user_id, oauth_provider):
         response = self.get(
             'accounts/token',
-            data={
+            params={
                 'user': user_id,
                 'identifier': oauth_provider,
             },
         )
-        return response[0]
+        return response[0] if response else None
 
     def set_access_token(self, user_id, oauth_provider, access_token):
         self.post(
@@ -152,3 +158,6 @@ class Client(object):
                 'token': access_token,
             },
         )
+
+    def delete_access_token(self, token_id):
+        return self.delete('accounts/token', params={'id': token_id})
