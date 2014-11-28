@@ -94,6 +94,18 @@
 
                 };
 
+                $scope.trackRepo = function(repo) {
+                    var projectRepo = new Repos({
+                        name: repo.name,
+                        owner: $scope.selectedOrganisation.login,
+                        project: $scope.projectId
+                    });
+                    projectRepo.$save(function() {
+                        repo.tracked = true;
+                        $scope.selectedOrganisation.trackedRepos += 1;
+                    });
+                };
+
                 GHToken.query(function(token) {
                     if (token.length > 0) {
                         loadData();
