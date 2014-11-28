@@ -12,7 +12,7 @@ class BranchSerializer(serializers.ModelSerializer):
 
 class RepositorySerializer(DynamicFieldsSerializerMixin,
                            serializers.ModelSerializer):
-    branches = BranchSerializer(many=True)
+    branches = BranchSerializer(many=True, read_only=True)
 
     class Meta:
         model = Repository

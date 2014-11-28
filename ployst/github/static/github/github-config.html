@@ -32,9 +32,13 @@
                 <span title="{{ repo.description }}">{{ repo.name }}</span>
                 <i ng-if="repo.fork" class="fa fa-fw fa-code-fork"></i>
                 <span class="pull-right">
-                    <a class="hover-options" href="{{ repo.html_url }}" target="_blank"><i class="fa fa-fw fa-github-alt"></i> github</a>
+                    <a class="hover-options" href="{{ repo.html_url }}" target="_blank">
+                        <i class="fa fa-fw fa-github-alt"></i> github
+                    </a>
                     <a ng-if="repo.tracked"><i class="fa fa-fw fa-check"></i></a>
-                    <a ng-if="!repo.tracked" class="hover-options"><i class="fa fa-fw fa-plus"></i></a>
+                    <a ng-if="!repo.tracked" ng-click="trackRepo(repo)" class="hover-options">
+                        <i class="fa fa-fw fa-plus"></i>
+                    </a>
                 </span>
             </li>
         </ul>

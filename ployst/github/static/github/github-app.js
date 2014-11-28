@@ -39,7 +39,7 @@
             {
 
                 var repoCount = {},      // map owner to number of tracked repos
-                    trackedRepos = {};   // map "<owner>/<repo>" to boolean for fast lookup
+                    trackedRepos = {};   // map "<owner>/<repo>" to bool for fast lookup
 
                 $scope.hasToken = null;
                 $scope.repos = null;
@@ -92,6 +92,18 @@
                         });
                     }
 
+                };
+
+                $scope.trackRepo = function(repo) {
+                    var projectRepo = new Repos({
+                        name: repo.name,
+                        owner: $scope.selectedOrganisation.login,
+                        project: $scope.projectId
+                    });
+                    projectRepo.$save(function() {
+                        repo.tracked = true;
+                        $scope.selectedOrganisation.trackedRepos += 1;
+                    });
                 };
 
                 GHToken.query(function(token) {
