@@ -2,7 +2,7 @@
  * Ployst project management page
  */
 angular.module('ployst.projects', [
-        'ngResource',
+        'ngResource'
     ])
     .factory('Project', [
         '$resource',

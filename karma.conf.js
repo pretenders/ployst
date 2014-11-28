@@ -20,6 +20,7 @@ module.exports = function(config) {
 
             'ployst/**/static/app.js',
             'ployst/**/static/**/ployst.*.js',
+            'ployst/github/static/github/github-app.js',
             'ployst/**/static/test/**.js',
         ],
 

@@ -1,6 +1,8 @@
 (function() {
 
-    angular.module('ployst')
+    angular.module('ployst.github', [
+            'ployst.repos'
+        ])
         .factory('github.Organisations', [
             '$resource',
             function($resource) {
@@ -31,21 +33,49 @@
         ])
         .controller('github', [
             '$scope', 'github.Token', 'github.Organisations',
-            'github.OrgRepos', 'github.Repos',
-            function($scope, GHToken, GHOrganisations, GHOrgRepos, GHRepos) {
+            'github.OrgRepos', 'github.Repos', 'Repos',
+
+            function($scope, GHToken, GHOrganisations, GHOrgRepos, GHRepos, Repos)
+            {
+
+                var repoCount = {},
+                    trackedRepos = {};
 
                 $scope.hasToken = null;
                 $scope.repos = null;
                 $scope.organisations = null;
+                $scope.selectedOrganisation = null;
+                $scope.myGithubLogin = null;
 
                 var loadData = function() {
-                    GHOrganisations.query(function(orgs) {
-                        $scope.organisations = orgs;
-                        $scope.selectedOrganisation = orgs[0];
+                    Repos.query({project: $scope.projectId}, function(repos) {
+                        angular.forEach(repos, function(repo) {
+                            repoCount[repo.owner] = (repoCount[repo.owner] || 0) + 1;
+                            trackedRepos[repo.owner + '/' + repo.name] = true;
+                        });
+
+                        GHOrganisations.query(function(orgs) {
+                            $scope.organisations = orgs;
+                            // we rely on the backend API giving us the user's
+                            // personal account as the first organisation:
+                            $scope.myGithubLogin = orgs[0].login;
+                            angular.forEach(orgs, function(org) {
+                                org.trackedRepos = repoCount[org.login];
+                            });
+
+                            $scope.selectOrganisation(orgs[0]);
+                        });
                     });
-                    GHRepos.query(function(repos) {
-                        $scope.repos = repos;
+                };
+
+
+                var incorporateRepos = function(repos) {
+                    var owner = $scope.selectedOrganisation.login;
+                    $scope.repos = repos;
+                    angular.forEach(repos, function(repo) {
+                        repo.tracked = trackedRepos[owner + '/' + repo.name] || false;
                     });
+
                 };
 
                 $scope.selectOrganisation = function(org) {
@@ -54,15 +84,14 @@
 
                     if (org.type === 'User') {
                         GHRepos.query(function(repos) {
-                            $scope.repos = repos;
+                            incorporateRepos(repos);
                         });
                     } else {
-                        GHOrgRepos.query({
-                            id: org.login
-                        }, function(repos) {
-                            $scope.repos = repos;
+                        GHOrgRepos.query({id: org.login}, function (repos) {
+                            incorporateRepos(repos);
                         });
                     }
+
                 };
 
                 GHToken.query(function(token) {
@@ -79,7 +108,10 @@
             return {
                 controller: 'github',
                 restrict: 'E',
-                templateUrl: STATIC_URL + 'github/config.html'
+                templateUrl: STATIC_URL + 'github/github-config.html',
+                scope: {
+                    projectId: '='
+                }
             };
         });
 })();
