@@ -48,7 +48,7 @@
                 $scope.myGithubLogin = null;
 
                 var loadData = function() {
-                    Repos.query({project: $scope.projectId}, function(projectRepos) {
+                    Repos.query({project: $scope.project.id}, function(projectRepos) {
                         GHOrganisations.query(function(orgs) {
                             $scope.organisations = orgs;
                             // we rely on the backend API giving us the user's
@@ -102,7 +102,7 @@
                     var projectRepo = new Repos({
                         name: repo.name,
                         owner: $scope.selectedOrganisation.login,
-                        project: $scope.projectId
+                        project: $scope.project.id
                     });
                     projectRepo.$save(function() {
                         repo.tracked = true;
@@ -119,6 +119,13 @@
                         $scope.hasToken = false;
                     }
                 });
+
+                // ensure that when current project ID changes, we reload
+                $scope.$watch(function() {
+                    return $scope.project.id;
+                }, function () {
+                    loadData();
+                });
             }
         ])
         .directive('githubConfig', function() {
@@ -127,7 +134,7 @@
                 restrict: 'E',
                 templateUrl: STATIC_URL + 'github/github-config.html',
                 scope: {
-                    projectId: '='
+                    project: '='
                 }
             };
         });
