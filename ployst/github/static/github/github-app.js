@@ -102,7 +102,8 @@
                     });
                     projectRepo.$save(function() {
                         repo.tracked = true;
-                        $scope.selectedOrganisation.trackedRepos += 1;
+                        $scope.selectedOrganisation.trackedRepos =
+                            ($scope.selectedOrganisation.trackedRepos || 0) + 1;
                     });
                 };
 
