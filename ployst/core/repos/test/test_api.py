@@ -3,9 +3,10 @@ import json
 from django.core.urlresolvers import reverse
 from rest_framework.test import APITestCase
 
+from ployst.core.accounts.models import ProjectUser
 from ployst.core.accounts.test.mixins import ProjectTestMixin
 
-from ..models import Branch
+from ..models import Branch, Repository
 from .factories import BranchFactory, RepositoryFactory, ProjectFactory
 
 
@@ -41,6 +42,43 @@ class TestFiltering(ProjectTestMixin, APITestCase):
         repos = json.loads(response.content)
         self.assertEquals(len(repos), 1)
         self.assertEquals(repos[0]['name'], repo1.name)
+
+
+class TestRepoManagement(ProjectTestMixin, APITestCase):
+    """
+    Tests for repository management within a project.
+
+    They rely on base test data structure where self.user is manager for
+    self.project
+
+    """
+    def test_project_manager_can_create_repo(self):
+        url = reverse('core:repos:repository-list')
+
+        response = self.client.post(url, data={
+            'project': self.project.id,
+            'name': 'ployst',
+            'owner': 'pretenders',
+        })
+
+        self.assertEquals(201, response.status_code)
+        repos = Repository.objects.all()
+        self.assertEquals(1, len(repos))
+        self.assertEquals("ployst", repos[0].name)
+
+    def test_non_project_manager_cant_create_repo(self):
+        ProjectUser.objects.filter(user=self.user).update(manager=False)
+        url = reverse('core:repos:repository-list')
+
+        response = self.client.post(url, data={
+            'project': self.project.id,
+            'name': 'ployst',
+            'owner': 'pretenders',
+        })
+
+        self.assertEquals(403, response.status_code)
+        repos = Repository.objects.all()
+        self.assertEquals(0, len(repos))
 
 
 class TestBranchCreation(ProjectTestMixin, APITestCase):

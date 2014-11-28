@@ -39,7 +39,7 @@
             {
 
                 var repoCount = {},      // map owner to number of tracked repos
-                    trackedRepos = {};   // map "<owner>/<repo>" to boolean for fast lookup
+                    trackedRepos = {};   // map "<owner>/<repo>" to bool for fast lookup
 
                 $scope.hasToken = null;
                 $scope.repos = null;
