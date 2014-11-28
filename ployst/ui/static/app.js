@@ -11,7 +11,10 @@ var ployst = angular.module('ployst', [
 
         'ployst.profile',
         'ployst.projects',
-        'ployst.providers'
+        'ployst.providers',
+        'ployst.repos',
+
+        'ployst.github'
     ])
     .run([
         '$http', '$cookies',

@@ -17,7 +17,9 @@
             <li ng-repeat="org in organisations"
                 ng-class="{'list-group-item-warning': org===selectedOrganisation}"
                 ng-click="selectOrganisation(org)">
-                <img ng-src="{{ org.avatar_url }}" width=24 height=24> {{ org.login }}
+                <img ng-src="{{ org.avatar_url }}" width=24 height=24>
+                {{ org.login }}
+                <span class="pull-right badge">{{ org.trackedRepos }}</span>
             </li>
         </ul>
     </div>
@@ -31,7 +33,8 @@
                 <i ng-if="repo.fork" class="fa fa-fw fa-code-fork"></i>
                 <span class="pull-right">
                     <a class="hover-options" href="{{ repo.html_url }}" target="_blank"><i class="fa fa-fw fa-github-alt"></i> github</a>
-                    <a><i class="fa fa-fw fa-folder"></i> import</a>
+                    <a ng-if="repo.tracked"><i class="fa fa-fw fa-check"></i></a>
+                    <a ng-if="!repo.tracked" class="hover-options"><i class="fa fa-fw fa-plus"></i></a>
                 </span>
             </li>
         </ul>

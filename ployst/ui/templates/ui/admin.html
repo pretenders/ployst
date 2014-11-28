@@ -13,7 +13,6 @@
 <script src="{{ STATIC_URL }}profile/ployst.profile.js"></script>
 <script src="{{ STATIC_URL }}projects/ployst.projects.js"></script>
 <script src="{{ STATIC_URL }}providers/ployst.providers.js"></script>
-{% for provider in providers %}
-    <script src="{{ STATIC_URL }}{{ provider.slug }}/{{ provider.slug }}-app.js"></script>
-{% endfor %}
+<script src="{{ STATIC_URL }}repos/ployst.repos.js"></script>
+<script src="{{ STATIC_URL }}github/github-app.js"></script>
 {% endblock %}
