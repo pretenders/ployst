@@ -48,24 +48,28 @@
                 $scope.myGithubLogin = null;
 
                 var loadData = function() {
-                    Repos.query({project: $scope.projectId}, function(repos) {
-                        // Collect some stats about repos for later use
-                        angular.forEach(repos, function(repo) {
-                            repoCount[repo.owner] = (repoCount[repo.owner] || 0) + 1;
-                            trackedRepos[repo.owner + '/' + repo.name] = true;
-                        });
-
+                    Repos.query({project: $scope.projectId}, function(projectRepos) {
                         GHOrganisations.query(function(orgs) {
                             $scope.organisations = orgs;
                             // we rely on the backend API giving us the user's
                             // personal account as the first organisation:
                             $scope.myGithubLogin = orgs[0].login;
-                            angular.forEach(orgs, function(org) {
-                                org.trackedRepos = repoCount[org.login];
-                            });
+                            collectStats(projectRepos);
 
                             $scope.selectOrganisation(orgs[0]);
                         });
+                    });
+                };
+
+                var collectStats = function(projectRepos) {
+                    repoCount = {};
+                    trackedRepos = {};
+                    angular.forEach(projectRepos, function(repo) {
+                        repoCount[repo.owner] = (repoCount[repo.owner] || 0) + 1;
+                        trackedRepos[repo.owner + '/' + repo.name] = true;
+                    });
+                    angular.forEach($scope.organisations, function(org) {
+                        org.trackedRepos = repoCount[org.login];
                     });
                 };
 
@@ -102,7 +106,8 @@
                     });
                     projectRepo.$save(function() {
                         repo.tracked = true;
-                        $scope.selectedOrganisation.trackedRepos += 1;
+                        $scope.selectedOrganisation.trackedRepos =
+                            ($scope.selectedOrganisation.trackedRepos || 0) + 1;
                     });
                 };
 
