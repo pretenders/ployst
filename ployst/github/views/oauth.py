@@ -98,15 +98,15 @@ def token(request):
     """
     Get and validate the oauth token for github associated with this account.
     """
+    tokens = []
     token = client.get_access_token(request.user.id, 'github')
 
-    # Validate credentials
-    try:
-        gh_login(token=token['token']).user()
-    except GitHubError:
-        # Return a blank token
-        tokens = []
-    else:
-        tokens = [token]
+    if token:
+        # Validate credentials
+        try:
+            gh_login(token=token['token']).user()
+            tokens = [token]
+        except GitHubError:
+            client.delete_access_token(token['id'])
 
     return HttpResponse(json.dumps(tokens))

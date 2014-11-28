@@ -59,10 +59,14 @@ class MockClient(object):
 
     def get_access_token(self, user_id, oauth_provider):
         return {
+            'id': 1,
             'user': user_id,
             'identifier': oauth_provider,
             'token': 'test-token'
         }
+
+    def delete_access_token(self, token_id):
+        return
 
 
 def ensure_dummy_clone_available():
