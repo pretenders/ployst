@@ -6,7 +6,7 @@ urlpatterns = patterns(
     '',
 
     # receive data from github hooks
-    url(r'^receive-hook/(?P<hook_token>.*?)/', hook.receive, name='hook'),
+    url(r'^receive-hook', hook.receive, name='hook'),
 
     # authentication to github account
     url(r'^oauth-start', oauth.start, name='oauth-start'),

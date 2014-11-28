@@ -35,3 +35,17 @@ class GithubClient(object):
 
         """
         return list(org.iter_repos())
+
+    def create_hook(self, org, repo, url):
+        """
+        Create a hook for the given org and repo.
+
+        """
+        repo = self.gh.repository(org, repo)
+        hook_config = {
+            "url": url,
+            "content_type": "json"
+        }
+        repo.create_hook('web', config=hook_config, events=['push'])
+
+        return True

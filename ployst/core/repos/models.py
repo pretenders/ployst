@@ -29,17 +29,14 @@ class Repository(ProjectObject):
     """
     A Git Repository.
 
-    Currently this really represents a github repo. Some work and thought will
-    need to go into supporting other repos, including adding a type to this.
-
-    If required in the future, this can be extended to support other
-    repo types, such as mercurial, subversion etc.
+    Currently this represents a github repo. Some work and thought will
+    need to go into supporting other repos (eg bitbucket), including adding a
+    type to this.
     """
     project = models.ForeignKey(Project, related_name='repositories')
     name = models.CharField(max_length=100)
     owner = models.CharField(max_length=100)
     active = models.BooleanField(default=True)
-
     project_lookup = 'project'
 
     class Meta:

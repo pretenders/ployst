@@ -1,14 +1,13 @@
-import hashlib
 import json
 import logging
 
 from django.http import (
-    HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
+    HttpResponse, HttpResponseBadRequest
 )
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
-from ..conf import settings
+from ..github_client import GithubClient
 from ..tasks.hierarchy import recalculate
 
 LOGGER = logging.getLogger(__name__)
@@ -16,30 +15,33 @@ LOGGER = logging.getLogger(__name__)
 
 @csrf_exempt
 @require_http_methods(['POST'])
-def receive(request, hook_token):
+def receive(request):
     "Entry point for github messages"
     try:
-        payload = request.POST['payload']
+        payload = request.body
         commit_info = json.loads(payload)
         url = commit_info['repository']['url']
-        branch_name = commit_info['ref'].replace('refs/heads/', '')
+        branch_name = commit_info.get('ref', '').replace('refs/heads/', '')
     except (KeyError, ValueError):
-        LOGGER.error('Unexpected data structure: {0}'.format(request.POST))
+        LOGGER.exception('Unexpected data structure')
         return HttpResponseBadRequest()
 
-    if create_token(url) != hook_token:
-        return HttpResponseNotFound()
+    if branch_name:
+        recalculate.delay(url, branch_name)
 
-    recalculate.delay(url, branch_name)
     return HttpResponse("OK")
 
 
-def create_token(repo_url):
+def create_hook(request, organization, name):
     """
-    Create a token for the given repo.
+    Create a hook for the repo identified by organization and name.
 
-    This token will be used in the url of requests from Github.
-    We will then compare it with the repo information contained in the body
-    of the request and if they match then it is deemed valid.
+    TODO: use "secret" in config to validate the incoming request on hook.
+
+    https://developer.github.com/v3/repos/hooks/#example
     """
-    return hashlib.md5(repo_url + settings.GITHUB_HOOK_TOKEN_SALT).hexdigest()
+    client = GithubClient(request.user.id)
+    post_back_url = (
+        "https://{0}/github/receive-hook".format(request.META['HTTP_HOST'])
+    )
+    client.create_hook(organization, name, post_back_url)
