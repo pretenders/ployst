@@ -6,6 +6,7 @@ from django.test.utils import override_settings
 import httpretty
 from mock import patch
 
+from . import MockClient
 from .. import views  # noqa
 from ..views.oauth import exchange_for_access_token
 
@@ -114,3 +115,23 @@ class TestAccessTokenExchange(TestCase):
             'Received a 400 response from Github'
             in LOGGER.error.call_args[0][0]
         )
+
+
+@patch(__name__ + '.views.oauth.client', MockClient())
+class TestGetAccessToken(TestCase):
+
+    @patch(__name__ + '.views.oauth.gh_login')
+    def test_get_access_token_via_api(self, gh_login):
+        "We can get the access token from the github api"
+        gh_login().user.return_value = True
+        response = self.client.get(
+            reverse('github:oauth-token')
+        )
+        self.assertEquals(response.content, 'test-token')
+
+    def test_get_access_token_invalid_token(self):
+        "The access token is validated when GET"
+        response = self.client.get(
+            reverse('github:oauth-token')
+        )
+        self.assertEquals(response.content, '')
