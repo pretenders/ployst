@@ -1,3 +1,4 @@
+import json
 import logging
 
 from django.http import (
@@ -97,13 +98,15 @@ def token(request):
     """
     Get and validate the oauth token for github associated with this account.
     """
-    token = client.get_access_token(request.user.id, 'github')['token']
+    token = client.get_access_token(request.user.id, 'github')
 
     # Validate credentials
     try:
-        gh_login(token=token).user()
+        gh_login(token=token['token']).user()
     except GitHubError:
         # Return a blank token
-        token = ''
+        tokens = []
+    else:
+        tokens = [token]
 
-    return HttpResponse(token)
+    return HttpResponse(json.dumps(tokens))

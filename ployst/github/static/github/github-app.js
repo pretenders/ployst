@@ -26,7 +26,7 @@
         .factory('github.Token', [
             '$resource',
             function($resource) {
-                return $resource('/core/accounts/token?identifier=github');
+                return $resource('/github/oauth-access-token');
             }
         ])
         .controller('github', [

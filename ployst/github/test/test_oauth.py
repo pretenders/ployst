@@ -127,11 +127,13 @@ class TestGetAccessToken(TestCase):
         response = self.client.get(
             reverse('github:oauth-token')
         )
-        self.assertEquals(response.content, 'test-token')
+        tokens = json.loads(response.content)
+        self.assertEquals(tokens[0]['token'], 'test-token')
 
     def test_get_access_token_invalid_token(self):
         "The access token is validated when GET"
         response = self.client.get(
             reverse('github:oauth-token')
         )
-        self.assertEquals(response.content, '')
+        tokens = json.loads(response.content)
+        self.assertEquals(len(tokens), 0)
