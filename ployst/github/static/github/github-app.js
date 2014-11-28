@@ -31,15 +31,15 @@
                 return $resource('/github/oauth-access-token');
             }
         ])
-        .controller('github', [
+        .controller('GithubController', [
             '$scope', 'github.Token', 'github.Organisations',
             'github.OrgRepos', 'github.Repos', 'Repos',
 
             function($scope, GHToken, GHOrganisations, GHOrgRepos, GHRepos, Repos)
             {
 
-                var repoCount = {},
-                    trackedRepos = {};
+                var repoCount = {},      // map owner to number of tracked repos
+                    trackedRepos = {};   // map "<owner>/<repo>" to boolean for fast lookup
 
                 $scope.hasToken = null;
                 $scope.repos = null;
@@ -49,6 +49,7 @@
 
                 var loadData = function() {
                     Repos.query({project: $scope.projectId}, function(repos) {
+                        // Collect some stats about repos for later use
                         angular.forEach(repos, function(repo) {
                             repoCount[repo.owner] = (repoCount[repo.owner] || 0) + 1;
                             trackedRepos[repo.owner + '/' + repo.name] = true;
@@ -68,8 +69,7 @@
                     });
                 };
 
-
-                var incorporateRepos = function(repos) {
+                var processRepos = function(repos) {
                     var owner = $scope.selectedOrganisation.login;
                     $scope.repos = repos;
                     angular.forEach(repos, function(repo) {
@@ -84,11 +84,11 @@
 
                     if (org.type === 'User') {
                         GHRepos.query(function(repos) {
-                            incorporateRepos(repos);
+                            processRepos(repos);
                         });
                     } else {
                         GHOrgRepos.query({id: org.login}, function (repos) {
-                            incorporateRepos(repos);
+                            processRepos(repos);
                         });
                     }
 
@@ -106,7 +106,7 @@
         ])
         .directive('githubConfig', function() {
             return {
-                controller: 'github',
+                controller: 'GithubController',
                 restrict: 'E',
                 templateUrl: STATIC_URL + 'github/github-config.html',
                 scope: {
