@@ -9,8 +9,8 @@ urlpatterns = patterns(
     url(r'^receive-hook/(?P<hook_token>.*?)/', hook.receive, name='hook'),
 
     # authentication to github account
-    url(r'^oauth-start/', oauth.start, name='oauth-start'),
-    url(r'^oauth-confirmed/', oauth.receive, name='oauth-callback'),
+    url(r'^oauth-start', oauth.start, name='oauth-start'),
+    url(r'^oauth-confirmed', oauth.receive, name='oauth-callback'),
     url(r'^oauth-access-token', oauth.token, name='oauth-token'),
 
     # actual data from github account
