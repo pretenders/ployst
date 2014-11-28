@@ -35,7 +35,7 @@ var ployst = angular.module('ployst', [
                 })
                 .when('/projects', {
                     controller: 'projects',
-                    templateUrl: STATIC_URL + 'projects/projects.html',
+                    templateUrl: STATIC_URL + 'projects/project.html',
                     menu: 'projects'
                 })
                 .otherwise({
