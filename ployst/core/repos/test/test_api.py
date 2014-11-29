@@ -1,6 +1,7 @@
 import json
 
 from django.core.urlresolvers import reverse
+from rest_framework import status
 from rest_framework.test import APITestCase
 
 from ployst.core.accounts.models import ProjectUser
@@ -66,6 +67,18 @@ class TestRepoManagement(ProjectTestMixin, APITestCase):
         self.assertEquals(1, len(repos))
         self.assertEquals("ployst", repos[0].name)
 
+    def test_project_manager_can_delete_repo(self):
+        repo = RepositoryFactory(name='TestRepo', project=self.project)
+        url = reverse(
+            'core:repos:repository-detail', kwargs={"pk": repo.id}
+        )
+
+        response = self.client.delete(url)
+
+        self.assertEquals(status.HTTP_204_NO_CONTENT, response.status_code)
+        with self.assertRaises(Repository.DoesNotExist):
+            Repository.objects.get(pk=repo.id)
+
     def test_non_project_manager_cant_create_repo(self):
         ProjectUser.objects.filter(user=self.user).update(manager=False)
         url = reverse('core:repos:repository-list')
@@ -79,6 +92,19 @@ class TestRepoManagement(ProjectTestMixin, APITestCase):
         self.assertEquals(403, response.status_code)
         repos = Repository.objects.all()
         self.assertEquals(0, len(repos))
+
+    def test_non_project_manager_cant_delete_repo(self):
+        repo = RepositoryFactory(name='TestRepo', project=self.project)
+        url = reverse(
+            'core:repos:repository-detail', kwargs={"pk": repo.id}
+        )
+        ProjectUser.objects.filter(user=self.user).update(manager=False)
+
+        response = self.client.delete(url)
+
+        self.assertEquals(403, response.status_code)
+        found = Repository.objects.get(pk=repo.id)
+        self.assertEquals(repo, found)
 
 
 class TestBranchCreation(ProjectTestMixin, APITestCase):
