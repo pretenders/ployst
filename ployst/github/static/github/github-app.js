@@ -61,12 +61,16 @@
                     });
                 };
 
+                var k = function(owner, name) {
+                    return owner + '/' + name;
+                };
+
                 var collectStats = function(projectRepos) {
                     repoCount = {};
                     trackedRepos = {};
                     angular.forEach(projectRepos, function(repo) {
                         repoCount[repo.owner] = (repoCount[repo.owner] || 0) + 1;
-                        trackedRepos[repo.owner + '/' + repo.name] = true;
+                        trackedRepos[k(repo.owner, repo.name)] = repo.id;
                     });
                     angular.forEach($scope.organisations, function(org) {
                         org.trackedRepos = repoCount[org.login];
@@ -77,7 +81,7 @@
                     var owner = $scope.selectedOrganisation.login;
                     $scope.repos = repos;
                     angular.forEach(repos, function(repo) {
-                        repo.tracked = trackedRepos[owner + '/' + repo.name] || false;
+                        repo.tracked = trackedRepos[k(owner, repo.name)] || false;
                     });
 
                 };
@@ -104,10 +108,18 @@
                         owner: $scope.selectedOrganisation.login,
                         project: $scope.project.id
                     });
-                    projectRepo.$save(function() {
-                        repo.tracked = true;
+                    projectRepo.$save(function(projectRepo) {
+                        repo.tracked = projectRepo.id;
                         $scope.selectedOrganisation.trackedRepos =
                             ($scope.selectedOrganisation.trackedRepos || 0) + 1;
+                    });
+                };
+
+                $scope.untrackRepo = function(repo) {
+                    Repos.delete({id: repo.tracked}, function() {
+                        repo.tracked = false;
+                        $scope.selectedOrganisation.trackedRepos =
+                            ($scope.selectedOrganisation.trackedRepos || 0) - 1;
                     });
                 };
 
