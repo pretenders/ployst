@@ -16,7 +16,12 @@
                 </h2>
             </div>
 
-            <ul class="nav nav-tabs" ng-init="tab = 'repos'">
+            <ul class="nav nav-tabs" ng-init="tab = 'activity'">
+                <li ng-class="{active:tab=== 'activity'}">
+                    <a href ng-click="tab = 'activity'">
+                        <i class="fa fa-rss"></i> Activity
+                    </a>
+                </li>
                 <li ng-class="{active:tab==='repos'}">
                     <a href ng-click="tab = 'repos'">
                         <i class="fa fa-code-fork"></i> Repositories
@@ -29,6 +34,10 @@
                 </li>
             </ul>
 
+
+            <div class="row-fluid" ng-if="tab == 'activity'">
+                <project-activity project="project"></project-activity>
+            </div>
 
             <div class="row-fluid" ng-if="tab == 'users'">
                 <project-users></project-users>

@@ -1,0 +1,20 @@
+<p>Filter: <input ng-model="filter" type="text"></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Branch Name</th>
+            <th>Head Commit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="branch in branches|filter:filter">
+            <td>
+                <span>{{ branch.name }}</span>
+            </td>
+            <td>
+                <span>{{ branch.head }}</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
