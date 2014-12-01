@@ -61,6 +61,11 @@ class GithubClient(object):
             "content_type": "json",
             "secret": secret
         }
-        repo.create_hook('web', config=hook_config, events=['push'])
+        try:
+            repo.create_hook('web', config=hook_config, events=['push'])
+        except Exception as e:
+            # 422 = hook already exists
+            if e.response.status_code != 422:
+                raise
 
         return True
