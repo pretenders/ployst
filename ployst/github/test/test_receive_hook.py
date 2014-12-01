@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-from mock import patch
+from mock import patch, Mock
 
 from . import read_data
 from .. import views  # noqa
@@ -11,9 +11,12 @@ class TestReceiveHook(TestCase):
 
     def post(self, data):
         return self.client.post(reverse('github:hook'), data=data,
-                                content_type='application/json')
+                                content_type='application/json',
+                                **{'HTTP_X_HUB_SIGNATURE': 'f'})
 
     @patch(__name__ + '.views.hook.recalculate')
+    @patch(__name__ + '.views.hook.validate_hook_post',
+           Mock(return_value=True))
     def test_post_causes_recalculation(self, recalculate):
         """
         Test that we recalculate branches after receive hook

@@ -28,10 +28,12 @@ class TestEndToEnd(TestCase):
 
         data = read_data('end-to-end.json')
 
+        hub_sig = 'sha1=69dc39b53b28c021f48e4e08739f678acbca952e'
         response = self.client.post(
             reverse('github:hook'),
             data=data,
-            content_type='application/json'
+            content_type='application/json',
+            **{'HTTP_X_HUB_SIGNATURE': hub_sig}
         )
 
         self.assertEquals(response.status_code, 200)
