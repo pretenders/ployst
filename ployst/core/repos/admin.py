@@ -10,6 +10,7 @@ admin.site.register(Branch, BranchAdmin)
 
 
 class RepositoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('owner', 'name', 'project')
+    list_filter = ('project', 'owner')
 
 admin.site.register(Repository, RepositoryAdmin)

@@ -1,7 +1,5 @@
-from rest_framework.exceptions import PermissionDenied
 from rest_framework.viewsets import ModelViewSet
 
-from ployst.core.accounts.models import ProjectUser
 from ployst.core.accounts.mixins import PermissionsViewSetMixin
 
 from .models import Repository, Branch
@@ -23,13 +21,13 @@ class RepositoryViewSet(PermissionsViewSetMixin, ModelViewSet):
         serializer = self.get_serializer(data=request.DATA,
                                          files=request.FILES)
         if serializer.is_valid():
-            project = serializer.object.project
-            if not ProjectUser.objects.filter(project=project,
-                                              user=request.user,
-                                              manager=True):
-                raise PermissionDenied("You are not this project's manager")
+            self.assert_is_project_manager(request, serializer.object)
 
         return super(RepositoryViewSet, self).create(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        self.assert_is_project_manager(request, self.get_object())
+        return super(RepositoryViewSet, self).destroy(request, *args, **kwargs)
 
 
 class BranchViewSet(PermissionsViewSetMixin, ModelViewSet):

@@ -9,6 +9,7 @@
 
 
 <div ng-if="hasToken">
+
     <div class="panel panel-default col-md-3">
         <h5>Your Organisations</h5>
         <ul class="list-unstyled actionable-list">
@@ -18,13 +19,17 @@
                 ng-click="selectOrganisation(org)">
                 <img ng-src="{{ org.avatar_url }}" width=24 height=24>
                 {{ org.login }}
-                <span class="pull-right badge">{{ org.trackedRepos }}</span>
+                <span ng-if="org.trackedRepos" class="pull-right badge">
+                    {{ org.trackedRepos }}
+                </span>
             </li>
         </ul>
     </div>
+
     <div ng-if="selectedOrganisation" class="col-md-9">
         <p ng-show="!repos">Loading...</p>
         <p class="alert alert-info" ng-show="repos.length === 0">No repos found.</p>
+
         <ul class="list-group actionable-list" ng-show="repos.length">
             <li ng-repeat="repo in repos"
                 class="list-group-item">
@@ -34,7 +39,9 @@
                     <a class="hover-options" href="{{ repo.html_url }}" target="_blank">
                         <i class="fa fa-fw fa-github-alt"></i> github
                     </a>
-                    <a ng-if="repo.tracked"><i class="fa fa-fw fa-check"></i></a>
+                    <a ng-if="repo.tracked" ng-click="untrackRepo(repo)">
+                        <i class="fa fa-fw fa-check"></i>
+                    </a>
                     <a ng-if="!repo.tracked" ng-click="trackRepo(repo)" class="hover-options">
                         <i class="fa fa-fw fa-plus"></i>
                     </a>
@@ -42,4 +49,5 @@
             </li>
         </ul>
     </div>
+
 </div>

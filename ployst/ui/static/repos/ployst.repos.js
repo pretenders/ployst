@@ -8,7 +8,7 @@ angular.module('ployst.repos', [
         '$resource',
 
         function($resource) {
-            return $resource('/core/repos/repo');
+            return $resource('/core/repos/repo/:id');
         }
     ])
     .service('RepoService', [
