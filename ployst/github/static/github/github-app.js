@@ -39,7 +39,7 @@
             {
 
                 var repoCount = {},      // map owner to number of tracked repos
-                    trackedRepos = {};   // map "<owner>/<repo>" to boolean for fast lookup
+                    trackedRepos = {};   // map "<owner>/<repo>" to bool for fast lookup
 
                 $scope.hasToken = null;
                 $scope.repos = null;
@@ -48,24 +48,32 @@
                 $scope.myGithubLogin = null;
 
                 var loadData = function() {
-                    Repos.query({project: $scope.projectId}, function(repos) {
-                        // Collect some stats about repos for later use
-                        angular.forEach(repos, function(repo) {
-                            repoCount[repo.owner] = (repoCount[repo.owner] || 0) + 1;
-                            trackedRepos[repo.owner + '/' + repo.name] = true;
-                        });
-
+                    Repos.query({project: $scope.project.id}, function(projectRepos) {
                         GHOrganisations.query(function(orgs) {
                             $scope.organisations = orgs;
                             // we rely on the backend API giving us the user's
                             // personal account as the first organisation:
                             $scope.myGithubLogin = orgs[0].login;
-                            angular.forEach(orgs, function(org) {
-                                org.trackedRepos = repoCount[org.login];
-                            });
+                            collectStats(projectRepos);
 
                             $scope.selectOrganisation(orgs[0]);
                         });
+                    });
+                };
+
+                var k = function(owner, name) {
+                    return owner + '/' + name;
+                };
+
+                var collectStats = function(projectRepos) {
+                    repoCount = {};
+                    trackedRepos = {};
+                    angular.forEach(projectRepos, function(repo) {
+                        repoCount[repo.owner] = (repoCount[repo.owner] || 0) + 1;
+                        trackedRepos[k(repo.owner, repo.name)] = repo.id;
+                    });
+                    angular.forEach($scope.organisations, function(org) {
+                        org.trackedRepos = repoCount[org.login];
                     });
                 };
 
@@ -73,7 +81,7 @@
                     var owner = $scope.selectedOrganisation.login;
                     $scope.repos = repos;
                     angular.forEach(repos, function(repo) {
-                        repo.tracked = trackedRepos[owner + '/' + repo.name] || false;
+                        repo.tracked = trackedRepos[k(owner, repo.name)] || false;
                     });
 
                 };
@@ -94,6 +102,27 @@
 
                 };
 
+                $scope.trackRepo = function(repo) {
+                    var projectRepo = new Repos({
+                        name: repo.name,
+                        owner: $scope.selectedOrganisation.login,
+                        project: $scope.project.id
+                    });
+                    projectRepo.$save(function(projectRepo) {
+                        repo.tracked = projectRepo.id;
+                        $scope.selectedOrganisation.trackedRepos =
+                            ($scope.selectedOrganisation.trackedRepos || 0) + 1;
+                    });
+                };
+
+                $scope.untrackRepo = function(repo) {
+                    Repos.delete({id: repo.tracked}, function() {
+                        repo.tracked = false;
+                        $scope.selectedOrganisation.trackedRepos =
+                            ($scope.selectedOrganisation.trackedRepos || 0) - 1;
+                    });
+                };
+
                 GHToken.query(function(token) {
                     if (token.length > 0) {
                         loadData();
@@ -101,6 +130,13 @@
                     } else {
                         $scope.hasToken = false;
                     }
+                });
+
+                // ensure that when current project ID changes, we reload
+                $scope.$watch(function() {
+                    return $scope.project.id;
+                }, function () {
+                    loadData();
                 });
             }
         ])
@@ -110,7 +146,7 @@
                 restrict: 'E',
                 templateUrl: STATIC_URL + 'github/github-config.html',
                 scope: {
-                    projectId: '='
+                    project: '='
                 }
             };
         });

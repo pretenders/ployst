@@ -24,5 +24,7 @@ def create_hooks(modeladmin, request, queryset):
 
 class RepositoryAdmin(admin.ModelAdmin):
     actions = [create_hooks]
+    list_display = ('owner', 'name', 'project')
+    list_filter = ('project', 'owner')
 
 admin.site.register(Repository, RepositoryAdmin)

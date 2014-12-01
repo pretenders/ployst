@@ -1,6 +1,10 @@
+from rest_framework.exceptions import PermissionDenied
+
 from ployst.apibase.permissions import (
     AnyPermissions, IsAuthenticated, ClientTokenPermission
 )
+
+from .models import ProjectUser
 
 
 class PermissionsViewSetMixin(object):
@@ -33,3 +37,19 @@ class PermissionsViewSetMixin(object):
             return manager.all()
         else:
             return manager.for_user(self.request.user)
+
+    def assert_is_project_manager(self, request, obj):
+        """
+        Raise exception if request user is not project manager for the object.
+
+        We check the object's ancestry until we get the project (this is
+        typically only one step in our data structure.
+
+        """
+        lookup = obj.project_lookup.split('__')
+        for step in lookup:
+            obj = getattr(obj, step)
+        if not ProjectUser.objects.filter(project=obj,
+                                          user=request.user,
+                                          manager=True):
+            raise PermissionDenied("You are not this project's manager")
