@@ -6,8 +6,6 @@ import requests
 from django.core.management.base import BaseCommand, CommandError
 from django.core.urlresolvers import reverse
 
-from ...views import create_token
-
 
 class Command(BaseCommand):
     args = '<repo_url> <branch_name>'
@@ -27,10 +25,9 @@ class Command(BaseCommand):
                 self.args, len(args)))
 
         repo_url, branch_name = args
-        hook_token = create_token(repo_url)
         port = options.get('port')
 
-        url = reverse('github:hook', kwargs={'hook_token': hook_token})
+        url = reverse('github:hook')
         full_url = 'http://localhost:{port}{url}'.format(url=url, port=port)
 
         load = json.dumps({

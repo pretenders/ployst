@@ -19,8 +19,8 @@ class GithubConf(AppConf):
     CORE_API_TOKEN = ""
     "The token used for authenticating with the core API"
 
-    HOOK_TOKEN_SALT = "ChAnGeThIsOnPrOdUcTiOn"
-    "The salt used when creating a hook token that github pushes to"
+    HOOK_SECRET_SALT = "ChAnGeThIsOnPrOdUcTiOn"
+    "The salt used to create the secret that we send to github"
 
     CLIENT_ID = ""
     "The client id given when registering the application on github."

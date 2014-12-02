@@ -1,5 +1,3 @@
-import json
-
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.utils import override_settings
@@ -10,7 +8,6 @@ from . import (
     read_data, ensure_dummy_clone_available, MockClient, DUMMY_CODE_DIR
 )
 from .. import tasks  # noqa
-from ..views.hook import create_token
 
 
 class TestEndToEnd(TestCase):
@@ -31,11 +28,12 @@ class TestEndToEnd(TestCase):
 
         data = read_data('end-to-end.json')
 
-        url = json.loads(data)['repository']['url']
-
+        hub_sig = 'sha1=69dc39b53b28c021f48e4e08739f678acbca952e'
         response = self.client.post(
-            reverse('github:hook', kwargs={'hook_token': create_token(url)}),
-            data={'payload': data}
+            reverse('github:hook'),
+            data=data,
+            content_type='application/json',
+            **{'HTTP_X_HUB_SIGNATURE': hub_sig}
         )
 
         self.assertEquals(response.status_code, 200)
