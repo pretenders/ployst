@@ -4,7 +4,7 @@ from .models import Branch, Repository
 
 
 class BranchAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'head', 'repo')
 
 admin.site.register(Branch, BranchAdmin)
 

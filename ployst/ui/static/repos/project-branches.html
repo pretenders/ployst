@@ -1,0 +1,26 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Repo</th>
+            <th>Branch Name &nbsp;
+                <small>
+                    <input ng-model="filter" type="text">
+                </small>
+            </th>
+            <th>Head Commit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="branch in branches|filter:filter">
+            <td>
+                <span>{{ branch.repo }}</span>
+            </td>
+            <td>
+                <span>{{ branch.name }}</span>
+            </td>
+            <td>
+                <span>{{ branch.head }}</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
