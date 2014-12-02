@@ -9,7 +9,7 @@ from .serializers import RepositorySerializer
 class RepositoryViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = Repository
     serializer_class = RepositorySerializer
-    filter_fields = ('project',)
+    filter_fields = ('project', 'owner', 'name')
 
     def create(self, request, *args, **kwargs):
         """

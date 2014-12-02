@@ -29,6 +29,26 @@ class TestFiltering(ProjectTestMixin, APITestCase):
         self.assertEquals(len(repos), 1)
         self.assertEquals(repos[0]['name'], repo1.name)
 
+    def test_get_repos_by_owner_and_name(self):
+        """
+        Search by owner and name to get a list of matching repos.
+
+        This endpoint is used by the github hook. Do not remove this test
+        unless the hook no longer uses this.
+        """
+        repo1 = RepositoryFactory(owner='me', name='A', project=self.project)
+        RepositoryFactory(owner='you', name='B', project=self.project)
+        url = reverse('core:repos:repository-list')
+
+        response = self.client.get('{0}?owner={1}&name={2}'.format(
+            url, repo1.owner, repo1.name))
+
+        repos = json.loads(response.content)
+        self.assertEquals(len(repos), 1)
+        self.assertEquals(repos[0]['id'], repo1.id)
+        self.assertEquals(repos[0]['name'], repo1.name)
+        self.assertEquals(repos[0]['owner'], repo1.owner)
+
     def test_only_see_repos_for_my_projects(self):
         """
         Should not be able to see all repos.

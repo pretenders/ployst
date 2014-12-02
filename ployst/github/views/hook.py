@@ -37,7 +37,7 @@ def receive(request):
         return HttpResponseBadRequest()
 
     if branch_name:
-        recalculate.delay(url, branch_name)
+        recalculate.delay(org, repo, branch_name)
 
     return HttpResponse("OK")
 
