@@ -27,20 +27,28 @@ angular.module('ployst.repos', [
             };
         }
     ])
-    .controller('BranchController', [
-        '$scope', 'Branches',
+    .controller('ActivityController', [
+        '$scope', 'Repos',
 
-        function($scope, Branches) {
-            $scope.branches = [];
+        function($scope, Repos) {
+            $scope.repos = [];
+            $scope.branches = null;
 
-            Branches.query({'repo__project': $scope.project.id}, function(branches) {
-                $scope.branches = branches;
+            Repos.query({'project': $scope.project.id}, function(repos) {
+                $scope.repos = repos;
+                $scope.branches = [];
+                angular.forEach(repos, function(repo) {
+                    angular.forEach(repo.branches, function(branch) {
+                        branch.repo = repo.owner + '/' + repo.name;
+                        $scope.branches.push(branch);
+                    });
+                });
             });
         }
     ])
     .directive('projectActivity', function() {
         return {
-            controller: 'BranchController',
+            controller: 'ActivityController',
             restrict: 'E',
             templateUrl: STATIC_URL + 'repos/project-branches.html',
             scope: {

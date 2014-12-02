@@ -1,6 +1,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Repo</th>
             <th>Branch Name &nbsp;
                 <small>
                     <input ng-model="filter" type="text">
@@ -11,6 +12,9 @@
     </thead>
     <tbody>
         <tr ng-repeat="branch in branches|filter:filter">
+            <td>
+                <span>{{ branch.repo }}</span>
+            </td>
             <td>
                 <span>{{ branch.name }}</span>
             </td>
