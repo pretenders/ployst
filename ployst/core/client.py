@@ -116,7 +116,7 @@ class Client(object):
             repo=branch_info['repo'],
             name=branch_info['name']
         )
-        print branch_info
+
         if existing_branch:
             self.put('repos/branch/{}'.format(existing_branch[0]['id']),
                      branch_info)

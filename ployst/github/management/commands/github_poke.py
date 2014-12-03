@@ -44,7 +44,7 @@ class Command(BaseCommand):
         response = requests.post(full_url, data=load,
                                  headers={'X_HUB_SIGNATURE': sig})
         print response.status_code
-        # TODO: Find out why we're getting a 404 when posting here.
+
         if response.status_code != 200:
             with file('/tmp/error.html', 'w') as f:
                 f.write(response.content)
