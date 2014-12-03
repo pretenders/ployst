@@ -1,10 +1,11 @@
 import json
 
+import httpretty
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.utils import override_settings
-import httpretty
-from mock import patch
+from github3.models import GitHubError
+from mock import patch, Mock
 
 from . import MockClient
 from .. import views  # noqa
@@ -130,8 +131,10 @@ class TestGetAccessToken(TestCase):
         tokens = json.loads(response.content)
         self.assertEquals(tokens[0]['token'], 'test-token')
 
-    def test_get_access_token_invalid_token(self):
+    @patch(__name__ + '.views.oauth.gh_login')
+    def test_get_access_token_invalid_token(self, gh_login):
         "The access token is validated when GET"
+        gh_login().user.side_effect = GitHubError(Mock())
         response = self.client.get(
             reverse('github:oauth-token')
         )

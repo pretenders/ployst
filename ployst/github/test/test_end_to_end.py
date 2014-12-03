@@ -17,6 +17,7 @@ class TestEndToEnd(TestCase):
 
     @patch(__name__ + '.tasks.hierarchy.client', MockClient())
     @override_settings(GITHUB_REPOSITORY_LOCATION=DUMMY_CODE_DIR)
+    @override_settings(GITHUB_CALCULATE_HIERARCHIES_ON_HOOK=True)
     def test_receive_hook_end_to_end(self):
         """
         Perform a full end to end test with the receive hook.
