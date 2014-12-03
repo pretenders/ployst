@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.test.utils import override_settings
 
 from mock import patch, Mock
 
@@ -17,9 +18,10 @@ class TestReceiveHook(TestCase):
     @patch(__name__ + '.views.hook.recalculate')
     @patch(__name__ + '.views.hook.validate_hook_post',
            Mock(return_value=True))
+    @override_settings(GITHUB_CALCULATE_HIERARCHIES_ON_HOOK=True)
     def test_post_causes_recalculation(self, recalculate):
         """
-        Test that we recalculate branches after receive hook
+        Test we recalculate branches after receive hook when setting is True.
 
         Note that currently this is being done synchronously at the point
         of receiving a request from github.
@@ -33,6 +35,26 @@ class TestReceiveHook(TestCase):
         self.assertEquals(
             recalculate.delay.call_args[0],
             ('pretenders', 'ployst', 'dev_alex'))
+
+    @patch(__name__ + '.views.hook.recalculate')
+    @patch(__name__ + '.views.hook.update_branch_information')
+    @patch(__name__ + '.views.hook.validate_hook_post',
+           Mock(return_value=True))
+    def test_post_causes_simple_branch_update(self, update, recalculate):
+        """
+        Test we simply update branch information after receiving hook.
+        """
+        data = read_data('post-receive-hook.json')
+
+        response = self.post(data)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(recalculate.delay.call_count, 0)
+        self.assertEquals(update.delay.call_count, 1)
+        self.assertEquals(
+            update.delay.call_args[0],
+            ('pretenders', 'ployst', 'dev_alex')
+        )
 
     def test_get_rejected(self):
         "GET requests to the receive hook end point are rejected"

@@ -67,6 +67,21 @@ def recalculate(org, repo, branch_name):
             save_branch_statuses(statuses, repo['id'], feature['id'])
 
 
+@app.task
+def update_branch_information(org, repo, branch_name):
+    """
+    Update the given branch information.
+
+    Simply create a branch, repo link in the core.
+    """
+    repos = client.get_repos(owner=org, name=repo)
+    for repo in repos:
+        client.create_or_update_branch_information({
+            'repo': repo['id'],
+            'name': branch_name,
+        })
+
+
 def save_branch_statuses(statuses, repo_id, feature_id):
     for branch_status in statuses:
         parent = None

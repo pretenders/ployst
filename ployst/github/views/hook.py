@@ -9,8 +9,9 @@ from django.http import (
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
+from ..conf import settings
 from ..github_client import GithubClient, get_secret
-from ..tasks.hierarchy import recalculate
+from ..tasks.hierarchy import recalculate, update_branch_information
 
 LOGGER = logging.getLogger(__name__)
 
@@ -37,7 +38,10 @@ def receive(request):
         return HttpResponseBadRequest()
 
     if branch_name:
-        recalculate.delay(org, repo, branch_name)
+        if settings.GITHUB_CALCULATE_HIERARCHIES_ON_HOOK:
+            recalculate.delay(org, repo, branch_name)
+        else:
+            update_branch_information.delay(org, repo, branch_name)
 
     return HttpResponse("OK")
 

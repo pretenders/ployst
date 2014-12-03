@@ -36,3 +36,9 @@ class GithubConf(AppConf):
 
     REPOSITORY_LOCATION = '/tmp'
     "The location to clone repositories to."
+
+    CALCULATE_HIERARCHIES_ON_HOOK = False
+    """
+    Boolean for whether hierarchies of branches should be calculated. If False,
+    simply create branch meta data on github pushes.
+    """
