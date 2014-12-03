@@ -1,5 +1,3 @@
-import hashlib
-import hmac
 import json
 import logging
 
@@ -10,7 +8,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
 from ..conf import settings
-from ..github_client import GithubClient, get_secret
+from ..github_client import GithubClient, compute_github_signature
 from ..tasks.hierarchy import recalculate, update_branch_information
 
 LOGGER = logging.getLogger(__name__)
@@ -55,8 +53,7 @@ def validate_hook_post(body, org, repo, hub_signature):
 
     See https://developer.github.com/v3/repos/hooks/#example
     """
-    secret = get_secret(org, repo)
-    computed = hmac.new(secret, body, hashlib.sha1).hexdigest()
+    computed = compute_github_signature(body, org, repo)
     sent_sig = hub_signature.split('sha1=')[-1]
     return computed == sent_sig
 

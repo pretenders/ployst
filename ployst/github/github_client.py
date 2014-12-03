@@ -1,4 +1,5 @@
 from github3 import login
+import hmac
 import hashlib
 
 from . import client as ployst_core
@@ -14,6 +15,11 @@ def get_secret(org, repo):
     """
     return (hashlib.md5(org + repo + settings.GITHUB_HOOK_SECRET_SALT)
             .hexdigest())
+
+
+def compute_github_signature(body, org, repo):
+    secret = get_secret(org, repo)
+    return hmac.new(secret, body, hashlib.sha1).hexdigest()
 
 
 class GithubClient(object):

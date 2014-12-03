@@ -111,11 +111,16 @@ class Client(object):
 
         Perform a lookup on (repo, name) to see if it exists.
         Update or create it with the contents of ``branch_info``.
+
+        TODO: I expect there is a bug here as I believe there can be many
+        occurences of a repo - so the existing branch check could return some
+        other project?
         """
         existing_branch = self.ployst.repos.branch(
             repo=branch_info['repo'],
             name=branch_info['name']
         )
+        print branch_info
         if existing_branch:
             self.put('repos/branch/{}/'.format(existing_branch[0]['id']),
                      branch_info)
