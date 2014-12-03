@@ -80,7 +80,7 @@ def ensure_dummy_clone_available():
         os.system('git clone git://github.com/pretenders/dummyrepo.git {0}'
                   .format(DUMMY_REPO))
     else:
-        cmd = 'git --git-dir="{0}/.git" fetch'.format(DUMMY_REPO)
+        cmd = 'git --git-dir="{0}/.git" fetch -p'.format(DUMMY_REPO)
         ans = os.system(cmd)
         if ans != 0:
             raise Exception("Git fetch failed")

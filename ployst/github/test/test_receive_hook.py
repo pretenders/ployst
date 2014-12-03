@@ -32,8 +32,7 @@ class TestReceiveHook(TestCase):
         self.assertEquals(recalculate.delay.call_count, 1)
         self.assertEquals(
             recalculate.delay.call_args[0],
-            ('https://github.com/pretenders/ployst',
-             'dev_alex'))
+            ('pretenders', 'ployst', 'dev_alex'))
 
     def test_get_rejected(self):
         "GET requests to the receive hook end point are rejected"

@@ -8,7 +8,7 @@ from ..path import get_destination
 
 
 @app.task
-def recalculate(repo_url, branch_name):
+def recalculate(org, repo, branch_name):
     """
     Recalculate all relevant branch information given a new commit
 
@@ -33,7 +33,7 @@ def recalculate(repo_url, branch_name):
         - dev branch (merged in)
         - dev branch 2 (not merged in)
     """
-    repos = client.get_repos(url=repo_url)
+    repos = client.get_repos(owner=org, name=repo)
     for repo in repos:
 
         prov_settings = client.get_provider_settings(
