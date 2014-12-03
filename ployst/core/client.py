@@ -28,7 +28,7 @@ class Client(object):
             params=params,
             headers={'X-Ployst-Access-Token': self.access_token}
         )
-        if response.status_code > 299:
+        if response.status_code >= 400:
             raise UnexpectedResponse("{0}: {1}".format(
                 response.status_code,
                 response.content)
@@ -122,10 +122,10 @@ class Client(object):
         )
         print branch_info
         if existing_branch:
-            self.put('repos/branch/{}/'.format(existing_branch[0]['id']),
+            self.put('repos/branch/{}'.format(existing_branch[0]['id']),
                      branch_info)
         else:
-            self.post('repos/branch/', branch_info)
+            self.post('repos/branch', branch_info)
 
     def create_or_update_feature_information(self, feature_info):
         """
