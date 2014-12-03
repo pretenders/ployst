@@ -1,15 +1,15 @@
 <ul class="fa-ul">
-    <li ng-repeat="user in project.users">
+    <li ng-repeat="user in ps.project.users">
         <i ng-if="user.manager"
             class="fa fa-fw fa-star" title="manager"></i>
         <i ng-if="!user.manager"
             class="fa fa-fw"></i>
         <span>{{ user.user.username }}</span>
     </li>
-    <li ng-if="project.am_manager">
-        <h5>Invite a user to join {{ project.name }}:</h5>
+    <li ng-if="ps.project.am_manager">
+        <h5>Invite a user to join {{ ps.project.name }}:</h5>
         <input ng-model="newUser.email" name="email" placeholder="email..."></input>
-        <i ng-click="inviteUser(project, newUser)"
+        <i ng-click="inviteUser(ps.project, newUser)"
             class="fa fa-fw fa-lg fa-plus-square icon-clickable"
             title="Invite a User"></i>
     </li>

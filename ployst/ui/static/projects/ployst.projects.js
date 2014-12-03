@@ -11,35 +11,28 @@ angular.module('ployst.projects', [
             return $resource('/core/accounts/project/:id');
         }
     ])
-    .controller('projects', [
-        '$http', '$scope', 'Project', 'User',
+    .service('ProjectService', [
+        'Project',
 
-        function($http, $scope, Project, User) {
-            $scope.newUser = {};
-            $scope.user = User.user;
-            // prior to project loading, to avoid UI flicker with "no projects"
-            // message:
-            $scope.project = 'unknown';
+        function(Project) {
+            var $this = this;
+            this.project = 'unknown';
+            this.projects = [];
 
-            Project.query(function(projects) {
-                $scope.projects = projects;
-                $scope.setDefaultProject();
-            });
-
-            $scope.setDefaultProject = function() {
+            this.setDefaultProject = function() {
                 // set first project as active
-                if ($scope.projects.length > 0) {
-                    $scope.project = $scope.projects[0];
+                if ($this.projects.length > 0) {
+                    $this.project = $this.projects[0];
                 } else {
-                    $scope.project = null;
+                    $this.project = null;
                 }
             };
 
-            $scope.selectProject = function(project) {
-                $scope.project = project;
+            this.selectProject = function(project) {
+                $this.project = project;
             };
 
-            $scope.createProject = function(newProject) {
+            this.createProject = function(newProject) {
                 var project = new Project({
                     name: newProject.name
                 });
@@ -48,21 +41,35 @@ angular.module('ployst.projects', [
                         id: project.id
                     });
                     // Add to UI
-                    $scope.projects.push(project);
-                    $scope.project = project;
+                    $this.projects.push(project);
+                    $this.project = project;
                     newProject.name = '';
                 });
             };
 
-            $scope.deleteProject = function(project) {
+            this.deleteProject = function(project) {
                 Project.delete({
                     id: project.id
                 }, function() {
-                    // remove from UI once deleted in backend
-                    $scope.projects.splice($scope.projects.indexOf(project), 1);
-                    $scope.setDefaultProject();
+                    // remove from list once deleted in backend
+                    $this.projects.splice($this.projects.indexOf(project), 1);
+                    $this.setDefaultProject();
                 });
             };
+
+            Project.query(function(projects) {
+                $this.projects = projects;
+                $this.setDefaultProject();
+            });
+        }
+    ])
+    .controller('projects', [
+        '$http', '$scope', 'ProjectService', 'User',
+
+        function($http, $scope, ProjectService, User) {
+            $scope.newUser = {};
+            $scope.user = User.user;
+            $scope.ps = ProjectService;
 
             $scope.inviteUser = function(project, user) {
                 // invite user to join project: if email is recognised, add to
