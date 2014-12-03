@@ -68,7 +68,7 @@ def recalculate(org, repo, branch_name):
 
 
 @app.task
-def update_branch_information(org, repo, branch_name):
+def update_branch_information(org, repo, branch_name, head):
     """
     Update the given branch information.
 
@@ -79,6 +79,7 @@ def update_branch_information(org, repo, branch_name):
         client.create_or_update_branch_information({
             'repo': repo['id'],
             'name': branch_name,
+            'head': head,
         })
 
 

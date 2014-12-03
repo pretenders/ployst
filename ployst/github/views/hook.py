@@ -14,6 +14,15 @@ from ..tasks.hierarchy import recalculate, update_branch_information
 LOGGER = logging.getLogger(__name__)
 
 
+def safe_get(payload, keys, default=''):
+    try:
+        for key in keys:
+            payload = payload[key]
+    except:
+        return default
+    return payload
+
+
 @csrf_exempt
 @require_http_methods(['POST'])
 def receive(request):
@@ -39,7 +48,8 @@ def receive(request):
         if settings.GITHUB_CALCULATE_HIERARCHIES_ON_HOOK:
             recalculate.delay(org, repo, branch_name)
         else:
-            update_branch_information.delay(org, repo, branch_name)
+            head = safe_get(commit_info, ['head_commit', 'id'])[:7]
+            update_branch_information.delay(org, repo, branch_name, head)
 
     return HttpResponse("OK")
 
