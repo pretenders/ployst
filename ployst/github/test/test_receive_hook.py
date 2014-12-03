@@ -53,7 +53,7 @@ class TestReceiveHook(TestCase):
         self.assertEquals(update.delay.call_count, 1)
         self.assertEquals(
             update.delay.call_args[0],
-            ('pretenders', 'ployst', 'dev_alex')
+            ('pretenders', 'ployst', 'dev_alex', '0458a0f')
         )
 
     def test_get_rejected(self):
