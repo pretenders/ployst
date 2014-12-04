@@ -11,12 +11,24 @@
 </style>
 {% endblock %}
 
+{% block body_class %}with-nav{% endblock %}
+
 {% block page_footer %}
 <script src="{{ STATIC_URL }}lib/angular/angular.min.js"></script>
 <script src="{{ STATIC_URL }}lib/angular-resource/angular-resource.min.js"></script>
 <script src="{{ STATIC_URL }}lib/angular-route/angular-route.min.js"></script>
 <script src="{{ STATIC_URL }}lib/angular-cookies/angular-cookies.min.js"></script>
 <script type="text/javascript">
-    window.STATIC_URL = {{ STATIC_URL }};
+    var STATIC_URL = "{{ STATIC_URL }}";
+
+    angular.module('ployst.django', [
+    ])
+    .constant('Django', {
+        URL: {
+            STATIC: STATIC_URL,
+            HOME: "{% url 'ui:home' %}",
+            LOGOUT: "{% url 'logout' %}"
+        }
+    });
 </script>
 {% endblock %}

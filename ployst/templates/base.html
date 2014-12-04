@@ -29,7 +29,7 @@
     {% endblock %}
     </head>
 
-    <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
+    <body {% block ng %}{% endblock %}class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
         {% block page_header %}{% endblock %}
         {% block content %}{% endblock %}
         {% block page_footer %}{% endblock %}

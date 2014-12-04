@@ -1,7 +1,7 @@
 /*
 
 Sidebar component. Absolutely positioned left of the page.
-   
+
 Dependencies:
  - bootstrap nav
 
@@ -16,8 +16,6 @@ Markup:
 */
 
 @sidebar-width: 220px;
-@sidebar-width-collapsed: 48px;
-@sidebar-inner-width: @sidebar-width - @sidebar-width-collapsed;
 @sidebar-padding: 16px;
 @sidebar-heading-background: @gray-dark;
 @sidebar-heading-border: 8px solid lighten(@sidebar-heading-background, 30%);
@@ -38,18 +36,8 @@ Markup:
 
     .box-shadow(4px 0 4px rgba(0,0,0,0.4));
 
-    &.collapsed {
-        width: @sidebar-width-collapsed;
-        ul, header, footer {
-            width: @sidebar-width-collapsed;
-        }
-        .reveal {
-            display: none;
-        }
-    }
-
     p {
-        padding: 0 @sidebar-padding @sidebar-padding;
+        padding: 20px @sidebar-padding @sidebar-padding;
     }
 
     .sidebar-divider {
@@ -70,7 +58,7 @@ Markup:
                 color: @sidebar-link-color;
             }
             &.active {
-                background-color: darken(@sidebar-background, 25%);
+                background-color: darken(@sidebar-background, 40%);
                 a {
                     color: @white;
                 }
@@ -82,87 +70,13 @@ Markup:
         }
     }
 
-    header, footer {
-        background-color: @sidebar-heading-background;
-        display: block;
-        overflow-x: auto;
-        overflow-y: hidden;
-        padding: 8px;
-        position: fixed;
-        width: @sidebar-width;
-        z-index: 110;
-    }
-
-    header {
-        border-bottom: @sidebar-heading-border;
-        height: 80px;
-        margin-bottom: 80px + @sidebar-padding;
-        padding: 8px @sidebar-padding;
-        text-transform: lowercase;
-        top: 0;
-
-        h1 {
-            color: @brand-color;
-            font-family: @brand-font;
-            font-size: 24px;
-            margin: 0 0 8px;
-        }
-        p {
-            color: @white;
-            margin: 0;
-            padding: 0;
-        }
-    }
-
-    footer {
-        border-top: @sidebar-heading-border;
-        bottom: 0;
-        color: @white;
-
-        a, p {
-            color: @white;
-        }
-        p {
-            margin: 0;
-        }
+    input {
+        width: @sidebar-width - 60px;
+        color: @black;
+        display: inline;
     }
 }
 
-.sidebar-inner {
-    z-index: 90;
-    left: @sidebar-width-collapsed;
-    width: @sidebar-inner-width;
-
-    header, footer, ul {
-        width: @sidebar-inner-width;
-    }
-
-    header {
-        height: auto;
-        text-transform: none;
-        h1 {
-            color: @white !important;
-            font-family: @brand-sans-font;
-            font-size: 15px; 
-            font-weight: bold;
-            margin-top: 12px;
-        }
-    }
-
-    header, footer {
-        background-color: lighten(@sidebar-heading-background, 20%) !important;
-        padding: 8px @sidebar-padding;
-        input {
-            width: @sidebar-inner-width - 60px;
-            color: @black;
-            display: inline;
-        }
-    }
-
-    ul > li > a {
-        padding-left: @sidebar-padding;
-    }
-}
 
 .sidebar-rest {
     height: 100%;

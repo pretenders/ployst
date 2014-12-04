@@ -1,19 +1,19 @@
-<aside class="sidebar sidebar-inner">
-    <header>
-        <h1>My Projects</h1>
-    </header>
+<aside class="sidebar">
     <ul>
         <li ng-repeat="p in ps.projects" ng-class="{active: p===ps.project}">
             <a ng-click="ps.selectProject(p)">
                 <i class="fa fa-fw fa-folder"></i> {{ p.name }}
             </a>
         </li>
+        <li>
+            <p>
+            Create a Project:
+            <input ng-model="newProject.name" name="name" placeholder="name..."></input>
+            <i ng-click="ps.createProject(newProject)"
+                class="fa fa-fw fa-lg fa-plus-square icon-clickable"
+                title="Create Project"></i>
+            </p>
+        </li>
     </ul>
-    <footer>Create a Project:
-        <input ng-model="newProject.name" name="name" placeholder="name..."></input>
-        <i ng-click="ps.createProject(newProject)"
-            class="fa fa-fw fa-lg fa-plus-square icon-clickable"
-            title="Create Project"></i>
-    </footer>
 </aside>
 

@@ -9,6 +9,8 @@ var ployst = angular.module('ployst', [
         'ngResource',
         'ngCookies',
 
+        'ployst.django',
+        'ployst.navbar',
         'ployst.profile',
         'ployst.projects',
         'ployst.providers',
