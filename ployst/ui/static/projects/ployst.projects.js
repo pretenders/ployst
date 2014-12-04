@@ -94,21 +94,23 @@ angular.module('ployst.projects', [
         }
 
     ])
-    .directive('menuProjects',
+    .directive('menuProjects', [
+        'Django',
 
-        function() {
+        function(Django) {
             return {
                 restrict: 'E',
-                templateUrl: STATIC_URL + 'projects/menuProjects.html'
+                templateUrl: Django.URL.STATIC + 'projects/menuProjects.html'
             };
         }
-    )
-    .directive('projectUsers',
+    ])
+    .directive('projectUsers', [
+        'Django',
 
-        function() {
+        function(Django) {
             return {
                 restrict: 'E',
-                templateUrl: STATIC_URL + 'projects/projectUsers.html'
+                templateUrl: Django.URL.STATIC + 'projects/projectUsers.html'
             };
         }
-    );
+    ]);

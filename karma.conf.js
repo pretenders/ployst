@@ -18,10 +18,11 @@ module.exports = function(config) {
 
             'assets/lib/angular-mocks/angular-mocks.js',
 
+            'ployst/**/static/test/**.js',
+
             'ployst/**/static/app.js',
             'ployst/**/static/**/ployst.*.js',
-            'ployst/github/static/github/github-app.js',
-            'ployst/**/static/test/**.js',
+            'ployst/github/static/github/github-app.js'
         ],
 
         preprocessors: {
