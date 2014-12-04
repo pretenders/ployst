@@ -43,7 +43,7 @@ var ployst = angular.module('ployst', [
                     menu: 'projects'
                 })
                 .otherwise({
-                    redirectTo: '/profile'
+                    redirectTo: '/projects'
                 });
             $locationProvider.html5Mode(false);
         }
