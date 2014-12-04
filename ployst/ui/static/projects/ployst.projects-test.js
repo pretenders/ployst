@@ -18,16 +18,11 @@ describe('test projects controller', function() {
     beforeEach(module('ployst'));
 
     beforeEach(inject(
-        function(_$httpBackend_, $controller, $rootScope, $route, Project, User) {
+        function(_$httpBackend_, $controller, $rootScope, User) {
             $httpBackend = _$httpBackend_;
-            $httpBackend.expectGET('/core/accounts/me')
-                .respond(mockUser);
-            $httpBackend.expectGET('/core/accounts/project')
-                .respond(mockProjects);
-            $httpBackend.expectGET('/static/profile/profile.html')
-                .respond();
+            $httpBackend.expectGET('/core/accounts/me').respond(mockUser);
+            $httpBackend.expectGET('/core/accounts/project').respond(mockProjects);
             User.user = mockUser;
-            _Project = Project;
 
             scope = $rootScope.$new();
             ctrl = $controller(
@@ -42,18 +37,17 @@ describe('test projects controller', function() {
     });
 
     it('scope contains projects, first project is preselected', function() {
-        expect(scope.projects[0].name).toBe('project-one');
-        expect(scope.project).toBe(scope.projects[0]);
-        expect(scope.project.managers).toEqual([mockUser.id]);
+        expect(scope.ps.projects[0].name).toBe('project-one');
+        expect(scope.ps.project).toBe(scope.ps.projects[0]);
+        expect(scope.ps.project.managers).toEqual([mockUser.id]);
     });
 
     it('can delete a project', function() {
-        $httpBackend.expectDELETE('/core/accounts/project/1')
-            .respond();
-        scope.deleteProject(mockProject);
+        $httpBackend.expectDELETE('/core/accounts/project/1').respond();
+        scope.ps.deleteProject(mockProject);
         $httpBackend.flush();
-        expect(scope.projects.length).toBe(0);
-        expect(scope.project).toBe(null);
+        expect(scope.ps.projects.length).toBe(0);
+        expect(scope.ps.project).toBe(null);
     });
 
     it('can create a project, and it becomes the active project', function() {
@@ -66,12 +60,12 @@ describe('test projects controller', function() {
             .respond(mockProject2);
         $httpBackend.expectGET('/core/accounts/project/2')
             .respond(mockProject2);
-        scope.createProject({
+        scope.ps.createProject({
             name: 'project-two'
         });
         $httpBackend.flush();
-        expect(scope.projects.length).toBe(2);
-        expect(scope.project.name).toEqual(mockProject2.name);
+        expect(scope.ps.projects.length).toBe(2);
+        expect(scope.ps.project.name).toEqual(mockProject2.name);
     });
 
 });

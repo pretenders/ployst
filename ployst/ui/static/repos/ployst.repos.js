@@ -34,15 +34,24 @@ angular.module('ployst.repos', [
             $scope.repos = [];
             $scope.branches = null;
 
-            Repos.query({'project': $scope.project.id}, function(repos) {
-                $scope.repos = repos;
-                $scope.branches = [];
-                angular.forEach(repos, function(repo) {
-                    angular.forEach(repo.branches, function(branch) {
-                        branch.repo = repo.owner + '/' + repo.name;
-                        $scope.branches.push(branch);
+            var loadData = function() {
+                Repos.query({'project': $scope.project.id}, function (repos) {
+                    $scope.repos = repos;
+                    $scope.branches = [];
+                    angular.forEach(repos, function (repo) {
+                        angular.forEach(repo.branches, function (branch) {
+                            branch.repo = repo.owner + '/' + repo.name;
+                            $scope.branches.push(branch);
+                        });
                     });
                 });
+            };
+
+            // ensure that when current project ID changes, we reload
+            $scope.$watch(function() {
+                return $scope.project.id;
+            }, function () {
+                loadData();
             });
         }
     ])
