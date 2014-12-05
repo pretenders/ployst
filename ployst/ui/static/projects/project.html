@@ -1,57 +1,44 @@
-<menu-projects></menu-projects>
-
-<div class="sidebar-rest">
-    <div ng-if="ps.project && (ps.project !== 'unknown')">
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <h2><i class="fa fa-folder"></i> Project {{ ps.project.name }}
-                    <div class="btn-group pull-right">
-                        <button ng-if="ps.project.am_manager"
-                                ng-click="ps.deleteProject(ps.project)"
-                                type="button" class="btn btn-small btn-danger">
-                            Delete
-                        </button>
-                    </div>
-                </h2>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <h2><i class="fa fa-folder"></i> Project {{ ps.project.name }}
+            <div class="btn-group pull-right">
+                <button ng-if="ps.project.am_manager"
+                        ng-click="ps.deleteProject(ps.project)"
+                        type="button" class="btn btn-small btn-danger">
+                    Delete
+                </button>
             </div>
-
-            <ul class="nav nav-tabs" ng-init="tab = 'activity'">
-                <li ng-class="{active:tab=== 'activity'}">
-                    <a href ng-click="tab = 'activity'">
-                        <i class="fa fa-rss"></i> Activity
-                    </a>
-                </li>
-                <li ng-class="{active:tab==='repos'}">
-                    <a href ng-click="tab = 'repos'">
-                        <i class="fa fa-code-fork"></i> Repositories
-                    </a>
-                </li>
-                <li ng-class="{active:tab=== 'users'}">
-                    <a href ng-click="tab = 'users'">
-                        <i class="fa fa-user"></i> Users
-                    </a>
-                </li>
-            </ul>
-
-
-            <div class="row-fluid" ng-if="tab == 'activity'">
-                <project-activity project="ps.project"></project-activity>
-            </div>
-
-            <div class="row-fluid" ng-if="tab == 'users'">
-                <project-users project="ps.project"></project-users>
-            </div>
-
-            <div class="row-fluid" ng-if="tab == 'repos'">
-                <github-config project="ps.project"></github-config>
-            </div>
-        </div>
+        </h2>
     </div>
 
-    <div ng-if="!ps.project" class="row-fluid">
-        <div class="alert alert-info">
-            <strong>You have no projects yet.</strong>
-            Why don't you go ahead and create one?
-        </div>
+    <ul class="nav nav-tabs" ng-init="tab = 'activity'">
+        <li ng-class="{active:tab=== 'activity'}">
+            <a href ng-click="tab = 'activity'">
+                <i class="fa fa-rss"></i> Activity
+            </a>
+        </li>
+        <li ng-class="{active:tab==='repos'}">
+            <a href ng-click="tab = 'repos'">
+                <i class="fa fa-code-fork"></i> Repositories
+            </a>
+        </li>
+        <li ng-class="{active:tab=== 'users'}">
+            <a href ng-click="tab = 'users'">
+                <i class="fa fa-user"></i> Users
+            </a>
+        </li>
+    </ul>
+
+
+    <div class="row-fluid" ng-if="tab == 'activity'">
+        <project-activity project="ps.project"></project-activity>
+    </div>
+
+    <div class="row-fluid" ng-if="tab == 'users'">
+        <project-users project="ps.project"></project-users>
+    </div>
+
+    <div class="row-fluid" ng-if="tab == 'repos'">
+        <github-config project="ps.project"></github-config>
     </div>
 </div>
