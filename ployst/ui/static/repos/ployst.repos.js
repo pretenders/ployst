@@ -55,14 +55,18 @@ angular.module('ployst.repos', [
             });
         }
     ])
-    .directive('projectActivity', function() {
-        return {
-            controller: 'ActivityController',
-            restrict: 'E',
-            templateUrl: STATIC_URL + 'repos/project-branches.html',
-            scope: {
-                project: '='
-            }
-        };
-    });
+    .directive('projectActivity', [
+        'Django',
+
+        function(Django) {
+            return {
+                controller: 'ActivityController',
+                restrict: 'E',
+                templateUrl: Django.URL.STATIC + 'repos/project-branches.html',
+                scope: {
+                    project: '='
+                }
+            };
+        }
+    ]);
 

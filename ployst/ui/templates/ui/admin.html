@@ -1,15 +1,22 @@
 {% extends "base-angular.html" %}
 
+{% block ng %}ng-app="ployst" id="app"{% endblock %}
+
+{% block page_header %}
+<header id="header">
+    <navbar></navbar>
+</header>
+{% endblock %}
+
 {% block content %}
-<div ng-app="ployst" id="app">
-    <div ng-view ng-cloak>
-    </div>
+<div ng-view ng-cloak id="content">
 </div>
 {% endblock %}
 
 {% block page_footer %}
 {{ block.super }}
 <script src="{{ STATIC_URL }}app.js"></script>
+<script src="{{ STATIC_URL }}navbar/ployst.navbar.js"></script>
 <script src="{{ STATIC_URL }}profile/ployst.profile.js"></script>
 <script src="{{ STATIC_URL }}projects/ployst.projects.js"></script>
 <script src="{{ STATIC_URL }}providers/ployst.providers.js"></script>

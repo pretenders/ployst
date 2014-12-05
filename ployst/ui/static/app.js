@@ -9,6 +9,7 @@ var ployst = angular.module('ployst', [
         'ngResource',
         'ngCookies',
 
+        'ployst.navbar',
         'ployst.profile',
         'ployst.projects',
         'ployst.providers',
@@ -16,6 +17,9 @@ var ployst = angular.module('ployst', [
 
         'ployst.github'
     ])
+    .constant('Django', {
+        URL: URLS
+    })
     .run([
         '$http', '$cookies',
 
@@ -24,22 +28,22 @@ var ployst = angular.module('ployst', [
         }
     ])
     .config([
-        '$routeProvider', '$locationProvider',
+        '$routeProvider', '$locationProvider', 'Django',
 
-        function($routeProvider, $locationProvider) {
+        function($routeProvider, $locationProvider, Django) {
             $routeProvider
                 .when('/profile', {
                     controller: 'profile',
-                    templateUrl: STATIC_URL + 'profile/profile.html',
+                    templateUrl: Django.URL.STATIC + 'profile/profile.html',
                     menu: 'profile'
                 })
                 .when('/projects', {
                     controller: 'projects',
-                    templateUrl: STATIC_URL + 'projects/project.html',
+                    templateUrl: Django.URL.STATIC + 'projects/project.html',
                     menu: 'projects'
                 })
                 .otherwise({
-                    redirectTo: '/profile'
+                    redirectTo: '/projects'
                 });
             $locationProvider.html5Mode(false);
         }
@@ -49,7 +53,7 @@ var ployst = angular.module('ployst', [
         function() {
             return {
                 restrict: 'E',
-                templateUrl: STATIC_URL + 'mainMenu.html',
+                templateUrl: Django.URL.STATIC + 'mainMenu.html',
                 controller: 'profile',
                 transclude: true,
                 replace: true,

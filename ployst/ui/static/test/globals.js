@@ -1,1 +1,3 @@
-var STATIC_URL = '/static/';
+var URLS = {
+    STATIC: '/static/'
+};

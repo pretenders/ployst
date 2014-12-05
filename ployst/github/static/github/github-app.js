@@ -138,13 +138,17 @@ angular.module('ployst.github', [
             });
         }
     ])
-    .directive('githubConfig', function() {
-        return {
-            controller: 'GithubController',
-            restrict: 'E',
-            templateUrl: STATIC_URL + 'github/github-config.html',
-            scope: {
-                project: '='
-            }
-        };
-    });
+    .directive('githubConfig', [
+        'Django',
+
+        function(Django) {
+            return {
+                controller: 'GithubController',
+                restrict: 'E',
+                templateUrl: Django.URL.STATIC + 'github/github-config.html',
+                scope: {
+                    project: '='
+                }
+            };
+        }
+    ]);
