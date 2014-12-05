@@ -17,76 +17,57 @@ Markup:
 
 @sidebar-width: 220px;
 @sidebar-padding: 16px;
-@sidebar-heading-background: @gray-dark;
-@sidebar-heading-border: 8px solid lighten(@sidebar-heading-background, 30%);
-@sidebar-link-color: @black;
 
-
-.sidebar {
-    background-color: @sidebar-background;
-    display: block;
+.row-offcanvas {
     height: 100%;
-    min-height: 400px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    top: 0;
-    width: @sidebar-width;
-    z-index: 100;
+}
+#sidebar {
+    width: inherit;
+    min-width: @sidebar-width;
+    max-width: @sidebar-width;
+    background-color: #f5f5f5;
+    float: left;
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     .box-shadow(4px 0 4px rgba(0,0,0,0.4));
-
-    p {
-        padding: 20px @sidebar-padding @sidebar-padding;
-    }
-
-    .sidebar-divider {
-        height: 2em;
-    }
-
-    ul {
-        .nav;
-        .nav-stacked;
-
-        // font-weight: bold;
-        position: fixed;
-        top: 80px + @sidebar-padding;
-        width: @sidebar-width;
-
-        li {
-            a {
-                color: @sidebar-link-color;
-            }
-            &.active {
-                background-color: darken(@sidebar-background, 40%);
-                a {
-                    color: @white;
-                }
-            }
-            a:hover {
-                background-color: darken(@sidebar-background, 20%);
-                color: @white;
-            }
-        }
-    }
 
     input {
         width: @sidebar-width - 60px;
         color: @black;
         display: inline;
     }
+
+    p {
+        padding-top: 8px;
+    }
 }
-
-
-.sidebar-rest {
+#main {
     height: 100%;
-    margin-left: @sidebar-width;
-    padding-left: @sidebar-padding;
-    min-height: 100%;
-    min-width: 1280 - @sidebar-width;
-
-    h2 {
-        margin-bottom: @sidebar-padding;
-        padding-bottom: @sidebar-padding;
+    overflow: auto;
+}
+/*
+* off Canvas sidebar
+* --------------------------------------------------
+*/
+@media screen and (max-width: 768px) {
+    .row-offcanvas {
+        position: relative;
+        -webkit-transition: all 0.25s ease-out;
+        -moz-transition: all 0.25s ease-out;
+        transition: all 0.25s ease-out;
+        width: calc(100% + 220px);
+    }
+    .row-offcanvas-left {
+        left: -220px;
+    }
+    .row-offcanvas-left.active {
+        left: 0;
+    }
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
     }
 }

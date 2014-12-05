@@ -11,41 +11,25 @@
 
 
 @footer-height: 120px;
-@nav-height: 55px;
+@nav-height: 50px;
 
 
 // Custom Site-wide styles
 
 html,
-body {
+body,
+#content {
     height: 100%;
     /* The html and body elements cannot have any padding or margin. */
 }
+body {
+    padding-top: @nav-height;
+}
+
 
 h5 {
     font-weight: bold;
 }
-
-// Main page header, contains main navigation bar
-
-#header {
-   .navbar {
-       border-bottom: 4px solid @brand-color;
-       .box-shadow(0 3px 6px @gray-light);
-   }
-}
-
-#content {
-    .with-nav & {
-        padding-top: @nav-height + 16px; /* make space for fixed top navbar */
-    }
-    margin-bottom: 32px;
-    min-height: 100%;
-    height: auto !important;
-    height: 100%;
-}
-
-/* sticky footer ----------------------------------------------------- */
 
 .navbar-brand {
     font-family: @brand-font;
@@ -114,12 +98,6 @@ h5 {
 /* end sticky footer */
 
 /* Admin page -------------------------------------------------------- */
-
-#app {
-    min-height: 100%;
-    height: 100%;
-    position: absolute;
-}
 
 .icon-clickable {
     cursor: pointer;

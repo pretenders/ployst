@@ -1,14 +1,23 @@
-<menu-projects></menu-projects>
-
-<div class="sidebar-rest">
-    <div ng-if="ps.project && (ps.project !== 'unknown')">
-        <project></project>
+<div class="row-offcanvas row-offcanvas-left">
+    <div id="sidebar" class="sidebar-offcanvas">
+        <div class="col-md-12">
+            <menu-projects></menu-projects>
+        </div>
     </div>
 
-    <div ng-if="!ps.project" class="row-fluid">
-        <div class="alert alert-info">
-            <strong>You have no projects yet.</strong>
-            Why don't you go ahead and create one?
+    <div id="main">
+        <div class="col-md-12">
+
+            <div ng-if="ps.project && (ps.project !== 'unknown')">
+                <project></project>
+            </div>
+
+            <div ng-if="!ps.project" class="row-fluid">
+                <div class="alert alert-info">
+                    <strong>You have no projects yet.</strong>
+                    Why don't you go ahead and create one?
+                </div>
+            </div>
         </div>
     </div>
 </div>
