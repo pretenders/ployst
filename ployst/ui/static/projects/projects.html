@@ -1,0 +1,14 @@
+<menu-projects></menu-projects>
+
+<div class="sidebar-rest">
+    <div ng-if="ps.project && (ps.project !== 'unknown')">
+        <project></project>
+    </div>
+
+    <div ng-if="!ps.project" class="row-fluid">
+        <div class="alert alert-info">
+            <strong>You have no projects yet.</strong>
+            Why don't you go ahead and create one?
+        </div>
+    </div>
+</div>

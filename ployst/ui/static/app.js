@@ -39,7 +39,7 @@ var ployst = angular.module('ployst', [
                 })
                 .when('/projects', {
                     controller: 'projects',
-                    templateUrl: Django.URL.STATIC + 'projects/project.html',
+                    templateUrl: Django.URL.STATIC + 'projects/projects.html',
                     menu: 'projects'
                 })
                 .otherwise({
