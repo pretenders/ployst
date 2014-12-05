@@ -31,7 +31,6 @@ Markup:
     position: relative;
     overflow-y: auto;
     overflow-x: hidden;
-
     .box-shadow(4px 0 4px rgba(0,0,0,0.4));
 
     input {
@@ -43,10 +42,15 @@ Markup:
     p {
         padding-top: 8px;
     }
+
+    ul {
+        padding-bottom: @sidebar-padding;
+    }
 }
 #main {
     height: 100%;
     overflow: auto;
+    padding: @sidebar-padding;
 }
 /*
 * off Canvas sidebar
