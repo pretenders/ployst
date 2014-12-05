@@ -104,6 +104,16 @@ angular.module('ployst.projects', [
             };
         }
     ])
+    .directive('project', [
+        'Django',
+
+        function(Django) {
+            return {
+                restrict: 'E',
+                templateUrl: Django.URL.STATIC + 'projects/project.html'
+            };
+        }
+    ])
     .directive('projectUsers', [
         'Django',
 

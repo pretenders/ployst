@@ -2,7 +2,7 @@
 
 <div class="sidebar-rest">
     <div ng-if="ps.project && (ps.project !== 'unknown')">
-        <ng-include src="'/static/projects/project.html'"></ng-include>
+        <project></project>
     </div>
 
     <div ng-if="!ps.project" class="row-fluid">
