@@ -1,4 +1,4 @@
-describe('test projects controller', function() {
+describe('test ProjectController', function() {
 
     var ctrl,
         scope,
@@ -22,11 +22,13 @@ describe('test projects controller', function() {
             $httpBackend = _$httpBackend_;
             $httpBackend.expectGET('/core/accounts/me').respond(mockUser);
             $httpBackend.expectGET('/core/accounts/project').respond(mockProjects);
+            $httpBackend.expectGET('/static/projects/projects.html').respond();
+
             User.user = mockUser;
 
             scope = $rootScope.$new();
             ctrl = $controller(
-                'projects', {
+                'ProjectController', {
                     $scope: scope
                 }
             );

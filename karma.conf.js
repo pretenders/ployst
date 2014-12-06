@@ -11,10 +11,10 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'assets/lib/angular/angular.js',
-            'assets/lib/angular-cookies/angular-cookies.js',
-            'assets/lib/angular-resource/angular-resource.js',
-            'assets/lib/angular-route/angular-route.js',
+            'assets/lib/**/angular.js',
+            'assets/lib/**/angular-cookies.js',
+            'assets/lib/**/angular-resource.js',
+            'assets/lib/**/angular-ui-router.js',
 
             'assets/lib/angular-mocks/angular-mocks.js',
 

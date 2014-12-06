@@ -3,7 +3,7 @@
  */
 angular.module('ployst.profile', [
         'ngResource',
-        'ngRoute'
+        'ui.router'
     ])
     .service('User', [
         '$resource',
@@ -14,10 +14,10 @@ angular.module('ployst.profile', [
         }
     ])
     .controller('profile', [
-        '$route', '$scope', 'User',
+        '$state', '$scope', 'User',
 
-        function($route, $scope, User) {
+        function($state, $scope, User) {
             $scope.user = User.user;
-            $scope.menu = $route.current.$$route.menu;
+            $scope.menu = $state.current.menu;
         }
     ]);

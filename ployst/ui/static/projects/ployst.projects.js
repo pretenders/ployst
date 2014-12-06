@@ -63,7 +63,7 @@ angular.module('ployst.projects', [
             });
         }
     ])
-    .controller('projects', [
+    .controller('ProjectController', [
         '$http', '$scope', 'ProjectService', 'User',
 
         function($http, $scope, ProjectService, User) {

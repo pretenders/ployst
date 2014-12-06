@@ -5,14 +5,13 @@
  *     </div>
  */
 var ployst = angular.module('ployst', [
-        'ngRoute',
         'ngResource',
         'ngCookies',
+        'ui.router',
 
         'ployst.navbar',
         'ployst.profile',
         'ployst.projects',
-        'ployst.providers',
         'ployst.repos',
 
         'ployst.github'
@@ -20,46 +19,35 @@ var ployst = angular.module('ployst', [
     .constant('Django', {
         URL: URLS
     })
-    .run([
-        '$http', '$cookies',
-
-        function($http, $cookies) {
-            $http.defaults.headers.common['X-CSRFToken'] = $cookies.csrftoken;
-        }
-    ])
     .config([
-        '$routeProvider', '$locationProvider', 'Django',
+        '$locationProvider', '$stateProvider', '$urlRouterProvider', 'Django',
 
-        function($routeProvider, $locationProvider, Django) {
-            $routeProvider
-                .when('/profile', {
+        function($locationProvider, $stateProvider, $urlRouterProvider, Django) {
+
+            $urlRouterProvider.otherwise('/projects');
+
+            $stateProvider
+                .state('profile', {
+                    url: '/profile',
                     controller: 'profile',
                     templateUrl: Django.URL.STATIC + 'profile/profile.html',
                     menu: 'profile'
                 })
-                .when('/projects', {
-                    controller: 'projects',
+                .state('projects', {
+                    url: '/projects',
+                    controller: 'ProjectController',
                     templateUrl: Django.URL.STATIC + 'projects/projects.html',
                     menu: 'projects'
-                })
-                .otherwise({
-                    redirectTo: '/projects'
                 });
+
             $locationProvider.html5Mode(false);
         }
     ])
-    .directive('mainMenu',
+    .run([
+        '$http', '$cookies', '$state',
 
-        function() {
-            return {
-                restrict: 'E',
-                templateUrl: Django.URL.STATIC + 'mainMenu.html',
-                controller: 'profile',
-                transclude: true,
-                replace: true,
-                scope: {
-                    collapsed: '@menuCollapsed'
-                }
-            };
+        function($http, $cookies, $state) {
+            $http.defaults.headers.common['X-CSRFToken'] = $cookies.csrftoken;
+            //$state.transitionTo('projects');
         }
-    );
+    ]);

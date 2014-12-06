@@ -12,16 +12,16 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li ng-if="!user.is_anonymous" class="dropdown">
-                    <a href="/#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-cog"></i> {{ user.username }}
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ URL.HOME }}#/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+                            <a ui-sref="profile"><i class="fa fa-fw fa-user"></i> Profile</a>
                         </li>
                         <li>
-                            <a href="{{ URL.HOME }}#/projects"><i class="fa fa-fw fa-folder"></i> Projects</a>
+                            <a ui-sref="projects"><i class="fa fa-fw fa-folder"></i> Projects</a>
                         </li>
                         <li class="divider"></li>
                         <li>
