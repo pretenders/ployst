@@ -12,12 +12,22 @@ angular.module('ployst.projects', [
         }
     ])
     .service('ProjectService', [
+        '$filter',
+        'lodash',
         'Project',
 
-        function(Project) {
+        function($filter, _, Project) {
             var $this = this;
             this.project = 'unknown';
             this.projects = [];
+            this.startProject = null;
+
+            this.setStartProject = function(projectName) {
+                $this.startProject = projectName;
+                if($this.projects.length > 0) {
+                    this.selectProjectByName(projectName);
+                }
+            };
 
             this.setDefaultProject = function() {
                 // set first project as active
@@ -30,6 +40,17 @@ angular.module('ployst.projects', [
 
             this.selectProject = function(project) {
                 $this.project = project;
+            };
+
+            this.selectProjectByName = function(name) {
+                var found = _.find($this.projects, function(p) {
+                    return name && p.name == name;
+                });
+                if(found) {
+                    $this.project = found;
+                } else {
+                    $this.setDefaultProject();
+                }
             };
 
             this.createProject = function(newProject) {
@@ -59,17 +80,18 @@ angular.module('ployst.projects', [
 
             Project.query(function(projects) {
                 $this.projects = projects;
-                $this.setDefaultProject();
+                $this.selectProjectByName($this.startProject);
             });
         }
     ])
     .controller('ProjectController', [
-        '$http', '$scope', 'ProjectService', 'User',
+        '$http', '$scope', '$stateParams', 'ProjectService', 'User',
 
-        function($http, $scope, ProjectService, User) {
+        function($http, $scope, $stateParams, ProjectService, User) {
             $scope.newUser = {};
             $scope.user = User.user;
             $scope.ps = ProjectService;
+            $scope.tab = 'activity';
 
             $scope.inviteUser = function(project, user) {
                 // invite user to join project: if email is recognised, add to
@@ -91,6 +113,10 @@ angular.module('ployst.projects', [
                         alert(data.error);
                     });
             };
+
+            if($stateParams.project) {
+                $scope.ps.setStartProject($stateParams.project);
+            }
         }
 
     ])

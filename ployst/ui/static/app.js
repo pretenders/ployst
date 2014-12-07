@@ -7,6 +7,7 @@
 var ployst = angular.module('ployst', [
         'ngResource',
         'ngCookies',
+        'ngLodash',
         'ui.router',
 
         'ployst.navbar',
@@ -24,7 +25,7 @@ var ployst = angular.module('ployst', [
 
         function($locationProvider, $stateProvider, $urlRouterProvider, Django) {
 
-            $urlRouterProvider.otherwise('/projects');
+            $urlRouterProvider.otherwise('/projects/');
 
             $stateProvider
                 .state('profile', {
@@ -34,7 +35,7 @@ var ployst = angular.module('ployst', [
                     menu: 'profile'
                 })
                 .state('projects', {
-                    url: '/projects',
+                    url: '/projects/:project',
                     controller: 'ProjectController',
                     templateUrl: Django.URL.STATIC + 'projects/projects.html',
                     menu: 'projects'
