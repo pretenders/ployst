@@ -2,7 +2,6 @@ describe('test ProjectController', function() {
 
     var ctrl,
         scope,
-        _rootScope,
         mockUser = {
             username: 'user-1',
             id: 1
