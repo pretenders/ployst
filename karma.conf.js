@@ -15,7 +15,6 @@ module.exports = function(config) {
             'assets/lib/**/angular-cookies.min.js',
             'assets/lib/**/angular-resource.min.js',
             'assets/lib/**/angular-ui-router.min.js',
-            'assets/lib/**/lodash.min.js',
             'assets/lib/**/ng-lodash.min.js',
 
             'assets/lib/angular-mocks/angular-mocks.js',
@@ -28,7 +27,7 @@ module.exports = function(config) {
         ],
 
         preprocessors: {
-            'ployst/**/js/*.js': 'coverage'
+            'ployst/**/*.js': 'coverage'
         },
 
         // list of files to exclude

@@ -73,8 +73,11 @@ angular.module('ployst.projects', [
                     id: project.id
                 }, function() {
                     // remove from list once deleted in backend
-                    $this.projects.splice($this.projects.indexOf(project), 1);
-                    $this.setDefaultProject();
+                    var index = $this.projects.indexOf(project);
+                    $this.projects.splice(index, 1);
+                    $this.project = $this.projects[index]
+                        || $this.projects[index-1]
+                        || null;
                 }).$promise;
             };
 
@@ -126,11 +129,11 @@ angular.module('ployst.projects', [
             };
 
             $scope.deleteProject = function(project) {
-                $scope.ps.deleteProject(project).then(routeToCurrentProject);
+                return $scope.ps.deleteProject(project).then(routeToCurrentProject);
             };
 
             $scope.createProject = function(project) {
-                $scope.ps.createProject(project).then(routeToCurrentProject);
+                return $scope.ps.createProject(project).then(routeToCurrentProject);
             };
 
             // route to project in the route
