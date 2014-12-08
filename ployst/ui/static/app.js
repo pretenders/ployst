@@ -51,4 +51,17 @@ var ployst = angular.module('ployst', [
             $http.defaults.headers.common['X-CSRFToken'] = $cookies.csrftoken;
             //$state.transitionTo('projects');
         }
-    ]);
+    ])
+    .directive('ngEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if(event.which === 13) {
+                    scope.$apply(function (){
+                        scope.$eval(attrs.ngEnter);
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    });
