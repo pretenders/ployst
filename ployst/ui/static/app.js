@@ -45,16 +45,15 @@ var ployst = angular.module('ployst', [
         }
     ])
     .run([
-        '$http', '$cookies', '$state',
+        '$http', '$cookies',
 
-        function($http, $cookies, $state) {
+        function($http, $cookies) {
             $http.defaults.headers.common['X-CSRFToken'] = $cookies.csrftoken;
-            //$state.transitionTo('projects');
         }
     ])
     .directive('ngEnter', function () {
         return function (scope, element, attrs) {
-            element.bind("keydown keypress", function (event) {
+            element.bind('keydown keypress', function (event) {
                 if(event.which === 13) {
                     scope.$apply(function (){
                         scope.$eval(attrs.ngEnter);

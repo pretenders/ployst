@@ -24,7 +24,8 @@ describe('test ProjectController', function() {
 
     beforeEach(module('ployst'));
 
-    beforeEach(inject(function(_$httpBackend_, $controller, $rootScope, User) {
+    beforeEach(
+        inject(function(_$httpBackend_, $controller, $rootScope, User) {
             $httpBackend = _$httpBackend_;
             $httpBackend.expectGET('/core/accounts/me').respond(mockUser);
             $httpBackend.expectGET('/core/accounts/project').respond(mockProjects);
@@ -38,7 +39,8 @@ describe('test ProjectController', function() {
                     $scope: scope
                 }
             );
-        }));
+        })
+    );
 
     beforeEach(function() {
         $httpBackend.flush();
@@ -76,12 +78,13 @@ describe('test ProjectController', function() {
     });
 
     it('route contains project, that project is preselected',
-        inject(function($controller, $rootScope) {
+        inject(function($controller) {
             ctrl = $controller('ProjectController', {
                 $scope: scope,
                 $stateParams: {project: 'project-two'}
             });
             expect(scope.ps.project.name).toBe('project-two');
-    }));
+        })
+    );
 
 });

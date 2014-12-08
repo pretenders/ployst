@@ -75,9 +75,9 @@ angular.module('ployst.projects', [
                     // remove from list once deleted in backend
                     var index = $this.projects.indexOf(project);
                     $this.projects.splice(index, 1);
-                    $this.project = $this.projects[index]
-                        || $this.projects[index-1]
-                        || null;
+                    $this.project = $this.projects[index] ||
+                        $this.projects[index-1] ||
+                        null;
                 }).$promise;
             };
 

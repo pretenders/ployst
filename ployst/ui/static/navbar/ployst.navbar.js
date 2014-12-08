@@ -6,9 +6,9 @@ angular.module('ployst.navbar', [
         'ployst.profile'
     ])
     .controller('NavbarController', [
-        '$scope', 'Django', 'ProjectService', 'User',
+        '$scope', 'Django', 'User',
 
-        function($scope, Django, ProjectService, User) {
+        function($scope, Django, User) {
             $scope.user = User.user;
             $scope.URL = Django.URL;
         }
