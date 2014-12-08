@@ -1,7 +1,7 @@
 <h2><i class="fa fa-folder"></i> Project {{ ps.project.name }}
     <div class="btn-group pull-right">
         <button ng-if="ps.project.am_manager"
-                ng-click="ps.deleteProject(ps.project)"
+                ng-click="deleteProject(ps.project)"
                 type="button" class="btn btn-small btn-danger">
             Delete
         </button>
