@@ -78,16 +78,16 @@ angular.module('ployst.projects', [
                 });
             };
 
-            Project.query(function(projects) {
+            this.loadProjects = Project.query(function(projects) {
                 $this.projects = projects;
                 $this.selectProjectByName($this.startProject);
             });
         }
     ])
     .controller('ProjectController', [
-        '$http', '$scope', '$stateParams', 'ProjectService', 'User',
+        '$http', '$scope', '$state', '$stateParams', 'ProjectService', 'User',
 
-        function($http, $scope, $stateParams, ProjectService, User) {
+        function($http, $scope, $state, $stateParams, ProjectService, User) {
             $scope.newUser = {};
             $scope.user = User.user;
             $scope.ps = ProjectService;
@@ -117,6 +117,10 @@ angular.module('ployst.projects', [
             if($stateParams.project) {
                 $scope.ps.setStartProject($stateParams.project);
             }
+
+            $scope.ps.loadProjects.$promise.then(function() {
+                $state.go('projects', {project: $scope.ps.project.name});
+            });
         }
 
     ])
