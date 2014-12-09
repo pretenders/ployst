@@ -2,7 +2,6 @@
  * Ployst user profile page and current user services
  */
 angular.module('ployst.navbar', [
-        'ployst.projects',
         'ployst.profile'
     ])
     .controller('NavbarController', [

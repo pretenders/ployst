@@ -22,13 +22,13 @@ describe('test ProjectController', function() {
         _Project;
 
     beforeEach(module('ployst'));
+    beforeEach(module('/static/projects/projects.html'));
 
     beforeEach(
         inject(function(_$httpBackend_, $controller, $rootScope, User) {
             $httpBackend = _$httpBackend_;
             $httpBackend.expectGET('/core/accounts/me').respond(mockUser);
             $httpBackend.expectGET('/core/accounts/project').respond(mockProjects);
-            $httpBackend.expectGET('/static/projects/projects.html').respond();
 
             User.user = mockUser;
 

@@ -27,11 +27,21 @@ module.exports = function(config) {
             // ployst app code and tests
             'ployst/**/static/app.js',
             'ployst/**/static/**/ployst.*.js',
-            'ployst/github/static/github/*.js'
+            'ployst/github/static/github/*.js',
+
+            // ployst templates
+            'ployst/ui/static/**/*.html'
         ],
 
         preprocessors: {
-            'ployst/**/*.js': 'coverage'
+            'ployst/**/*.js': 'coverage',
+            'ployst/ui/static/**/*.html': 'ng-html2js'
+        },
+
+        ngHtml2JsPreprocessor: {
+            // If your build process changes the path to your templates,
+            // use stripPrefix and prependPrefix to adjust it.
+            stripPrefix: 'ployst/ui'
         },
 
         // list of files to exclude
