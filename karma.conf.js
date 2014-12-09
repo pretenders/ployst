@@ -11,16 +11,20 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
+            // 3rd party runtime dependencies
             'assets/lib/**/angular.min.js',
             'assets/lib/**/angular-cookies.min.js',
             'assets/lib/**/angular-resource.min.js',
             'assets/lib/**/angular-ui-router.min.js',
             'assets/lib/**/ng-lodash.min.js',
 
+            // 3rd party test dependencies
             'assets/lib/angular-mocks/angular-mocks.js',
 
+            // global test vars and matchers
             'ployst/**/static/test/**.js',
 
+            // ployst app code and tests
             'ployst/**/static/app.js',
             'ployst/**/static/**/ployst.*.js',
             'ployst/github/static/github/*.js'

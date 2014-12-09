@@ -24,13 +24,11 @@ describe('test GithubController', function() {
         ],
         mockRepos = [
             {
-                'fork': false,
                 'name': 'somecode',
                 'description': 'Some code',
                 tracked: false
             },
             {
-                'fork': false,
                 'name': 'else',
                 'description': 'Some oher code',
                 tracked: false
@@ -68,10 +66,10 @@ describe('test GithubController', function() {
     it('scope contains orgs and repos', function() {
         var i;
         for(i=0; i<mockOrganisations.length; i++) {
-            expect(scope.organisations[0].login).toBe(mockOrganisations[0].login);
+            expect(scope.organisations[0]).toNgEqual(mockOrganisations[0]);
         }
         for(i=0; i<mockRepos.length; i++) {
-            expect(scope.repos[i].name).toEqual(mockRepos[i].name);
+            expect(scope.repos[i]).toNgEqual(mockRepos[i]);
         }
         expect(scope.selectedOrganisation).toBe(scope.organisations[0]);
         expect(scope.myGithubLogin).toBe('me');
