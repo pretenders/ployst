@@ -3,9 +3,10 @@ describe('test GithubController', function() {
     var ctrl,
         scope,
         tokens = [{
-            "token": "1234",
-            "identifier": "github",
-            "id": 1, "user": 2
+            'token': '1234',
+            'identifier': 'github',
+            'id': 1,
+            'user': 2
         }],
         mockUser = {
             username: 'user-1',
@@ -13,28 +14,28 @@ describe('test GithubController', function() {
         },
         mockOrganisations = [
             {
-                "type": "User", 
-                "name": "Me", 
-                "login": "me"
-            }, 
+                'type': 'User',
+                'name': 'Me',
+                'login': 'me'
+            },
             {
-                "login": "org"
+                'login': 'org'
             }
         ],
         mockRepos = [
             {
-                "fork": false, 
-                "name": "somecode", 
-                "description": "Some code",
+                'fork': false,
+                'name': 'somecode',
+                'description': 'Some code',
                 tracked: false
-            }, 
+            },
             {
-                "fork": false, 
-                "name": "else", 
-                "description": "Some oher code",
+                'fork': false,
+                'name': 'else',
+                'description': 'Some oher code',
                 tracked: false
             }
-        ], 
+        ],
         projectRepos = [];
 
     beforeEach(module('ployst'));
@@ -65,10 +66,11 @@ describe('test GithubController', function() {
     });
 
     it('scope contains orgs and repos', function() {
-        for(var i=0; i<mockOrganisations.length; i++) {
+        var i;
+        for(i=0; i<mockOrganisations.length; i++) {
             expect(scope.organisations[0].login).toBe(mockOrganisations[0].login);
         }
-        for(var i=0; i<mockRepos.length; i++) {
+        for(i=0; i<mockRepos.length; i++) {
             expect(scope.repos[i].name).toEqual(mockRepos[i].name);
         }
         expect(scope.selectedOrganisation).toBe(scope.organisations[0]);
