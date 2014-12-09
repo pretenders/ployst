@@ -15,7 +15,7 @@
 
     // Styling preferences.
     "indent"        : 4,        // Indent level
-    "maxlen"        : 90,       // Set Maximum length of characters to 80
+    "maxlen"        : 90,       // Set Maximum length of characters to 90
     "quotmark"      : "single", // Prefer single quotes
     "camelcase"     : true      // Use CAMEL Casing for variables
 }

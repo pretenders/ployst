@@ -5,11 +5,8 @@ describe('test profile scope', function () {
 
     beforeEach(module('ployst'));
 
-    beforeEach(inject(function($rootScope, $route, User, $controller) {
+    beforeEach(inject(function($rootScope, $controller, User) {
         User.user = mockUser;
-        // mock routing
-        $route.current = {'$$route': {menu: 'profile'}};
-
         scope = $rootScope.$new();
         ctrl = $controller(
             'profile',

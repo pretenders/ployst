@@ -5,14 +5,14 @@
  *     </div>
  */
 var ployst = angular.module('ployst', [
-        'ngRoute',
         'ngResource',
         'ngCookies',
+        'ngLodash',
+        'ui.router',
 
         'ployst.navbar',
         'ployst.profile',
         'ployst.projects',
-        'ployst.providers',
         'ployst.repos',
 
         'ployst.github'
@@ -20,6 +20,30 @@ var ployst = angular.module('ployst', [
     .constant('Django', {
         URL: URLS
     })
+    .config([
+        '$locationProvider', '$stateProvider', '$urlRouterProvider', 'Django',
+
+        function($locationProvider, $stateProvider, $urlRouterProvider, Django) {
+
+            $urlRouterProvider.otherwise('/projects/');
+
+            $stateProvider
+                .state('profile', {
+                    url: '/profile',
+                    controller: 'profile',
+                    templateUrl: Django.URL.STATIC + 'profile/profile.html',
+                    menu: 'profile'
+                })
+                .state('projects', {
+                    url: '/projects/:project',
+                    controller: 'ProjectController',
+                    templateUrl: Django.URL.STATIC + 'projects/projects.html',
+                    menu: 'projects'
+                });
+
+            $locationProvider.html5Mode(false);
+        }
+    ])
     .run([
         '$http', '$cookies',
 
@@ -27,39 +51,16 @@ var ployst = angular.module('ployst', [
             $http.defaults.headers.common['X-CSRFToken'] = $cookies.csrftoken;
         }
     ])
-    .config([
-        '$routeProvider', '$locationProvider', 'Django',
+    .directive('ngEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind('keydown keypress', function (event) {
+                if(event.which === 13) {
+                    scope.$apply(function (){
+                        scope.$eval(attrs.ngEnter);
+                    });
 
-        function($routeProvider, $locationProvider, Django) {
-            $routeProvider
-                .when('/profile', {
-                    controller: 'profile',
-                    templateUrl: Django.URL.STATIC + 'profile/profile.html',
-                    menu: 'profile'
-                })
-                .when('/projects', {
-                    controller: 'projects',
-                    templateUrl: Django.URL.STATIC + 'projects/projects.html',
-                    menu: 'projects'
-                })
-                .otherwise({
-                    redirectTo: '/projects'
-                });
-            $locationProvider.html5Mode(false);
-        }
-    ])
-    .directive('mainMenu',
-
-        function() {
-            return {
-                restrict: 'E',
-                templateUrl: Django.URL.STATIC + 'mainMenu.html',
-                controller: 'profile',
-                transclude: true,
-                replace: true,
-                scope: {
-                    collapsed: '@menuCollapsed'
+                    event.preventDefault();
                 }
-            };
-        }
-    );
+            });
+        };
+    });

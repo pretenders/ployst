@@ -151,7 +151,7 @@ COMPRESS_CSS_HASHING_METHOD = 'content'
 # a dynamic compile cycle while you work on CSS files
 
 LESS_COMMAND = '%s --include-path=%s {infile} {outfile}' % (
-    os.path.join(ROOT_DIR, 'node_modules', 'less', 'bin', 'lessc'),
+    os.path.join(ROOT_DIR, 'node_modules', '.bin', 'lessc'),
     os.path.join(STATIC_ROOT, 'css')
 )
 COMPRESS_PRECOMPILERS = (

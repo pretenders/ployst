@@ -9,8 +9,7 @@ describe('test user service', function () {
 
     beforeEach(inject(function(_$httpBackend_, $rootScope, User) {
         $httpBackend = _$httpBackend_;
-        $httpBackend.expectGET('/core/accounts/me')
-                    .respond(mockUser);
+        $httpBackend.expectGET('/core/accounts/me').respond(mockUser);
         service = User;
     }));
 

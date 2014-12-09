@@ -12,12 +12,22 @@ angular.module('ployst.projects', [
         }
     ])
     .service('ProjectService', [
+        '$filter',
+        'lodash',
         'Project',
 
-        function(Project) {
+        function($filter, _, Project) {
             var $this = this;
             this.project = 'unknown';
             this.projects = [];
+            this.startProject = null;
+
+            this.setStartProject = function(projectName) {
+                $this.startProject = projectName;
+                if($this.projects.length > 0) {
+                    this.selectProjectByName(projectName);
+                }
+            };
 
             this.setDefaultProject = function() {
                 // set first project as active
@@ -32,11 +42,22 @@ angular.module('ployst.projects', [
                 $this.project = project;
             };
 
+            this.selectProjectByName = function(name) {
+                var found = _.find($this.projects, function(p) {
+                    return name && p.name == name;
+                });
+                if(found) {
+                    $this.project = found;
+                } else {
+                    $this.setDefaultProject();
+                }
+            };
+
             this.createProject = function(newProject) {
                 var project = new Project({
                     name: newProject.name
                 });
-                project.$save(function(project) {
+                return project.$save(function(project) {
                     project = Project.get({
                         id: project.id
                     });
@@ -48,28 +69,32 @@ angular.module('ployst.projects', [
             };
 
             this.deleteProject = function(project) {
-                Project.delete({
+                return Project.delete({
                     id: project.id
                 }, function() {
                     // remove from list once deleted in backend
-                    $this.projects.splice($this.projects.indexOf(project), 1);
-                    $this.setDefaultProject();
-                });
+                    var index = $this.projects.indexOf(project);
+                    $this.projects.splice(index, 1);
+                    $this.project = $this.projects[index] ||
+                        $this.projects[index-1] ||
+                        null;
+                }).$promise;
             };
 
-            Project.query(function(projects) {
+            this.loadProjects = Project.query(function(projects) {
                 $this.projects = projects;
-                $this.setDefaultProject();
+                $this.selectProjectByName($this.startProject);
             });
         }
     ])
-    .controller('projects', [
-        '$http', '$scope', 'ProjectService', 'User',
+    .controller('ProjectController', [
+        '$http', '$scope', '$state', '$stateParams', 'ProjectService', 'User',
 
-        function($http, $scope, ProjectService, User) {
+        function($http, $scope, $state, $stateParams, ProjectService, User) {
             $scope.newUser = {};
             $scope.user = User.user;
             $scope.ps = ProjectService;
+            $scope.tab = 'activity';
 
             $scope.inviteUser = function(project, user) {
                 // invite user to join project: if email is recognised, add to
@@ -91,6 +116,37 @@ angular.module('ployst.projects', [
                         alert(data.error);
                     });
             };
+
+            var routeToCurrentProject = function() {
+                var project = $scope.ps.project;
+                var isPromise = project && typeof project.$promise !== 'undefined';
+                if(isPromise && !project.$resolved) {
+                    project.$promise.then(routeToCurrentProject);
+                } else {
+                    var name = project && project.name || '';
+                    $state.go('projects', {project: name});
+                }
+            };
+
+            $scope.deleteProject = function(project) {
+                return $scope.ps.deleteProject(project).then(routeToCurrentProject);
+            };
+
+            $scope.createProject = function(project) {
+                return $scope.ps.createProject(project).then(routeToCurrentProject);
+            };
+
+            // route to project in the route
+            if($stateParams.project) {
+                $scope.ps.setStartProject($stateParams.project);
+            }
+
+            // route to first project, if it was not already in the route
+            $scope.ps.loadProjects.$promise.then(function() {
+                if($scope.ps.project) {
+                    $state.go('projects', {project: $scope.ps.project.name});
+                }
+            });
         }
 
     ])

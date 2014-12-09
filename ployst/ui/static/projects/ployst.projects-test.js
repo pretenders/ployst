@@ -1,4 +1,4 @@
-describe('test projects controller', function() {
+describe('test ProjectController', function() {
 
     var ctrl,
         scope,
@@ -12,25 +12,34 @@ describe('test projects controller', function() {
             id: 1,
             name: 'project-one'
         },
-        mockProjects = [mockProject],
+        mockProject2 = {
+            users: [mockUser],
+            managers: [1],
+            id: 2,
+            name: 'project-two'
+        },
+        mockProjects = [mockProject, mockProject2],
         _Project;
 
     beforeEach(module('ployst'));
+    beforeEach(module('/static/projects/projects.html'));
 
-    beforeEach(inject(
-        function(_$httpBackend_, $controller, $rootScope, User) {
+    beforeEach(
+        inject(function(_$httpBackend_, $controller, $rootScope, User) {
             $httpBackend = _$httpBackend_;
             $httpBackend.expectGET('/core/accounts/me').respond(mockUser);
             $httpBackend.expectGET('/core/accounts/project').respond(mockProjects);
+
             User.user = mockUser;
 
             scope = $rootScope.$new();
             ctrl = $controller(
-                'projects', {
+                'ProjectController', {
                     $scope: scope
                 }
             );
-        }));
+        })
+    );
 
     beforeEach(function() {
         $httpBackend.flush();
@@ -42,30 +51,39 @@ describe('test projects controller', function() {
         expect(scope.ps.project.managers).toEqual([mockUser.id]);
     });
 
-    it('can delete a project', function() {
-        $httpBackend.expectDELETE('/core/accounts/project/1').respond();
-        scope.ps.deleteProject(mockProject);
-        $httpBackend.flush();
-        expect(scope.ps.projects.length).toBe(0);
-        expect(scope.ps.project).toBe(null);
-    });
-
     it('can create a project, and it becomes the active project', function() {
-        var mockProject2 = {
+        var mockProject3 = {
             users: [mockUser],
-            id: 2,
-            name: 'project-two'
+            id: 3,
+            name: 'project-three'
         };
         $httpBackend.expectPOST('/core/accounts/project')
-            .respond(mockProject2);
-        $httpBackend.expectGET('/core/accounts/project/2')
-            .respond(mockProject2);
-        scope.ps.createProject({
-            name: 'project-two'
+            .respond(mockProject3);
+        $httpBackend.expectGET('/core/accounts/project/3')
+            .respond(mockProject3);
+        scope.createProject({
+            name: 'project-three'
         });
         $httpBackend.flush();
-        expect(scope.ps.projects.length).toBe(2);
-        expect(scope.ps.project.name).toEqual(mockProject2.name);
+        expect(scope.ps.projects.length).toBe(3);
+        expect(scope.ps.project.name).toEqual(mockProject3.name);
     });
+
+    it('can delete a project', function() {
+        $httpBackend.expectDELETE('/core/accounts/project/1').respond();
+        scope.deleteProject(mockProject);
+        $httpBackend.flush();
+        expect(scope.ps.projects.length).toBe(1);
+    });
+
+    it('route contains project, that project is preselected',
+        inject(function($controller) {
+            ctrl = $controller('ProjectController', {
+                $scope: scope,
+                $stateParams: {project: 'project-two'}
+            });
+            expect(scope.ps.project.name).toBe('project-two');
+        })
+    );
 
 });
