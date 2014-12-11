@@ -34,14 +34,15 @@ module.exports = function(config) {
         ],
 
         preprocessors: {
-            'ployst/**/*.js': 'coverage',
+            'ployst/**/*.js': 'coverage',  // comment-out if debugging in browser
             'ployst/ui/static/**/*.html': 'ng-html2js'
         },
 
         ngHtml2JsPreprocessor: {
             // If your build process changes the path to your templates,
             // use stripPrefix and prependPrefix to adjust it.
-            stripPrefix: 'ployst/ui'
+            stripPrefix: 'ployst/ui',
+            moduleName: 'templates'
         },
 
         // list of files to exclude
@@ -78,6 +79,8 @@ module.exports = function(config) {
         // - PhantomJS
         // - IE (only Windows; install with `npm install karma-ie-launcher`)
         browsers: ['PhantomJS'],
+        // useful for debugging and testing on multiple browsers:
+        // browsers: ['PhantomJS', 'Chrome', 'Firefox'],
 
         // If browser does not capture in given timeout [ms], kill it
         captureTimeout: 60000,

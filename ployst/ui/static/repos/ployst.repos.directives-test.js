@@ -15,7 +15,7 @@ describe('directive: project-activity', function() {
         mockRepos = [mockRepo];
 
     beforeEach(module('ployst'));
-    beforeEach(module('/static/repos/project-branches.html'));
+    beforeEach(module('templates'));
 
     beforeEach(inject(function(_$compile_, _$rootScope_) {
         $compile = _$compile_;

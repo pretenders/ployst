@@ -8,8 +8,7 @@ describe('directive: navbar', function() {
         };
 
     beforeEach(module('ployst'));
-    beforeEach(module('/static/navbar/navbar.html'));
-    beforeEach(module('/static/projects/projects.html'));
+    beforeEach(module('templates'));
 
     beforeEach(inject(function(_$compile_, _$httpBackend_, _$rootScope_) {
         $httpBackend = _$httpBackend_;

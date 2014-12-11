@@ -112,7 +112,7 @@ angular.module('ployst.projects', [
             };
 
             this.loadProjects = Project.query(function(projects) {
-                $this.projects = projects;
+                $this.projects = _.sortBy(projects, 'name');
                 $this.selectProjectByName($this.startProject);
             });
         }
@@ -122,7 +122,6 @@ angular.module('ployst.projects', [
 
         function($scope, $state, $stateParams, ProjectService) {
             $scope.ps = ProjectService;
-            $scope.tab = 'activity';
 
             var routeToCurrentProject = function() {
                 var project = $scope.ps.project;
@@ -130,7 +129,7 @@ angular.module('ployst.projects', [
                 if(isPromise && !project.$resolved) {
                     project.$promise.then(routeToCurrentProject);
                 } else {
-                    $state.go('projects', {project: ''});
+                    $state.go('projects.activity', {project: ''});
                 }
             };
 
@@ -162,7 +161,6 @@ angular.module('ployst.projects', [
         function($http, $scope, User) {
             $scope.newUser = {};
             $scope.user = User.user;
-            $scope.tab = 'users';
 
             $scope.inviteUser = function(project, user) {
                 // invite user to join project: if email is recognised, add to
