@@ -10,32 +10,22 @@
 
 
 <ul class="nav nav-tabs">
-    <li ng-class="{active:tab=== 'activity'}">
-        <a href ng-click="tab = 'activity'">
+    <li ui-sref-active="active">
+        <a ui-sref=".activity">
             <i class="fa fa-rss"></i> Activity
         </a>
     </li>
-    <li ng-class="{active:tab==='repos'}">
-        <a href ng-click="tab = 'repos'">
+    <li ui-sref-active="active">
+        <a ui-sref=".repos">
             <i class="fa fa-code-fork"></i> Repositories
         </a>
     </li>
-    <li ng-class="{active:tab=== 'users'}">
-        <a href ng-click="tab = 'users'">
+    <li ui-sref-active="active">
+        <a ui-sref=".users">
             <i class="fa fa-user"></i> Users
         </a>
     </li>
 </ul>
 
 
-<div ng-if="tab == 'activity'">
-    <project-activity project="ps.project"></project-activity>
-</div>
-
-<div ng-if="tab == 'users'">
-    <project-users project="ps.project"></project-users>
-</div>
-
-<div ng-if="tab == 'repos'">
-    <github-config project="ps.project"></github-config>
-</div>
+<div ui-view></div>

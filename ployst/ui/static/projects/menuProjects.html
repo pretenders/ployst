@@ -11,8 +11,8 @@
             title="Create Project"></i>
         </p>
     </li>
-    <li ng-repeat="p in ps.projects" ng-class="{active: p===ps.project}">
-        <a ui-sref="projects({project:p.name})">
+    <li ng-repeat="p in ps.projects | orderBy:'name'" ng-class="{active: p===ps.project}">
+        <a ui-sref="projects.activity({project:p.name})">
             <i class="fa fa-fw fa-folder"></i> {{ p.name }}
         </a>
     </li>
