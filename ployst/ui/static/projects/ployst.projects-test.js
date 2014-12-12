@@ -22,7 +22,7 @@ describe('test ProjectController', function() {
         _Project;
 
     beforeEach(module('ployst'));
-    beforeEach(module('/static/projects/projects.html'));
+    beforeEach(module('templates'));
 
     beforeEach(
         inject(function(_$httpBackend_, $controller, $rootScope, User) {

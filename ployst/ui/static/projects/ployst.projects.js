@@ -2,7 +2,37 @@
  * Ployst project management page
  */
 angular.module('ployst.projects', [
-        'ngResource'
+        'ngResource',
+        'ployst.base'
+    ])
+    .config([
+        '$stateProvider', 'Django',
+
+        function($stateProvider, Django) {
+            $stateProvider
+                .state('projects', {
+                    url: '/projects/:project',
+                    controller: 'ProjectController',
+                    templateUrl: Django.URL.STATIC + 'projects/projects.html',
+                    menu: 'projects'
+                })
+                .state('projects.activity', {
+                    url: '/feed',
+                    parent: 'projects',
+                    templateUrl: Django.URL.STATIC + 'projects/project-activity.html',
+                    menu: 'projects'
+                })
+                .state('projects.repos', {
+                    url: '/repos',
+                    templateUrl: Django.URL.STATIC + 'projects/project-repos.html',
+                    menu: 'projects'
+                })
+                .state('projects.users', {
+                    url: '/users',
+                    templateUrl: Django.URL.STATIC + 'projects/project-users.html',
+                    menu: 'projects'
+                });
+        }
     ])
     .factory('Project', [
         '$resource',
@@ -82,19 +112,55 @@ angular.module('ployst.projects', [
             };
 
             this.loadProjects = Project.query(function(projects) {
-                $this.projects = projects;
+                $this.projects = _.sortBy(projects, 'name');
                 $this.selectProjectByName($this.startProject);
             });
         }
     ])
     .controller('ProjectController', [
-        '$http', '$scope', '$state', '$stateParams', 'ProjectService', 'User',
+        '$scope', '$state', '$stateParams', 'ProjectService',
 
-        function($http, $scope, $state, $stateParams, ProjectService, User) {
+        function($scope, $state, $stateParams, ProjectService) {
+            $scope.ps = ProjectService;
+
+            var routeToCurrentProject = function() {
+                var project = $scope.ps.project;
+                var isPromise = project && typeof project.$promise !== 'undefined';
+                if(isPromise && !project.$resolved) {
+                    project.$promise.then(routeToCurrentProject);
+                } else {
+                    $state.go('projects.activity', {project: ''});
+                }
+            };
+
+            $scope.deleteProject = function(project) {
+                return $scope.ps.deleteProject(project).then(routeToCurrentProject);
+            };
+
+            $scope.createProject = function(project) {
+                return $scope.ps.createProject(project).then(routeToCurrentProject);
+            };
+
+            // route to project in the route
+            if($stateParams.project) {
+                $scope.ps.setStartProject($stateParams.project);
+            }
+
+            // route to first project, if it was not already in the route
+            $scope.ps.loadProjects.$promise.then(function() {
+                if($scope.ps.project.name != $stateParams.project) {
+                    $state.go('projects', {project: $scope.ps.project.name});
+                }
+            });
+        }
+
+    ])
+    .controller('ProjectUsersController', [
+        '$http', '$scope', 'User',
+
+        function($http, $scope, User) {
             $scope.newUser = {};
             $scope.user = User.user;
-            $scope.ps = ProjectService;
-            $scope.tab = 'activity';
 
             $scope.inviteUser = function(project, user) {
                 // invite user to join project: if email is recognised, add to
@@ -116,39 +182,7 @@ angular.module('ployst.projects', [
                         alert(data.error);
                     });
             };
-
-            var routeToCurrentProject = function() {
-                var project = $scope.ps.project;
-                var isPromise = project && typeof project.$promise !== 'undefined';
-                if(isPromise && !project.$resolved) {
-                    project.$promise.then(routeToCurrentProject);
-                } else {
-                    var name = project && project.name || '';
-                    $state.go('projects', {project: name});
-                }
-            };
-
-            $scope.deleteProject = function(project) {
-                return $scope.ps.deleteProject(project).then(routeToCurrentProject);
-            };
-
-            $scope.createProject = function(project) {
-                return $scope.ps.createProject(project).then(routeToCurrentProject);
-            };
-
-            // route to project in the route
-            if($stateParams.project) {
-                $scope.ps.setStartProject($stateParams.project);
-            }
-
-            // route to first project, if it was not already in the route
-            $scope.ps.loadProjects.$promise.then(function() {
-                if($scope.ps.project) {
-                    $state.go('projects', {project: $scope.ps.project.name});
-                }
-            });
         }
-
     ])
     .directive('menuProjects', [
         'Django',
@@ -176,6 +210,7 @@ angular.module('ployst.projects', [
         function(Django) {
             return {
                 restrict: 'E',
+                controller: 'ProjectUsersController',
                 templateUrl: Django.URL.STATIC + 'projects/projectUsers.html'
             };
         }

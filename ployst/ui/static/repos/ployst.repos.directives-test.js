@@ -9,13 +9,13 @@ describe('directive: project-activity', function() {
             'id': 1,
             'name': 'ployst',
             'owner': 'pretenders',
-            'branches': ['branch-one'],
+            'branches': [{name: 'branch-one'}],
             'project': 1
         },
         mockRepos = [mockRepo];
 
     beforeEach(module('ployst'));
-    beforeEach(module('/static/repos/project-branches.html'));
+    beforeEach(module('templates'));
 
     beforeEach(inject(function(_$compile_, _$rootScope_) {
         $compile = _$compile_;
@@ -32,15 +32,14 @@ describe('directive: project-activity', function() {
             var element = '<project-activity project="project"></project-activity>';
             var scope = $rootScope.$new();
             scope.project = project;
-
             element = $compile(element)(scope);
-            $rootScope.$digest();
-
             scope = element.isolateScope();
 
-            expect(element.controller).not.toBeNull();
+            $rootScope.$digest();
 
+            expect(element.controller).not.toBeNull();
             expect(element.html()).toContain('<th>Branch Name');
+            //expect(element.html()).toContain('branch-one');
         });
 
     });

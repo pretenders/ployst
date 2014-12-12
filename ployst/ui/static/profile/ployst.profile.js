@@ -3,7 +3,21 @@
  */
 angular.module('ployst.profile', [
         'ngResource',
-        'ui.router'
+        'ui.router',
+        'ployst.base'
+    ])
+    .config([
+        '$stateProvider', 'Django',
+
+        function($stateProvider, Django) {
+            $stateProvider
+                .state('profile', {
+                    url: '/profile',
+                    controller: 'profile',
+                    templateUrl: Django.URL.STATIC + 'profile/profile.html',
+                    menu: 'profile'
+                });
+        }
     ])
     .service('User', [
         '$resource',
