@@ -50,10 +50,8 @@ angular.module('ployst.repos', [
             // ensure that when current project ID changes, we reload
             $scope.$watch(function() {
                 return $scope.project.id;
-            }, function (newProject, oldProject) {
-                if(newProject != oldProject) {
-                    loadData();
-                }
+            }, function () {
+                loadData();
             });
         }
     ])
