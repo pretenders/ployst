@@ -96,7 +96,7 @@ class TestAccessTokenExchange(TestCase):
     @httpretty.activate
     @patch(__name__ + '.views.oauth.LOGGER')
     @patch(__name__ + '.views.oauth.client.set_access_token')
-    def test_github_returns_error(self, set_access_token, LOGGER):
+    def test_github_returns_error(self, set_access_token, logger):
         """
         Test what happens when github comes back with some non-200 status.
 
@@ -114,7 +114,7 @@ class TestAccessTokenExchange(TestCase):
         self.assertEquals(set_access_token.call_count, 0)
         self.assertTrue(
             'Received a 400 response from Github'
-            in LOGGER.error.call_args[0][0]
+            in logger.error.call_args[0][0]
         )
 
 

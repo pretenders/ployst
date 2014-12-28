@@ -10,12 +10,12 @@ class CoreApiClientTestMixin(object):
     """
 
     @classmethod
-    def setUpClass(self):
-        self.token = Token.objects.create()
-        self.request_factory = APIRequestFactory()
+    def setUpClass(cls):
+        cls.token = Token.objects.create()
+        cls.request_factory = APIRequestFactory()
 
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(cls):
         Token.objects.all().delete()
 
     def get_token_headers(self):

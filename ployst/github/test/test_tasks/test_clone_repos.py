@@ -109,6 +109,6 @@ class TestEnsureClonesForProject(unittest.TestCase):
         self.assertEqual(
             clone_repo.call_args[0][2],
             '/tmp/test-ensure-clones/pretenders/dummyrepo/clone'
-            )
+        )
         ssh_key = '/tmp/test-ensure-clones/pretenders/dummyrepo/ssh-key'
         self.assertTrue(os.path.exists(ssh_key))

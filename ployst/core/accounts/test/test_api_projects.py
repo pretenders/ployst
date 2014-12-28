@@ -40,18 +40,18 @@ class TestProjects(CoreApiClientTestMixin, TestCase):
 
     def test_create_project(self):
         "A logged in user can create a project"
-        NAME = 'new project'
+        name = 'new project'
         url = reverse('core:accounts:project-list')
         user = UserFactory(email='test@ployst.com', password='secret')
-        data = {'name': NAME}
+        data = {'name': name}
         self.client.login(username=user.username, password='secret')
 
         response = self.client.post(url, data=data)
 
         self.assertEquals(response.status_code, 201)
         project = json.loads(response.content)
-        self.assertEquals(project['name'], NAME)
-        project_user = ProjectUser.objects.get(project__name=NAME)
+        self.assertEquals(project['name'], name)
+        project_user = ProjectUser.objects.get(project__name=name)
         self.assertEquals(project_user.user, user)
         self.assertTrue(project_user.manager)
 

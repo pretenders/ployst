@@ -22,9 +22,6 @@ class Revision(models.CharField):
         return self.column.__name__
 
 
-#add_introspection_rules([], ["^ployst\.core\.repos\.models\.Revision"])
-
-
 class Repository(ProjectObject):
     """
     A Git Repository.

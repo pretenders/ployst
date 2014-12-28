@@ -143,8 +143,7 @@ class TestBranchCreation(ProjectTestMixin, APITestCase):
             'name': 'dev/alex',
             'head': 'somecommithash',
             'merged_into_parent': False,
-            }
-        )
+        })
 
         self.assertEquals(201, response.status_code)
 
@@ -171,8 +170,7 @@ class TestBranchCreation(ProjectTestMixin, APITestCase):
             'name': 'dev/test1',
             'head': 'anotherhash',
             'merged_into_parent': False,
-            }
-        )
+        })
 
         self.assertEquals(200, response.status_code)
         branches = Branch.objects.all()

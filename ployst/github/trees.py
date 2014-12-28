@@ -42,7 +42,7 @@ class Hierarchy(list):
         "Get the appropriate parent node for items on the level given"
         while level > 0:
             try:
-                return self[level-1][0]
+                return self[level - 1][0]
             except IndexError:
                 level -= 1
         return None
