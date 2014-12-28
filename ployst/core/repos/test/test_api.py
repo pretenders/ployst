@@ -22,8 +22,7 @@ class TestFiltering(ProjectTestMixin, APITestCase):
         RepositoryFactory(name='PloystTest', project=project2)
         url = reverse('core:repos:repository-list')
 
-        response = self.client.get('{0}?project={1}'.format(
-            url, self.project.id))
+        response = self.client.get(url, {'project': self.project.id})
 
         repos = json.loads(response.content)
         self.assertEquals(len(repos), 1)
@@ -40,8 +39,8 @@ class TestFiltering(ProjectTestMixin, APITestCase):
         RepositoryFactory(owner='you', name='B', project=self.project)
         url = reverse('core:repos:repository-list')
 
-        response = self.client.get('{0}?owner={1}&name={2}'.format(
-            url, repo1.owner, repo1.name))
+        response = self.client.get(url, {'owner': repo1.owner,
+                                         'name': repo1.name})
 
         repos = json.loads(response.content)
         self.assertEquals(len(repos), 1)

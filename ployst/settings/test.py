@@ -18,4 +18,6 @@ LOGGING['loggers'].update({
     },
 })
 
-SOUTH_TESTS_MIGRATE = False
+# Do not migrate providers: allow for test models
+# http://stackoverflow.com/a/25267435/166761
+MIGRATION_MODULES = {"providers": "providers.migrations_not_used_in_tests"}
