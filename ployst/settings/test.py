@@ -18,6 +18,15 @@ LOGGING['loggers'].update({
     },
 })
 
-# Do not migrate providers: allow for test models
+
+# Do not migrate during tests
 # http://stackoverflow.com/a/25267435/166761
-MIGRATION_MODULES = {"providers": "providers.migrations_not_used_in_tests"}
+
+class DisableMigrations(object):
+    def __contains__(self, item):
+        return True
+
+    def __getitem__(self, item):
+        return "notmigrations"
+
+MIGRATION_MODULES = DisableMigrations()
