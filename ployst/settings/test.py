@@ -18,4 +18,15 @@ LOGGING['loggers'].update({
     },
 })
 
-SOUTH_TESTS_MIGRATE = False
+
+# Do not migrate during tests
+# http://stackoverflow.com/a/25267435/166761
+
+class DisableMigrations(object):
+    def __contains__(self, item):
+        return True
+
+    def __getitem__(self, item):
+        return "notmigrations"
+
+MIGRATION_MODULES = DisableMigrations()

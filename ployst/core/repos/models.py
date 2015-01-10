@@ -1,5 +1,4 @@
 from django.db import models
-from south.modelsinspector import add_introspection_rules
 
 from ployst.core.accounts.models import ProjectObject
 from ployst.core.features.models import Feature, Project
@@ -16,13 +15,11 @@ class Revision(models.CharField):
 
     def __init__(self, *args, **kwargs):
         kwargs['max_length'] = 40
-        super(Revision, self).__init__(self, *args, **kwargs)
+        super(Revision, self).__init__(*args, **kwargs)
 
     def __unicode__(self):
         "The display name will be the column name"
-        return self.column
-
-add_introspection_rules([], ["^ployst\.core\.repos\.models\.Revision"])
+        return self.column.__name__
 
 
 class Repository(ProjectObject):
@@ -55,7 +52,8 @@ class Branch(ProjectObject):
     repo = models.ForeignKey(Repository, related_name='branches')
     name = models.CharField(max_length=100)
     head = Revision(help_text="Latest known revision", blank=True, null=True)
-    merged_into_parent = models.BooleanField(help_text="Merged into parent")
+    merged_into_parent = models.BooleanField(default=False,
+                                             help_text="Merged into parent")
     parent = models.ForeignKey("self", related_name="children",
                                blank=True, null=True)
     feature = models.ForeignKey(Feature, related_name='branches',

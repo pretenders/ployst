@@ -1,32 +1,23 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Token'
-        db.create_table(u'apibase_token', (
-            ('key', self.gf('django.db.models.fields.CharField')(max_length=50, primary_key=True)),
-            ('label', self.gf('django.db.models.fields.CharField')(max_length=200)),
-        ))
-        db.send_create_signal(u'apibase', ['Token'])
+    dependencies = [
+    ]
 
-
-    def backwards(self, orm):
-        # Deleting model 'Token'
-        db.delete_table(u'apibase_token')
-
-
-    models = {
-        u'apibase.token': {
-            'Meta': {'object_name': 'Token'},
-            'key': ('django.db.models.fields.CharField', [], {'max_length': '50', 'primary_key': 'True'}),
-            'label': ('django.db.models.fields.CharField', [], {'max_length': '200'})
-        }
-    }
-
-    complete_apps = ['apibase']
+    operations = [
+        migrations.CreateModel(
+            name='Token',
+            fields=[
+                ('key', models.CharField(max_length=50, serialize=False, editable=False, primary_key=True)),
+                ('label', models.CharField(help_text=b'\n        A label to distinguish between tokens.\n        May be e.g. the provider/client name.\n        ', max_length=200)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+    ]

@@ -5,4 +5,4 @@ Sphinx==1.2.2
 sphinx_bootstrap_theme==0.4.0
 
 # code checks
-flake8
+flake8==2.2.5

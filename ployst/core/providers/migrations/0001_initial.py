@@ -1,51 +1,30 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'ProviderData'
-        db.create_table(u'providers_providerdata', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
-            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('provider', self.gf('django.db.models.fields.CharField')(max_length=40)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=40)),
-            ('display_value', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('display_type', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('private_value', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-        ))
-        db.send_create_signal(u'providers', ['ProviderData'])
+    dependencies = [
+        ('contenttypes', '0001_initial'),
+    ]
 
-
-    def backwards(self, orm):
-        # Deleting model 'ProviderData'
-        db.delete_table(u'providers_providerdata')
-
-
-    models = {
-        u'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        u'providers.providerdata': {
-            'Meta': {'object_name': 'ProviderData'},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
-            'display_type': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'display_value': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
-            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'private_value': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'provider': ('django.db.models.fields.CharField', [], {'max_length': '40'})
-        }
-    }
-
-    complete_apps = ['providers']
+    operations = [
+        migrations.CreateModel(
+            name='ProviderData',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('object_id', models.PositiveIntegerField()),
+                ('provider', models.CharField(help_text=b'The provider for this data item', max_length=40)),
+                ('name', models.CharField(help_text=b'The name of this data item', max_length=40)),
+                ('value', models.TextField(help_text=b'Internal representation of this value, for provider use', null=True, blank=True)),
+                ('display_value', models.CharField(help_text=b'Value to display', max_length=100)),
+                ('display_type', models.IntegerField(default=0, help_text=b'How do you want this value to be displayed', verbose_name=b'Display Type', choices=[(0, b'String'), (1, b'Traffic Light')])),
+                ('content_type', models.ForeignKey(to='contenttypes.ContentType')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+    ]

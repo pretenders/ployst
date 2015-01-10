@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     'registration',                 # django-registration
     'compressor',
     'crispy_forms',
-    'south',
 
     'rest_framework',               # restful api
 

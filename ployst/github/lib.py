@@ -64,7 +64,7 @@ class HierarchyHandler(object):
                 'parent_name': parent_name,
                 'merged_into_parent': merged_into_parent,
                 'branch_name': node.branch,
-                })
+            })
 
         return statuses
 

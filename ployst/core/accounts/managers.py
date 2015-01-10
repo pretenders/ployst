@@ -43,7 +43,7 @@ class ProjectObjectsManager(Manager):
     It can filter objects that belong to a project or to a user
     """
 
-    def get_query_set(self):
+    def get_queryset(self):
         """
         Return a project objects query set.
 
@@ -57,10 +57,10 @@ class ProjectObjectsManager(Manager):
         """
         Return only project objects.
         """
-        return self.get_query_set().for_project(project)
+        return self.get_queryset().for_project(project)
 
     def for_user(self, user):
         """
         Return only user objects.
         """
-        return self.get_query_set().for_user(user)
+        return self.get_queryset().for_user(user)

@@ -12,8 +12,7 @@ class TestTokenPermissions(CoreApiClientTestMixin, TestCase):
         self.assertFalse(permissions.has_permission(request, None))
 
     def test_valid_token_in_url_has_permission(self):
-        url = '/?{}={}'.format(TOKEN_HEADER, self.token.key)
-        request = self.request_factory.get(url)
+        request = self.request_factory.get('/', {TOKEN_HEADER: self.token.key})
         permissions = ClientTokenPermission()
         self.assertTrue(permissions.has_permission(request, None))
 

@@ -1,143 +1,55 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+import ployst.core.repos.models
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Repository'
-        db.create_table(u'repos_repository', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('project', self.gf('django.db.models.fields.related.ForeignKey')(related_name='repositories', to=orm['accounts.Project'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('active', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('local_path', self.gf('django.db.models.fields.CharField')(max_length=100)),
-        ))
-        db.send_create_signal(u'repos', ['Repository'])
+    dependencies = [
+        ('features', '0001_initial'),
+        ('accounts', '0001_initial'),
+    ]
 
-        # Adding model 'Branch'
-        db.create_table(u'repos_branch', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('repo', self.gf('django.db.models.fields.related.ForeignKey')(related_name='branches', to=orm['repos.Repository'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('head', self.gf('ployst.core.repos.models.Revision')(max_length=40)),
-            ('merged_into_parent', self.gf('django.db.models.fields.BooleanField')()),
-            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(related_name='children', null=True, to=orm['repos.Branch'])),
-        ))
-        db.send_create_signal(u'repos', ['Branch'])
-
-        # Adding M2M table for field features on 'Branch'
-        db.create_table(u'repos_branch_features', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('branch', models.ForeignKey(orm[u'repos.branch'], null=False)),
-            ('feature', models.ForeignKey(orm[u'features.feature'], null=False))
-        ))
-        db.create_unique(u'repos_branch_features', ['branch_id', 'feature_id'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'Repository'
-        db.delete_table(u'repos_repository')
-
-        # Deleting model 'Branch'
-        db.delete_table(u'repos_branch')
-
-        # Removing M2M table for field features on 'Branch'
-        db.delete_table('repos_branch_features')
-
-
-    models = {
-        u'accounts.project': {
-            'Meta': {'object_name': 'Project'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'team': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'projects'", 'to': u"orm['accounts.Team']"}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
-        },
-        u'accounts.team': {
-            'Meta': {'object_name': 'Team'},
-            'guid': ('django.db.models.fields.CharField', [], {'max_length': '50', 'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'users': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.User']", 'through': u"orm['accounts.TeamUser']", 'symmetrical': 'False'})
-        },
-        u'accounts.teamuser': {
-            'Meta': {'object_name': 'TeamUser'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'manager': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'team': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['accounts.Team']"}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
-        },
-        u'auth.group': {
-            'Meta': {'object_name': 'Group'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
-        },
-        u'auth.permission': {
-            'Meta': {'ordering': "(u'content_type__app_label', u'content_type__model', u'codename')", 'unique_together': "((u'content_type', u'codename'),)", 'object_name': 'Permission'},
-            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
-        },
-        u'auth.user': {
-            'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Group']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Permission']"}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
-        },
-        u'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        u'features.feature': {
-            'Meta': {'object_name': 'Feature'},
-            'description': ('django.db.models.fields.TextField', [], {}),
-            'feature_id': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'owner': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True'}),
-            'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'features'", 'to': u"orm['accounts.Project']"}),
-            'provider': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'type': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
-        },
-        u'repos.branch': {
-            'Meta': {'object_name': 'Branch'},
-            'features': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['features.Feature']", 'symmetrical': 'False'}),
-            'head': ('ployst.core.repos.models.Revision', [], {'max_length': '40'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'merged_into_parent': ('django.db.models.fields.BooleanField', [], {}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'parent': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'children'", 'null': 'True', 'to': u"orm['repos.Branch']"}),
-            'repo': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'branches'", 'to': u"orm['repos.Repository']"})
-        },
-        u'repos.repository': {
-            'Meta': {'object_name': 'Repository'},
-            'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'local_path': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'repositories'", 'to': u"orm['accounts.Project']"}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
-        }
-    }
-
-    complete_apps = ['repos']
+    operations = [
+        migrations.CreateModel(
+            name='Branch',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=100)),
+                ('head', ployst.core.repos.models.Revision(help_text=b'Latest known revision', max_length=40, null=True, blank=True)),
+                ('merged_into_parent', models.BooleanField(default=False, help_text=b'Merged into parent')),
+                ('feature', models.ForeignKey(related_name='branches', blank=True, to='features.Feature', null=True)),
+                ('parent', models.ForeignKey(related_name='children', blank=True, to='repos.Branch', null=True)),
+            ],
+            options={
+                'verbose_name_plural': 'branches',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Repository',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=100)),
+                ('owner', models.CharField(max_length=100)),
+                ('active', models.BooleanField(default=True)),
+                ('project', models.ForeignKey(related_name='repositories', to='accounts.Project')),
+            ],
+            options={
+                'verbose_name_plural': 'repositories',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='branch',
+            name='repo',
+            field=models.ForeignKey(related_name='branches', to='repos.Repository'),
+            preserve_default=True,
+        ),
+        migrations.AlterUniqueTogether(
+            name='branch',
+            unique_together=set([('repo', 'name')]),
+        ),
+    ]

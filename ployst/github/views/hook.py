@@ -41,7 +41,7 @@ def receive(request):
             return HttpResponseBadRequest()
 
     except (KeyError, ValueError):
-        LOGGER.exception('Unexpected data structure')
+        LOGGER.error('Unexpected data structure')
         return HttpResponseBadRequest()
 
     if branch_name:
