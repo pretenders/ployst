@@ -1,4 +1,4 @@
-django==1.7.1
+django==1.7.3
 django-appconf==0.6              # provides graceful configuration of apps
 django-compressor==1.4
 django-crispy-forms==1.4.0       # better control over form rendering
