@@ -1,7 +1,10 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Project, ProjectUser
+from .models import (
+    Project, ProjectProviderSettings, ProjectUser,
+    UserOAuthToken
+)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,14 +27,14 @@ class ProjectUserSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    users = ProjectUserSerializer(source='projectuser_set',
-                                  many=True, read_only=True)
+    users = ProjectUserSerializer(source='projectuser_set', many=True)
     am_manager = serializers.SerializerMethodField('managed_by_me')
 
-    extra_data = serializers.Field(source='extra_data')
+    extra_data = serializers.ReadOnlyField()
 
     class Meta:
         model = Project
+        read_only_fields = ('users',)
 
     def managed_by_me(self, obj):
         request = self.context.get('request', None)
@@ -39,3 +42,13 @@ class ProjectSerializer(serializers.ModelSerializer):
             return obj.projectuser_set.filter(
                 user=request.user, manager=True).exists()
         return False
+
+
+class ProjectProviderSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectProviderSettings
+
+
+class UserOAuthTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserOAuthToken

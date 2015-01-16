@@ -3,7 +3,7 @@ django-appconf==0.6              # provides graceful configuration of apps
 django-compressor==1.4
 django-crispy-forms==1.4.0       # better control over form rendering
 django-filter==0.7               # provides generic filtering in API
-djangorestframework==2.3.12
+djangorestframework==3.0.3       # Rest API
 django-registration-redux==1.1   # user accounts and registration
 drf-extensions==0.2.5            # DRF enhancements, including nested routers
 

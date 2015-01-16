@@ -51,7 +51,7 @@ class ProviderDataValueView(ProviderDataMixin, RetrieveUpdateDestroyAPIView):
 
 class ProviderDataView(ProviderDataMixin, ListCreateAPIView):
 
-    def pre_save(self, obj):
+    def perform_create(self, serializer):
         """
         Properly populate content object.
 
@@ -59,5 +59,7 @@ class ProviderDataView(ProviderDataMixin, ListCreateAPIView):
         instance from the entity and object_id in the URL.
 
         """
-        obj.content_type, obj.object_id = self.get_content_object()
-        return super(ProviderDataView, self).pre_save(obj)
+        content_type, object_id = self.get_content_object()
+        serializer.save(content_type_id=content_type.id, object_id=object_id)
+
+    perform_update = perform_create

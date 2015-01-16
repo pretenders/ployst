@@ -1,4 +1,4 @@
-from rest_framework.decorators import action
+from rest_framework.decorators import detail_route
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -11,7 +11,10 @@ from .models import (
     Project, ProjectUser, ProjectProviderSettings, User,
     UserOAuthToken
 )
-from .serializers import ProjectSerializer, UserSerializer
+from .serializers import (
+    ProjectProviderSettingsSerializer, ProjectSerializer,
+    UserOAuthTokenSerializer, UserSerializer,
+)
 
 
 class MyAccountView(RetrieveAPIView):
@@ -49,7 +52,12 @@ class ProjectViewSet(PermissionsViewSetMixin, ModelViewSet):
             project=self.object, user=request.user, manager=True)
         return response
 
-    @action()
+    def perform_create(self, serializer):
+        # TODO: this seems hacky but DRF 3.0 does not provide an obvious way to
+        # access the created object(?)
+        self.object = serializer.save()
+
+    @detail_route(methods=['post'])
     def invite_user(self, request, pk=None):
         """
         Invite a user to your project, from email address.
@@ -87,24 +95,28 @@ class ProjectViewSet(PermissionsViewSetMixin, ModelViewSet):
 
 class ProjectProviderSettingsViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = ProjectProviderSettings
+    serializer_class = ProjectProviderSettingsSerializer
     filter_fields = ('provider',)
 
 
 class UserTokenViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = UserOAuthToken
+    serializer_class = UserOAuthTokenSerializer
     filter_fields = ('user', 'identifier')
 
     def delete(self, request, *args, **kwargs):
         self.kwargs = {'pk': request.GET['id']}
         return self.destroy(request, *args, **kwargs)
 
-    def pre_save(self, instance):
+    def perform_create(self, serializer):
         """
         We ensure older tokens for the same user and identifier get replaced.
 
         We do this by deleting all older tokens before saving.
 
         """
+        instance = serializer.data
         UserOAuthToken.objects.filter(
-            user=instance.user, identifier=instance.identifier
+            user_id=instance['user'], identifier=instance['identifier']
         ).delete()
+        return super(UserTokenViewSet, self).perform_create(serializer)
