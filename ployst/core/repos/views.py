@@ -3,7 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from ployst.core.accounts.mixins import PermissionsViewSetMixin
 
 from .models import Repository, Branch
-from .serializers import RepositorySerializer
+from .serializers import BranchSerializer, RepositorySerializer
 
 
 class RepositoryViewSet(PermissionsViewSetMixin, ModelViewSet):
@@ -18,10 +18,10 @@ class RepositoryViewSet(PermissionsViewSetMixin, ModelViewSet):
         User that creates the entry must be project manager.
 
         """
-        serializer = self.get_serializer(data=request.DATA,
-                                         files=request.FILES)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            self.assert_is_project_manager(request, serializer.object)
+            self.assert_is_project_manager(
+                request, serializer.validated_data['project'])
 
         return super(RepositoryViewSet, self).create(request, *args, **kwargs)
 
@@ -32,4 +32,5 @@ class RepositoryViewSet(PermissionsViewSetMixin, ModelViewSet):
 
 class BranchViewSet(PermissionsViewSetMixin, ModelViewSet):
     model = Branch
+    serializer_class = BranchSerializer
     filter_fields = ('name', 'repo', 'repo__project')

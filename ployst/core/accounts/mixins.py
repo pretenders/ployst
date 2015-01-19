@@ -4,7 +4,7 @@ from ployst.apibase.permissions import (
     AnyPermissions, IsAuthenticated, ClientTokenPermission
 )
 
-from .models import ProjectUser
+from .models import Project, ProjectUser
 
 
 class PermissionsViewSetMixin(object):
@@ -46,9 +46,10 @@ class PermissionsViewSetMixin(object):
         typically only one step in our data structure.
 
         """
-        lookup = obj.project_lookup.split('__')
-        for step in lookup:
-            obj = getattr(obj, step)
+        if not isinstance(obj, Project):
+            lookup = obj.project_lookup.split('__')
+            for step in lookup:
+                obj = getattr(obj, step)
         if not ProjectUser.objects.filter(project=obj,
                                           user=request.user,
                                           manager=True):
