@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/pretenders/ployst.svg?branch=develop)](https://travis-ci.org/pretenders/ployst)
+[![Code Health](https://landscape.io/github/pretenders/ployst/develop/landscape.svg)](https://landscape.io/github/pretenders/ployst/develop)
+[![Requirements Status](https://requires.io/github/pretenders/ployst/requirements.svg?branch=develop)](https://requires.io/github/pretenders/ployst/requirements/?branch=develop)
+
 # Ployst
 
 
