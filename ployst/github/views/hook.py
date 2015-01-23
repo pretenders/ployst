@@ -27,7 +27,7 @@ class PloystGithubHookHandler(GithubHookHandler):
     """
     Custom Github hook handler for ployst.
 
-    Add an on_<event> method for each new event you want to hndle
+    Add an on_<event> method for each new event you want to handle.
 
     """
     def on_push(self, payload):

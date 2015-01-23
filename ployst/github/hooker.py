@@ -45,7 +45,9 @@ class GithubHookHandler(object):
         self.event = request.META['HTTP_X_GITHUB_EVENT']
 
         if DEBUG:
-            filename = 'github-hook-{}.json'.format(datetime.now().isoformat())
+            filename = 'github-hook-{}-{}.json'.format(
+                datetime.now().isoformat(), self.event
+            )
             with open(filename, 'w') as f:
                 f.write(request.body)
 
