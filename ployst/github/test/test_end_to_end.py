@@ -15,7 +15,7 @@ class TestEndToEnd(TestCase):
     def setUp(self):
         ensure_dummy_clone_available()
 
-    @patch(__name__ + '.tasks.hierarchy.client', MockClient())
+    @patch('ployst.github.tasks.hierarchy.client', MockClient())
     @override_settings(GITHUB_REPOSITORY_LOCATION=DUMMY_CODE_DIR)
     @override_settings(GITHUB_CALCULATE_HIERARCHIES_ON_HOOK=True)
     def test_receive_hook_end_to_end(self):
@@ -34,7 +34,10 @@ class TestEndToEnd(TestCase):
             reverse('github:hook'),
             data=data,
             content_type='application/json',
-            **{'HTTP_X_HUB_SIGNATURE': hub_sig}
+            **{
+                'HTTP_X_HUB_SIGNATURE': hub_sig,
+                'HTTP_X_GITHUB_EVENT': 'push',
+            }
         )
 
         self.assertEquals(response.status_code, 200)

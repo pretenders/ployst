@@ -6,7 +6,8 @@ import requests
 from django.core.management.base import BaseCommand, CommandError
 from django.core.urlresolvers import reverse
 
-from ...github_client import compute_github_signature
+from ...github_client import get_secret
+from ...hooker import compute_github_signature
 
 
 class Command(BaseCommand):
@@ -37,12 +38,19 @@ class Command(BaseCommand):
             'repository': {
                 'url': repo_url
             },
-            'ref': branch_name
+            'ref': branch_name,
+            'head_commit': {
+                'id': '1234567'
+            }
         })
-        sig = compute_github_signature(load, org, repo)
+        secret = get_secret(org, repo)
+        sig = compute_github_signature(load, secret)
 
         response = requests.post(full_url, data=load,
-                                 headers={'X_HUB_SIGNATURE': sig})
+                                 headers={
+                                     'X-Hub-Signature': sig,
+                                     'X-Github-Event': 'push',
+                                 })
         print response.status_code
 
         if response.status_code != 200:
