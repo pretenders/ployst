@@ -10,13 +10,16 @@ from .. import views  # noqa
 
 class TestReceiveHook(TestCase):
 
-    def post(self, data):
+    def post(self, data, **kwargs):
+        kwargs.update({
+            'HTTP_X_HUB_SIGNATURE': 'f',
+        })
         return self.client.post(reverse('github:hook'), data=data,
                                 content_type='application/json',
-                                **{'HTTP_X_HUB_SIGNATURE': 'f'})
+                                **kwargs)
 
     @patch(__name__ + '.views.hook.recalculate')
-    @patch(__name__ + '.views.hook.validate_hook_post',
+    @patch(__name__ + '.views.hook.GithubHookHandler.validate_hook_post',
            Mock(return_value=True))
     @override_settings(GITHUB_CALCULATE_HIERARCHIES_ON_HOOK=True)
     def test_post_causes_recalculation(self, recalculate):
@@ -28,7 +31,7 @@ class TestReceiveHook(TestCase):
         """
         data = read_data('post-receive-hook.json')
 
-        response = self.post(data)
+        response = self.post(data, HTTP_X_GITHUB_EVENT='push')
 
         self.assertEquals(response.status_code, 200)
         self.assertEquals(recalculate.delay.call_count, 1)
@@ -38,7 +41,7 @@ class TestReceiveHook(TestCase):
 
     @patch(__name__ + '.views.hook.recalculate')
     @patch(__name__ + '.views.hook.update_branch_information')
-    @patch(__name__ + '.views.hook.validate_hook_post',
+    @patch(__name__ + '.views.hook.GithubHookHandler.validate_hook_post',
            Mock(return_value=True))
     def test_post_causes_simple_branch_update(self, update, recalculate):
         """
@@ -46,7 +49,7 @@ class TestReceiveHook(TestCase):
         """
         data = read_data('post-receive-hook.json')
 
-        response = self.post(data)
+        response = self.post(data, HTTP_X_GITHUB_EVENT='push')
 
         self.assertEquals(response.status_code, 200)
         self.assertEquals(recalculate.delay.call_count, 0)
@@ -66,7 +69,7 @@ class TestReceiveHook(TestCase):
 
     def test_handles_missing_payload(self):
         "Return 400 on missing payload in POSTs"
-        response = self.post({'foo': 'bar'})
+        response = self.post({'foo': 'bar'}, HTTP_X_GITHUB_EVENT='push')
 
         self.assertEquals(response.status_code, 400)
 
@@ -74,7 +77,7 @@ class TestReceiveHook(TestCase):
         """
         Return 400 if repository or branch information is missing from payload
         """
-        response = self.post({'payload': '{}'})
+        response = self.post({'payload': '{}'}, HTTP_X_GITHUB_EVENT='push')
 
         self.assertEquals(response.status_code, 400)
 
@@ -82,6 +85,6 @@ class TestReceiveHook(TestCase):
         """
         Return 400 on malformed JSON content
         """
-        response = self.post({'payload': 'xyz'})
+        response = self.post({'payload': 'xyz'}, HTTP_X_GITHUB_EVENT='push')
 
         self.assertEquals(response.status_code, 400)

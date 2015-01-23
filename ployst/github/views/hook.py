@@ -1,4 +1,3 @@
-import json
 import logging
 
 from django.http import (
@@ -8,7 +7,8 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
 from ..conf import settings
-from ..github_client import GithubClient, compute_github_signature
+from ..github_client import GithubClient, get_secret
+from ..hooker import GithubHookHandler, GithubHookException
 from ..tasks.hierarchy import recalculate, update_branch_information
 
 LOGGER = logging.getLogger(__name__)
@@ -23,49 +23,52 @@ def safe_get(payload, keys, default=''):
     return payload
 
 
+class PloystGithubHookHandler(GithubHookHandler):
+    """
+    Custom Github hook handler for ployst.
+
+    Add an on_<event> method for each new event you want to hndle
+
+    """
+    def on_push(self, payload):
+        """
+        https://developer.github.com/v3/activity/events/types/#pushevent
+
+        """
+        try:
+            branch_name = payload['ref'].replace('refs/heads/', '')
+            head = payload['head_commit']['id'][:7]
+
+        except (KeyError, ValueError):
+            LOGGER.error('Unexpected data structure')
+            return HttpResponseBadRequest()
+
+        if settings.GITHUB_CALCULATE_HIERARCHIES_ON_HOOK:
+            recalculate.delay(self.org, self.repo, branch_name)
+        else:
+            update_branch_information.delay(
+                self.org, self.repo, branch_name, head
+            )
+
+
 @csrf_exempt
 @require_http_methods(['POST'])
 def receive(request):
-    "Entry point for github messages"
+    """
+    Entry point for github webhook messages
+
+    """
     try:
-        payload = request.body
-        commit_info = json.loads(payload)
-        hub_sig = request.META['HTTP_X_HUB_SIGNATURE']
-        url = commit_info['repository']['url']
-        branch_name = commit_info.get('ref', '').replace('refs/heads/', '')
+        org, repo = PloystGithubHookHandler.get_org_repo(request)
+        secret = get_secret(org, repo)
+        handler = PloystGithubHookHandler(secret, request)
+        handler.route()
 
-        org, repo = url.split('/')[-2:]
-
-        if not validate_hook_post(payload, org, repo, hub_sig):
-            LOGGER.error("Fraudulent hook post")
-            return HttpResponseBadRequest()
-
-    except (KeyError, ValueError):
-        LOGGER.error('Unexpected data structure')
+    except GithubHookException:
+        LOGGER.error("Incorrect hook post")
         return HttpResponseBadRequest()
 
-    if branch_name:
-        if settings.GITHUB_CALCULATE_HIERARCHIES_ON_HOOK:
-            recalculate.delay(org, repo, branch_name)
-        else:
-            head = safe_get(commit_info, ['head_commit', 'id'])[:7]
-            update_branch_information.delay(org, repo, branch_name, head)
-
     return HttpResponse("OK")
-
-
-def validate_hook_post(body, org, repo, hub_signature):
-    """
-    Check that the post is valid (and therefore came from github legitimately)
-
-    A post is considered valid if the HMAC digest of the body equals the header
-    given in `X-Hub-Signature`.
-
-    See https://developer.github.com/v3/repos/hooks/#example
-    """
-    computed = compute_github_signature(body, org, repo)
-    sent_sig = hub_signature.split('sha1=')[-1]
-    return computed == sent_sig
 
 
 def create_hook(request, organization, name):

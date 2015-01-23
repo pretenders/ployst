@@ -8,6 +8,7 @@ tags
 .ropeproject/
 /assets/lib
 /node_modules/
+github-hook*.json
 
 # Editors and IDEs
 .project
@@ -22,9 +23,9 @@ tags
 /docs/build
 /ployst.egg-info
 /static
+/.tox/
 
 # Some OSX specific thing
 *.DS_Store
-/.tox/
 
 ployst/github/test/data/
