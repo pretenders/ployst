@@ -4,9 +4,6 @@ import hmac
 import json
 
 
-DEBUG = True
-
-
 class GithubHookException(Exception):
     pass
 
@@ -34,22 +31,31 @@ class GithubHookHandler(object):
         except ValueError:
             raise GithubHookException("Invalid payload")
 
-    def __init__(self, secret, request):
+    def __init__(self, secret, request, debug=True):
         hub_sig = request.META['HTTP_X_HUB_SIGNATURE']
         payload = request.body
 
         if not self.validate_hook_post(payload, secret, hub_sig):
             raise GithubHookException("Incorrect signature")
 
-        self.payload = json.loads(request.body)
         self.event = request.META['HTTP_X_GITHUB_EVENT']
+        self.payload = json.loads(request.body)
+        self.debug = debug
 
-        if DEBUG:
-            filename = 'github-hook-{}-{}.json'.format(
-                datetime.now().isoformat(), self.event
-            )
-            with open(filename, 'w') as f:
-                f.write(request.body)
+        if debug:
+            self.dump_to_file()
+
+    def dump_to_file(self):
+        """
+        Dump payload into a file for logging and debugging purposes.
+
+        """
+        filename = 'github-hook-{}-{}.json'.format(
+            datetime.now().isoformat(), self.event
+        )
+        formatted_json = json.dumps(self.payload, indent=4)
+        with open(filename, 'w') as f:
+            f.write(formatted_json)
 
     @property
     def org_repo(self):
@@ -65,6 +71,7 @@ class GithubHookHandler(object):
         header given in `X-Hub-Signature`.
 
         See https://developer.github.com/v3/repos/hooks/#example
+
         """
         computed = compute_github_signature(body, secret)
         sent_sig = hub_signature.split('sha1=')[-1]
