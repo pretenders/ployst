@@ -62,7 +62,9 @@ class GithubClient(object):
             "secret": secret
         }
         try:
-            repo.create_hook('web', config=hook_config, events=['push'])
+            # For now, listen to all events. Once we put ployst into production
+            # we'll probably only listen to the events we actually handle
+            repo.create_hook('web', config=hook_config, events=['*'])
         except Exception as e:
             # 422 = hook already exists
             if e.response.status_code != 422:
