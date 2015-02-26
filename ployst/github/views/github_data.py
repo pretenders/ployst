@@ -56,3 +56,29 @@ class OrganisationRepos(UserRepos):
         org_name = self.kwargs['name']
         org = self.gh.gh.organization(org_name)
         return self.gh.org_repos(org)
+
+
+class RepoIssues(APIView):
+    """
+    Retrieve all issues for a given repo.
+
+    The organisation name is kwarg ``org`` in the URL pattern.
+    The repo name is kwarg ``repo`` in the URL pattern.
+    """
+    keys = [
+        'id', 'number', 'title', 'html_url', 'state', 'labels', 'milestone'
+    ]
+
+    def get(self, request, org, repo):
+        self.gh = GithubClient(request.user.id)
+        issues = self.gh.repo_issues(org, repo)
+        filtered_issues = []
+        for issue in issues:
+            issue = restrict_keys(issue.to_json(), self.keys)
+            issue['repo'] = '{0}/{1}'.format(org, repo)
+            issue['labels'] = [
+                {'name': label['name'], 'color': label['color']}
+                for label in issue['labels']
+            ]
+            filtered_issues.append(issue)
+        return Response(filtered_issues)

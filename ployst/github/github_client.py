@@ -49,6 +49,13 @@ class GithubClient(object):
         """
         return list(org.iter_repos())
 
+    def repo_issues(self, org, repo):
+        """
+        Return all repos from the given organisation.
+
+        """
+        return list(self.gh.iter_repo_issues(org, repo))
+
     def create_hook(self, org, repo, url):
         """
         Create a hook for the given org and repo.

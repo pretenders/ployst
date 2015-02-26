@@ -23,4 +23,7 @@ urlpatterns = patterns(
     url(r'^org-repos/(?P<name>\w+)',
         github_data.OrganisationRepos.as_view(),
         name='org-repos'),
+    url(r'^repo-issues/(?P<org>[-_\w]+)/(?P<repo>[-_\w]+)',
+        github_data.RepoIssues.as_view(),
+        name='repo-issues'),
 )

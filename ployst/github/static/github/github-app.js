@@ -23,6 +23,17 @@ angular.module('ployst.github', [
             );
         }
     ])
+    .factory('github.RepoIssues', [
+        '$resource',
+        function($resource) {
+            return $resource(
+                '/github/repo-issues/:org/:repo', {
+                    org: '@org',
+                    repo: '@repo'
+                }
+            );
+        }
+    ])
     .factory('github.Token', [
         '$resource',
         function($resource) {
@@ -148,6 +159,53 @@ angular.module('ployst.github', [
                 controller: 'GithubController',
                 restrict: 'E',
                 templateUrl: Django.URL.STATIC + 'github/github-config.html',
+                scope: {
+                    project: '='
+                }
+            };
+        }
+    ])
+    .controller('GithubIssuesController', [
+        '$scope', 'github.Token', 'Repos', 'github.RepoIssues',
+
+        function($scope, GHToken, Repos, GHRepoIssues)
+        {
+            $scope.hasToken = null;
+            $scope.repos = null;
+            $scope.issues = [];
+
+            var loadData = function() {
+                Repos.query({project: $scope.project.id}, function(projectRepos) {
+                    $scope.repos = projectRepos;
+                    angular.forEach(projectRepos, function(repo) {
+                        GHRepoIssues.query(
+                            {org: repo.owner, repo: repo.name},
+                            function(repoIssues) {
+                                $scope.issues = $scope.issues.concat(repoIssues);
+                            }
+                        );
+                    });
+                });
+            };
+
+            GHToken.query(function(token) {
+                if (token.length > 0) {
+                    loadData();
+                    $scope.hasToken = true;
+                } else {
+                    $scope.hasToken = false;
+                }
+            });
+        }
+    ])
+    .directive('githubIssues', [
+        'Django',
+
+        function(Django) {
+            return {
+                controller: 'GithubIssuesController',
+                restrict: 'E',
+                templateUrl: Django.URL.STATIC + 'github/github-issues.html',
                 scope: {
                     project: '='
                 }

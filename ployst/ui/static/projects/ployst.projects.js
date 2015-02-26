@@ -22,6 +22,12 @@ angular.module('ployst.projects', [
                     templateUrl: Django.URL.STATIC + 'projects/project-activity.html',
                     menu: 'projects'
                 })
+                .state('projects.issues', {
+                    url: '/issues',
+                    parent: 'projects',
+                    templateUrl: Django.URL.STATIC + 'projects/project-issues.html',
+                    menu: 'projects'
+                })
                 .state('projects.repos', {
                     url: '/repos',
                     templateUrl: Django.URL.STATIC + 'projects/project-repos.html',

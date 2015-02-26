@@ -1,0 +1,25 @@
+<p ng-if="hasToken === null">
+    Loading...
+</p>
+
+<div ng-if="hasToken === false">
+    <p>You still haven't authorised ployst to access your Github account.</p>
+    <a href="/github/oauth-start" class="btn btn-primary">Assimilate Github account</a>
+</div>
+
+
+<div ng-if="hasToken">
+
+    <ul class="list-unstyled actionable-list">
+        <li ng-show="!issues">Loading...</li>
+        <li ng-repeat="issue in issues">
+            <a ng-href="{{issue.html_url}}">#{{ issue.number }} @{{issue.repo}}</a>
+            {{ issue.title }}
+            <span class="label" style="background-color: #{{label.color}}"
+                ng-repeat="label in issue.labels">
+                {{ label.name }}&nbsp;
+            </span>
+        </li>
+    </ul>
+
+</div>
