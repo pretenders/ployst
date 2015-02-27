@@ -66,7 +66,8 @@ class RepoIssues(APIView):
     The repo name is kwarg ``repo`` in the URL pattern.
     """
     keys = [
-        'id', 'number', 'title', 'html_url', 'state', 'labels', 'milestone'
+        'number', 'title', 'html_url', 'labels', 'milestone',
+        # 'id', 'state',
     ]
 
     def get(self, request, org, repo):
