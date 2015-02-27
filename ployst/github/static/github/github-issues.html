@@ -9,10 +9,11 @@
 
 
 <div ng-if="hasToken">
+    <p>Filter: <input ng-model="filter" type="text"></p>
 
     <ul class="list-unstyled actionable-list">
         <li ng-show="!issues">Loading...</li>
-        <li ng-repeat="issue in issues">
+        <li ng-repeat="issue in issues|filter:filter">
             <a ng-href="{{issue.html_url}}">#{{ issue.number }} @{{issue.repo}}</a>
             {{ issue.title }}
             <span class="label" style="background-color: #{{label.color}}"
