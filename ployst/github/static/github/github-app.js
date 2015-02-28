@@ -172,9 +172,33 @@ angular.module('ployst.github', [
         {
             $scope.hasToken = null;
             $scope.repos = null;
+            $scope.allIssues = [];
             $scope.issues = [];
+            $scope.count = 0;
+            $scope.groupings = {};
+            $scope.groupBy = null;
+
+            var buildGroupings = function(repoIssues) {
+                angular.forEach(repoIssues, function(issue) {
+                    angular.forEach(issue['labels'], function(label) {
+                        if(label.name.indexOf(':') !== -1) {
+                            var keyval = label.name.split(':'),
+                                key = keyval[0],
+                                val = keyval[1];
+                            if($scope.groupings[key] === undefined) {
+                                $scope.groupings[key] = {};
+                            }
+                            if($scope.groupings[key][val] === undefined) {
+                                $scope.groupings[key][val] = [];
+                            }
+                            $scope.groupings[key][val].push(issue);
+                        }
+                    });
+                });
+            };
 
             var loadData = function() {
+                $scope.issues = [];
                 Repos.query({project: $scope.project.id}, function(projectRepos) {
                     $scope.repos = projectRepos;
                     angular.forEach(projectRepos, function(repo) {
@@ -182,10 +206,21 @@ angular.module('ployst.github', [
                             {org: repo.owner, repo: repo.name},
                             function(repoIssues) {
                                 $scope.issues = $scope.issues.concat(repoIssues);
+                                buildGroupings(repoIssues);
+                                $scope.allIssues = $scope.issues;
                             }
                         );
                     });
                 });
+            };
+
+            $scope.setGroupBy = function(key) {
+                $scope.groupBy = key;
+                if(key === null) {
+                    $scope.issues = $scope.allIssues;
+                } else {
+                    $scope.issues = $scope.groupings[key];
+                }
             };
 
             GHToken.query(function(token) {

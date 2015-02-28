@@ -9,21 +9,57 @@
 
 
 <div ng-if="hasToken">
-    <p>Filter: <input ng-model="filter" type="text"></p>
+    <div class="well well-sm">
+        <p>Filter:
+            <input ng-model="filter" type="text">
+        </p>
+        <p ng-if="groupings != {}">Group by:
+            <span ng-repeat="(key, _) in groupings">
+                <span ng-click="setGroupBy(key)" class="label label-default">
+                    <i class="fa fa-tag"></i> {{ key }}
+                </span> &nbsp;
+            </span>
+            <span ng-click="setGroupBy(null)" class="label label-danger">
+                <i class="fa fa-times-circle"></i> (no groups)
+            </span>
+        </p>
+    </div>
 
-    <ul class="list-unstyled actionable-list">
+    <ul ng-if="groupBy === null" class="list-unstyled">
         <li ng-show="!issues">Loading...</li>
         <li ng-repeat="issue in issues|filter:filter">
-            <a target="_blank" ng-href="{{issue.html_url}}">#{{ issue.number }} {{issue.repo}}</a>
+            <a target="_blank" ng-href="{{issue.html_url}}">
+                #{{ issue.number }} {{issue.repo}}
+            </a>
             {{ issue.title }}
             <span ng-repeat="label in issue.labels">
                 <span class="label" style="background-color: #{{label.color}}">
                     {{ label.name }}
-                </span>
-                &nbsp;
+                </span> &nbsp;
             </span>
-            <span ng-if="issue.milestone" class="badge">milestone:{{ issue.milestone.title }}</span>
+            <!-- span ng-if="issue.milestone" class="badge">milestone:{{ issue.milestone.title }}</span -->
         </li>
     </ul>
+
+    <div ng-if="groupBy">
+        <h3>Grouping by {{groupBy}}</h3>
+        <div ng-repeat="(value, issues) in issues">
+            <h4 ng-if="issues">{{value}}</h3>
+            <ul class="list-unstyled">
+                <li ng-repeat="issue in issues|filter:filter">
+                    <a target="_blank" ng-href="{{issue.html_url}}">
+                        #{{ issue.number }} {{issue.repo}}
+                    </a>
+                    {{ issue.title }}
+                    <span ng-repeat="label in issue.labels">
+                        <span class="label" style="background-color: #{{label.color}}">
+                            {{ label.name }}
+                        </span> &nbsp;
+                    </span>
+                    <!-- span ng-if="issue.milestone" class="badge">milestone:{{ issue.milestone.title }}</span -->
+                </li>
+            </ul>
+        </div>
+    </div>
 
 </div>

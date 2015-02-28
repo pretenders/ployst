@@ -76,10 +76,18 @@ class RepoIssues(APIView):
         filtered_issues = []
         for issue in issues:
             issue = restrict_keys(issue.to_json(), self.keys)
-            issue['repo'] = '{0}/{1}'.format(org, repo)
+            issue['owner'] = org
+            issue['repo'] = repo
             issue['labels'] = [
                 {'name': label['name'], 'color': label['color']}
                 for label in issue['labels']
             ]
+            # Add milestone as a label:
+            if 'milestone' in issue and issue['milestone']:
+                milestone = issue['milestone']['title']
+                issue['labels'].append({
+                    'name': 'milestone:{0}'.format(milestone),
+                    'color': '777777',
+                })
             filtered_issues.append(issue)
         return Response(filtered_issues)
