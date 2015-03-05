@@ -53,4 +53,4 @@ def heroku_deploy():
     Push this branch to heroku to deploy it.
     """
     this_branch = local("git rev-parse --abbrev-ref HEAD", capture=True)
-    local("git push heroku {0}:master".format(this_branch))
+    local("git push --force heroku {0}:master".format(this_branch))
