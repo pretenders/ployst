@@ -27,7 +27,8 @@ class ProjectUserSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    users = ProjectUserSerializer(source='projectuser_set', many=True)
+    users = ProjectUserSerializer(source='projectuser_set', many=True,
+                                  read_only=True)
     am_manager = serializers.SerializerMethodField('managed_by_me')
 
     extra_data = serializers.ReadOnlyField()
