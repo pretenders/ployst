@@ -4,8 +4,8 @@ from rest_framework import routers
 from . import views
 
 router = routers.SimpleRouter(trailing_slash=False)
-router.register(r'repo', views.RepositoryViewSet)
-router.register(r'branch', views.BranchViewSet)
+router.register(r'repo', views.RepositoryViewSet, base_name='repository')
+router.register(r'branch', views.BranchViewSet, base_name='branch')
 
 urlpatterns = patterns(
     '',
