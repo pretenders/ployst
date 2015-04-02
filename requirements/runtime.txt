@@ -1,6 +1,6 @@
-django==1.7.3
+django==1.7.7
 django-appconf==0.6              # provides graceful configuration of apps
-django-compressor==1.4
+django-compressor==1.4           # static asset compression
 django-crispy-forms==1.4.0       # better control over form rendering
 django-filter==0.7               # provides generic filtering in API
 djangorestframework==3.0.3       # Rest API
@@ -8,12 +8,12 @@ django-registration-redux==1.1   # user accounts and registration
 drf-extensions==0.2.5            # DRF enhancements, including nested routers
 
 # API client requirements
-apitopy==0.3.0
-requests==2.3.0
+apitopy==0.3.0                   # pythonic HTTP API clients
+requests==2.3.0                  # HTTP client library
 
 
 # Git provider requirements
 GitPython==0.3.2.RC1             # access local git repositories
 github3.py==0.8.2                # access github repositories
 
-celery==3.1.11
+celery==3.1.11                   # asynchronous task execution
