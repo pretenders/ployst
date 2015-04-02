@@ -10,7 +10,7 @@ from ..models import UserOAuthToken
 
 
 class TestOAuthTokens(CoreApiClientTestMixin, TestCase):
-    url = reverse('core:accounts:useroauthtoken-list')
+    url = reverse('core:accounts:usertoken-list')
 
     def setUp(self):
         super(TestOAuthTokens, self).setUp()

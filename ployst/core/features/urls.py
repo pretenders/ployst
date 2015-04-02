@@ -4,7 +4,7 @@ from rest_framework import routers
 from . import views
 
 router = routers.SimpleRouter(trailing_slash=False)
-router.register(r'feature', views.FeatureViewSet)
+router.register(r'feature', views.FeatureViewSet, base_name='feature')
 
 urlpatterns = patterns(
     '',
