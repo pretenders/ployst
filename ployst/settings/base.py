@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'ployst.core.features',         # planning: stories, bugs, features...
     'ployst.core.repos',            # version control: repos, branches...
     'ployst.core.builds',           # continuous integration: build results...
+    'ployst.core.blips',            # ployst2 prototyping
     'ployst.ui',                    # The main Ployst UI
 
     # Providers
@@ -73,7 +74,7 @@ WSGI_APPLICATION = 'ployst.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
     'default': {

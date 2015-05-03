@@ -8,6 +8,8 @@ urlpatterns = patterns(
 
     url(r'^accounts/',
         include('ployst.core.accounts.urls', namespace='accounts')),
+    url(r'^blips/',
+        include('ployst.core.blips.urls', namespace='blips')),
     url(r'^builds/',
         include('ployst.core.builds.urls', namespace='builds')),
     url(r'^features/',
